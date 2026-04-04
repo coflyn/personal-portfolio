@@ -1,0 +1,181 @@
+.page {
+  padding-top: calc(var(--nav-height) + 80px);
+  padding-bottom: var(--section-padding);
+}
+
+.header {
+  margin-bottom: 64px;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 64px;
+}
+
+@media (min-width: 768px) {
+  .content {
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+  }
+}
+
+.text p {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: 32px;
+}
+
+.emailLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  padding-bottom: 4px;
+  border-bottom: 2px solid var(--border);
+  transition:
+    border-color var(--duration-normal) var(--ease-smooth),
+    color var(--duration-normal) var(--ease-smooth);
+}
+
+.emailLink:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.socials {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.socialItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+  transition: padding-left var(--duration-normal) var(--ease-smooth);
+}
+
+.socialItem:first-child {
+  border-top: 1px solid var(--border);
+}
+
+.socialItem:hover {
+  padding-left: 8px;
+}
+
+.socialName {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.socialArrow {
+  font-size: 0.9rem;
+  color: var(--text-tertiary);
+  transition:
+    color var(--duration-fast) var(--ease-smooth),
+    transform var(--duration-normal) var(--ease-smooth);
+}
+
+.socialItem:hover .socialArrow {
+  color: var(--accent);
+  transform: translate(3px, -3px);
+}
+
+.formSide {
+  display: flex;
+  flex-direction: column;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.inputGroup {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.inputGroup input,
+.inputGroup textarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  padding: 12px 0;
+  font-size: 1rem;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  transition: border-color var(--duration-fast) var(--ease-smooth);
+  resize: none;
+}
+
+.inputGroup input:focus,
+.inputGroup textarea:focus {
+  outline: none;
+  border-bottom-color: var(--accent);
+}
+
+.inputGroup input:-webkit-autofill,
+.inputGroup input:-webkit-autofill:hover,
+.inputGroup input:-webkit-autofill:focus,
+.inputGroup textarea:-webkit-autofill,
+.inputGroup textarea:-webkit-autofill:hover,
+.inputGroup textarea:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--text-primary) !important;
+  -webkit-box-shadow: 0 0 0px 1000px var(--bg-primary) inset !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.inputGroup label {
+  position: absolute;
+  top: 12px;
+  left: 0;
+  font-size: 1rem;
+  color: var(--text-tertiary);
+  pointer-events: none;
+  transition:
+    transform var(--duration-normal) var(--ease-smooth),
+    font-size var(--duration-normal) var(--ease-smooth),
+    color var(--duration-normal) var(--ease-smooth);
+  transform-origin: left top;
+}
+
+.inputGroup input:focus ~ label,
+.inputGroup input:not(:placeholder-shown) ~ label,
+.inputGroup textarea:focus ~ label,
+.inputGroup textarea:not(:placeholder-shown) ~ label {
+  transform: translateY(-24px) scale(0.85);
+  color: var(--text-secondary);
+}
+
+.submitBtn {
+  align-self: flex-start;
+  margin-top: 16px;
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  border: none;
+  padding: 14px 32px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 100px;
+  cursor: pointer;
+  transition:
+    transform var(--duration-fast) var(--ease-spring),
+    background-color var(--duration-fast) var(--ease-smooth);
+}
+
+.submitBtn:hover {
+  background: var(--text-secondary);
+  transform: scale(0.98);
+}

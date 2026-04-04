@@ -1,0 +1,20 @@
+.page {
+  padding-top: calc(var(--nav-height) + 80px);
+  padding-bottom: var(--section-padding);
+}
+
+.header {
+  margin-bottom: 64px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
