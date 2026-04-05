@@ -1,6 +1,12 @@
 .page {
-  padding-top: calc(var(--nav-height) + 80px);
+  padding-top: calc(var(--nav-height) + 32px);
   padding-bottom: var(--section-padding);
+}
+
+@media (min-width: 1024px) {
+  .page {
+    padding-top: calc(var(--nav-height) + 80px);
+  }
 }
 
 .header {

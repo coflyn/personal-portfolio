@@ -3,7 +3,8 @@
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 32px;
-  transition: background var(--duration-normal) var(--ease-smooth),
+  transition:
+    background var(--duration-normal) var(--ease-smooth),
     border-color var(--duration-normal) var(--ease-smooth),
     transform var(--duration-normal) var(--ease-smooth);
   display: flex;
@@ -65,7 +66,8 @@
 .arrow {
   font-size: 1.1rem;
   color: var(--text-tertiary);
-  transition: color var(--duration-fast) var(--ease-smooth),
+  transition:
+    color var(--duration-fast) var(--ease-smooth),
     transform var(--duration-normal) var(--ease-smooth);
   flex-shrink: 0;
 }

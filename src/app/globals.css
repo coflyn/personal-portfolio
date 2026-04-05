@@ -55,6 +55,51 @@ body {
   color: var(--text-primary);
   line-height: 1.6;
   overflow-x: hidden;
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(
+      circle at 15% 15%,
+      rgba(196, 168, 130, 0.15) 0%,
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 85% 85%,
+      rgba(196, 168, 130, 0.08) 0%,
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(196, 168, 130, 0.05) 0%,
+      transparent 50%
+    );
+  z-index: -1;
+  filter: blur(60px);
+  animation: ambientMove 15s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes ambientMove {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translate(4%, 3%) scale(1.15);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-3%, -5%) scale(1);
+    opacity: 0.8;
+  }
 }
 
 body::after {
@@ -181,8 +226,13 @@ button {
   background: var(--border);
 }
 
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-hover) var(--bg-primary);
+}
+
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 2px;
 }
 
 ::-webkit-scrollbar-track {
@@ -191,7 +241,7 @@ button {
 
 ::-webkit-scrollbar-thumb {
   background: var(--border-hover);
-  border-radius: 3px;
+  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {

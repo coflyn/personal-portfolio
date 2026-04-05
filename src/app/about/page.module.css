@@ -1,6 +1,12 @@
 .page {
-  padding-top: calc(var(--nav-height) + 80px);
+  padding-top: calc(var(--nav-height) + 32px);
   padding-bottom: var(--section-padding);
+}
+
+@media (min-width: 1024px) {
+  .page {
+    padding-top: calc(var(--nav-height) + 80px);
+  }
 }
 
 .header {
@@ -36,7 +42,6 @@
   font-weight: 500;
 }
 
-/* Details Side */
 .details {
   display: flex;
   flex-direction: column;
@@ -60,13 +65,14 @@
 }
 
 .techItem {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: var(--text-secondary);
   background: var(--bg-tertiary);
   border: 1px solid var(--border);
   padding: 6px 14px;
   border-radius: 6px;
   transition:
+    transform var(--duration-fast) var(--ease-smooth),
     border-color var(--duration-fast) var(--ease-smooth),
     color var(--duration-fast) var(--ease-smooth);
 }
@@ -74,6 +80,7 @@
 .techItem:hover {
   border-color: var(--border-hover);
   color: var(--text-primary);
+  transform: translateY(-2px);
 }
 
 .infoList {
@@ -113,20 +120,26 @@
 .githubCalendar {
   border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 40px 32px;
+  padding: 32px 16px;
   background: var(--bg-card);
   overflow-x: auto;
   scrollbar-width: none;
-  width: fit-content;
-  margin: 0 auto;
+  width: 100%;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+@media (min-width: 768px) {
+  .githubCalendar {
+    padding: 40px 32px;
+    width: fit-content;
+    margin: 0 auto;
+  }
 }
 
 .githubCalendar::-webkit-scrollbar {
   display: none;
 }
 
-/* Timeline Layout */
 .timelineSection {
   margin-top: 48px;
   padding-top: 48px;

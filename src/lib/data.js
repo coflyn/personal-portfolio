@@ -3,7 +3,7 @@ const projects = [
     id: "scribdl",
     title: "scribdl-py",
     description: "Save any Scribd document into a high-quality PDF.",
-    tags: ["Python", "CLI", "Downloader"],
+    tags: ["Python", "CLI", "Downloader", "Automation"],
     github: "https://github.com/coflyn/scribdl-py",
     featured: true,
   },
@@ -12,7 +12,7 @@ const projects = [
     title: "slidesharedl-py",
     description:
       "A simple tool to download and archive SlideShare presentations.",
-    tags: ["Python", "CLI", "Downloader"],
+    tags: ["Python", "CLI", "Downloader", "Automation"],
     github: "https://github.com/coflyn/slidesharedl-py",
     featured: true,
   },
@@ -21,7 +21,7 @@ const projects = [
     title: "academiadl-py",
     description:
       "Read and download Academia papers offline without logging in.",
-    tags: ["Python", "CLI", "Downloader"],
+    tags: ["Python", "CLI", "Downloader", "Automation"],
     github: "https://github.com/coflyn/academiadl-py",
     featured: true,
   },
@@ -29,9 +29,9 @@ const projects = [
     id: "dplayerdl",
     title: "dplayerdl-py",
     description: "Easily download and archive documents from DocPlayer.",
-    tags: ["Python", "CLI", "Downloader"],
+    tags: ["Python", "CLI", "Downloader", "Automation"],
     github: "https://github.com/coflyn/dplayerdl-py",
-    featured: false,
+    featured: true,
   },
   {
     id: "calameodl",

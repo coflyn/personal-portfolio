@@ -47,7 +47,9 @@ const fadeUp = {
 };
 
 export default function Home() {
-  const [featured, setFeatured] = useState(projects.filter((p) => p.featured));
+  const [featured, setFeatured] = useState(
+    projects.filter((p) => p.featured).slice(0, 3),
+  );
   const [catMsgIndex, setCatMsgIndex] = useState(0);
   const [isHappy, setIsHappy] = useState(false);
   const [showFeed, setShowFeed] = useState(false);
@@ -69,6 +71,7 @@ export default function Home() {
           setIsSelecting(false);
           setTypewriterText("");
           setWordIndex((prev) => (prev + 1) % phrases.length);
+          setTypingSpeed(150);
         }, 500);
         return;
       }
@@ -80,7 +83,7 @@ export default function Home() {
         if (typewriterText === "") {
           setIsDeleting(false);
           setWordIndex((prev) => (prev + 1) % phrases.length);
-          setTypingSpeed(500);
+          setTypingSpeed(150);
         }
       } else {
         let nextChar = currentWord[typewriterText.length];
@@ -90,7 +93,7 @@ export default function Home() {
           typewriterText.length > 2 &&
           typewriterText.length < currentWord.length - 1
         ) {
-          nextChar = "x"; // Wrong char
+          nextChar = "x";
           setTypewriterText((prev) => prev + nextChar);
           setTypingSpeed(150);
           setTimeout(() => setIsDeleting(true), 200);
@@ -164,7 +167,7 @@ export default function Home() {
       try {
         const cached = sessionStorage.getItem("featured_repos");
         if (cached) {
-          setFeatured(JSON.parse(cached));
+          setFeatured(JSON.parse(cached).slice(0, 3));
           return;
         }
 
@@ -323,7 +326,10 @@ export default function Home() {
               <div className={styles.grid}>
                 {featured.map((project, i) => (
                   <ScrollReveal key={project.id} delay={i * 0.1}>
-                    <ProjectCard project={project} index={i} />
+                    <ProjectCard
+                      project={{ ...project, tags: project.tags.slice(0, 2) }}
+                      index={i}
+                    />
                   </ScrollReveal>
                 ))}
               </div>

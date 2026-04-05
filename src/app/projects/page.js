@@ -32,7 +32,7 @@ export default async function Projects() {
         language: repo.language || "Unknown",
         tags: [repo.language, ...(repo.topics || [])]
           .filter(Boolean)
-          .slice(0, 2),
+          .slice(0, 4),
         github: repo.html_url,
         stars: repo.stargazers_count || 0,
         forks: repo.forks_count || 0,
