@@ -146,15 +146,32 @@ export default function About() {
                   <GitHubCalendar
                     username="coflyn"
                     colorScheme="dark"
-                    fontSize={16}
-                    blockSize={15}
-                    blockMargin={5}
+                    fontSize={15}
+                    blockSize={14}
+                    blockMargin={4}
+                    showWeekdayLabels
+                    loading={false}
                     renderBlock={(block, activity) =>
                       React.cloneElement(block, {
                         title: `${activity.count} contributions on ${activity.date}`,
                       })
                     }
-                  />
+                  >
+                    <div className={styles.calendarSkeleton}>
+                      <div className={styles.skeletonGrid}>
+                        {Array.from({ length: 7 }).map((_, row) => (
+                          <div key={row} className={styles.skeletonRow}>
+                            {Array.from({ length: 20 }).map((_, col) => (
+                              <div key={col} className={styles.skeletonBlock} />
+                            ))}
+                          </div>
+                        ))}
+                      </div>
+                      <p className={styles.skeletonText}>
+                        Loading contributions...
+                      </p>
+                    </div>
+                  </GitHubCalendar>
                 </div>
               </ScrollReveal>
             </div>

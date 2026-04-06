@@ -140,6 +140,51 @@
   display: none;
 }
 
+.calendarSkeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 8px 0;
+}
+
+.skeletonGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.skeletonRow {
+  display: flex;
+  gap: 4px;
+}
+
+.skeletonBlock {
+  width: 15px;
+  height: 15px;
+  border-radius: 3px;
+  background: var(--bg-tertiary);
+  animation: skeletonPulse 1.5s ease-in-out infinite;
+}
+
+.skeletonBlock:nth-child(odd) {
+  animation-delay: 0.3s;
+}
+
+.skeletonText {
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+  animation: skeletonPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes skeletonPulse {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
 .timelineSection {
   margin-top: 48px;
   padding-top: 48px;

@@ -52,6 +52,9 @@
   align-items: center;
   mix-blend-mode: screen;
   position: relative;
+  width: 100%;
+  max-width: 480px;
+  aspect-ratio: 1 / 1;
 }
 
 .catSpeech {
@@ -75,8 +78,8 @@
 
 .image {
   width: 100%;
-  max-width: 480px;
-  height: auto;
+  height: 100%;
+  object-fit: contain;
   pointer-events: none;
   transition: transform 0.6s var(--ease-smooth);
 }
