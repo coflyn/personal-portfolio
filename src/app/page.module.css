@@ -55,6 +55,13 @@
   width: 100%;
   max-width: 480px;
   aspect-ratio: 1 / 1;
+  background: radial-gradient(
+    circle at center,
+    rgba(196, 168, 130, 0.05) 0%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  animation: heroPulse 4s ease-in-out infinite;
 }
 
 .catSpeech {

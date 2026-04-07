@@ -171,3 +171,8 @@
 .mobileLink.active {
   color: var(--text-primary);
 }
+
+.mobileLink:hover,
+.mobileLink.active {
+  color: var(--text-primary);
+}

@@ -16,12 +16,20 @@ const pageVariants = {
 };
 
 export default function PageTransition({ children }) {
+  const handleAnimationStart = () => {
+    window.scrollTo(0, 0);
+    if (window.lenis) {
+      window.lenis.scrollTo(0, { immediate: true });
+    }
+  };
+
   return (
     <motion.div
       variants={pageVariants}
       initial="initial"
       animate="animate"
       exit="exit"
+      onAnimationStart={handleAnimationStart}
     >
       {children}
     </motion.div>

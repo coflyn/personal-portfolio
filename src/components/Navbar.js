@@ -58,7 +58,7 @@ export default function Navbar() {
                     transition={{
                       type: "spring",
                       stiffness: 380,
-                      damping: 30
+                      damping: 30,
                     }}
                   />
                 )}
@@ -72,7 +72,7 @@ export default function Navbar() {
                     transition={{
                       type: "spring",
                       stiffness: 380,
-                      damping: 30
+                      damping: 30,
                     }}
                   />
                 )}
@@ -108,11 +108,13 @@ export default function Navbar() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.08, duration: 0.4 }}
               >
-                <Link 
-                  href={link.href} 
+                <Link
+                  href={link.href}
                   className={`${styles.mobileLink} ${pathname === link.href ? styles.active : ""}`}
                 >
-                  <div style={{ position: "relative", display: "inline-block" }}>
+                  <div
+                    style={{ position: "relative", display: "inline-block" }}
+                  >
                     {link.label}
                     {pathname === link.href && (
                       <motion.div
@@ -122,7 +124,7 @@ export default function Navbar() {
                         transition={{
                           type: "spring",
                           stiffness: 380,
-                          damping: 30
+                          damping: 30,
                         }}
                       />
                     )}

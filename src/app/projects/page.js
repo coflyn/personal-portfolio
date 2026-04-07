@@ -1,8 +1,5 @@
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import ProjectList from "@/components/ProjectList";
 import ScrollReveal from "@/components/ScrollReveal";
-import SmoothScroll from "@/components/SmoothScroll";
 import PageTransition from "@/components/PageTransition";
 import fallbackProjects from "@/lib/data";
 import styles from "./page.module.css";
@@ -50,27 +47,23 @@ export default async function Projects() {
   }
 
   return (
-    <SmoothScroll>
-      <Navbar />
-      <PageTransition>
-        <main className={styles.page}>
-          <div className="container">
-            <ScrollReveal>
-              <div className={styles.header}>
-                <p className="section-label">Projects</p>
-                <h1 className="section-title">Things I&apos;ve built.</h1>
-                <p className="section-description">
-                  A collection of tools, scripts, and experiments. Fed directly
-                  from my GitHub.
-                </p>
-              </div>
-            </ScrollReveal>
+    <PageTransition>
+      <main className={styles.page}>
+        <div className="container">
+          <ScrollReveal>
+            <div className={styles.header}>
+              <p className="section-label">Projects</p>
+              <h1 className="section-title">Things I&apos;ve built.</h1>
+              <p className="section-description">
+                A collection of tools, scripts, and experiments. Fed directly
+                from my GitHub.
+              </p>
+            </div>
+          </ScrollReveal>
 
-            <ProjectList projects={projects} />
-          </div>
-        </main>
-        <Footer />
-      </PageTransition>
-    </SmoothScroll>
+          <ProjectList projects={projects} />
+        </div>
+      </main>
+    </PageTransition>
   );
 }

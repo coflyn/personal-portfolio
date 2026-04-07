@@ -4,11 +4,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import ProjectCard from "@/components/ProjectCard";
 import ScrollReveal from "@/components/ScrollReveal";
-import SmoothScroll from "@/components/SmoothScroll";
 import PageTransition from "@/components/PageTransition";
 import TextReveal from "@/components/TextReveal";
 
@@ -203,141 +200,137 @@ export default function Home() {
   }, []);
 
   return (
-    <SmoothScroll>
-      <Navbar />
-      <PageTransition>
-        <main>
-          {/* Hero */}
-          <section className={styles.hero}>
-            <div className="container">
-              <div className={styles.heroLayout}>
-                <motion.div
-                  className={styles.content}
-                  variants={stagger}
-                  initial="hidden"
-                  animate="visible"
+    <PageTransition>
+      <main>
+        {/* Hero */}
+        <section className={styles.hero}>
+          <div className="container">
+            <div className={styles.heroLayout}>
+              <motion.div
+                className={styles.content}
+                variants={stagger}
+                initial="hidden"
+                animate="visible"
+              >
+                <h1 className={styles.title}>
+                  Hi, I&apos;m{" "}
+                  <span className={styles.titleAccent}>coflyn.</span>
+                </h1>
+                <h2 className={styles.titleSub}>
+                  <span className={isSelecting ? styles.selecting : ""}>
+                    {typewriterText}
+                  </span>
+                  <span className={styles.cursor}>|</span>
+                </h2>
+
+                <motion.p
+                  className={styles.subtitle}
+                  variants={fadeUp}
+                  transition={{ delay: 0.5, duration: 0.5 }}
                 >
-                  <h1 className={styles.title}>
-                    Hi, I&apos;m{" "}
-                    <span className={styles.titleAccent}>coflyn.</span>
-                  </h1>
-                  <h2 className={styles.titleSub}>
-                    <span className={isSelecting ? styles.selecting : ""}>
-                      {typewriterText}
-                    </span>
-                    <span className={styles.cursor}>|</span>
-                  </h2>
-
-                  <motion.p
-                    className={styles.subtitle}
-                    variants={fadeUp}
-                    transition={{ delay: 0.5, duration: 0.5 }}
-                  >
-                    An undergraduate student exploring interesting things in
-                    tech and automation. Learning every day to build better,
-                    more efficient tools.
-                  </motion.p>
-                  <motion.div className={styles.ctas} variants={fadeUp}>
-                    <MagneticButton>
-                      <Link href="/projects" className={styles.ctaPrimary}>
-                        View Projects
-                      </Link>
-                    </MagneticButton>
-                    <MagneticButton>
-                      <Link href="/contact" className={styles.ctaSecondary}>
-                        Get in Touch
-                      </Link>
-                    </MagneticButton>
-                  </motion.div>
+                  An undergraduate student exploring interesting things in
+                  tech and automation. Learning every day to build better,
+                  more efficient tools.
+                </motion.p>
+                <motion.div className={styles.ctas} variants={fadeUp}>
+                  <MagneticButton>
+                    <Link href="/projects" className={styles.ctaPrimary}>
+                      View Projects
+                    </Link>
+                  </MagneticButton>
+                  <MagneticButton>
+                    <Link href="/contact" className={styles.ctaSecondary}>
+                      Get in Touch
+                    </Link>
+                  </MagneticButton>
                 </motion.div>
+              </motion.div>
 
-                <motion.div
-                  className={styles.heroImage}
-                  initial={{ opacity: 0, x: 30 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{
-                    delay: 0.6,
-                    duration: 0.8,
-                    ease: [0.25, 0.1, 0.25, 1],
-                  }}
-                  onClick={handleCatClick}
-                  style={{ cursor: "pointer" }}
-                >
-                  <div key={catMsgIndex} className={styles.catSpeech}>
-                    {catMessages[catMsgIndex]}
-                  </div>
-
-                  {showFeed && (
-                    <motion.div
-                      className={styles.feedAnim}
-                      initial={{ scale: 0.5, opacity: 0 }}
-                      animate={{
-                        scale: [1, 2.8],
-                        opacity: [0, 1, 0],
-                      }}
-                      style={{
-                        left: clickPos.x,
-                        top: clickPos.y,
-                      }}
-                      transition={{ duration: 0.6, ease: "easeOut" }}
-                    >
-                      <HeartSVG />
-                    </motion.div>
-                  )}
-
-                  <video
-                    src="/icon.mp4"
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    className={`${styles.image} ${isHappy ? styles.happyCat : ""}`}
-                  />
-                </motion.div>
-              </div>
-            </div>
-
-            <motion.div
-              className={styles.scrollIndicator}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.5, duration: 0.8 }}
-            >
-              <span>scroll</span>
-              <div className={styles.chevron} />
-            </motion.div>
-          </section>
-
-          {/* Featured Projects */}
-          <section className={styles.featured}>
-            <div className="container">
-              <ScrollReveal>
-                <div className={styles.featuredHeader}>
-                  <div>
-                    <p className="section-label">Selected Work</p>
-                    <h2 className="section-title">Featured Projects</h2>
-                  </div>
-                  <Link href="/projects" className={styles.viewAll}>
-                    View all →
-                  </Link>
+              <motion.div
+                className={styles.heroImage}
+                initial={{ opacity: 0, x: 30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{
+                  delay: 0.6,
+                  duration: 0.8,
+                  ease: [0.25, 0.1, 0.25, 1],
+                }}
+                onClick={handleCatClick}
+                style={{ cursor: "pointer" }}
+              >
+                <div key={catMsgIndex} className={styles.catSpeech}>
+                  {catMessages[catMsgIndex]}
                 </div>
-              </ScrollReveal>
 
-              <div className={styles.grid}>
-                {featured.map((project, i) => (
-                  <ScrollReveal key={project.id} delay={i * 0.1}>
-                    <ProjectCard
-                      project={{ ...project, tags: project.tags.slice(0, 2) }}
-                      index={i}
-                    />
-                  </ScrollReveal>
-                ))}
-              </div>
+                {showFeed && (
+                  <motion.div
+                    className={styles.feedAnim}
+                    initial={{ scale: 0.5, opacity: 0 }}
+                    animate={{
+                      scale: [1, 2.8],
+                      opacity: [0, 1, 0],
+                    }}
+                    style={{
+                      left: clickPos.x,
+                      top: clickPos.y,
+                    }}
+                    transition={{ duration: 0.6, ease: "easeOut" }}
+                  >
+                    <HeartSVG />
+                  </motion.div>
+                )}
+
+                <video
+                  src="/icon.mp4"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className={`${styles.image} ${isHappy ? styles.happyCat : ""}`}
+                />
+              </motion.div>
             </div>
-          </section>
-        </main>
-        <Footer />
-      </PageTransition>
-    </SmoothScroll>
+          </div>
+
+          <motion.div
+            className={styles.scrollIndicator}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.5, duration: 0.8 }}
+          >
+            <span>scroll</span>
+            <div className={styles.chevron} />
+          </motion.div>
+        </section>
+
+        {/* Featured Projects */}
+        <section className={styles.featured}>
+          <div className="container">
+            <ScrollReveal>
+              <div className={styles.featuredHeader}>
+                <div>
+                  <p className="section-label">Selected Work</p>
+                  <h2 className="section-title">Featured Projects</h2>
+                </div>
+                <Link href="/projects" className={styles.viewAll}>
+                  View all →
+                </Link>
+              </div>
+            </ScrollReveal>
+
+            <div className={styles.grid}>
+              {featured.map((project, i) => (
+                <ScrollReveal key={project.id} delay={i * 0.1}>
+                  <ProjectCard
+                    project={{ ...project, tags: project.tags.slice(0, 2) }}
+                    index={i}
+                  />
+                </ScrollReveal>
+              ))}
+            </div>
+          </div>
+        </section>
+      </main>
+    </PageTransition>
   );
 }
