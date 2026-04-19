@@ -27,11 +27,16 @@
 }
 
 .bio p {
-  font-size: 1rem;
+  font-size: 1.1rem;
+  line-height: 1.7;
   color: var(--text-secondary);
-  line-height: 1.8;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   text-align: justify;
+}
+
+.statusWrapper {
+  margin-top: 40px;
+  max-width: 550px;
 }
 
 .bio p:last-child {
@@ -49,40 +54,63 @@
   gap: 48px;
 }
 
-.detailBlock h3 {
+.detailBlock h3,
+.sectionTitle {
   font-family: var(--font-heading);
   font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--accent);
-  margin-bottom: 20px;
+  margin-bottom: 32px;
 }
 
 .techGrid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 12px;
 }
 
 .techItem {
-  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.85rem;
   color: var(--text-secondary);
-  background: var(--bg-tertiary);
+  background: var(--bg-card);
   border: 1px solid var(--border);
-  padding: 6px 14px;
-  border-radius: 6px;
+  padding: 12px 16px;
+  border-radius: 10px;
   transition:
-    transform var(--duration-fast) var(--ease-smooth),
+    transform var(--duration-fast) var(--ease-spring),
     border-color var(--duration-fast) var(--ease-smooth),
-    color var(--duration-fast) var(--ease-smooth);
+    color var(--duration-fast) var(--ease-smooth),
+    box-shadow var(--duration-fast) var(--ease-smooth);
+}
+
+.techIcon {
+  width: 18px;
+  height: 18px;
+  color: var(--accent);
+  opacity: 0.8;
+  transition: opacity var(--duration-fast) var(--ease-smooth);
 }
 
 .techItem:hover {
-  border-color: var(--border-hover);
+  border-color: var(--accent);
   color: var(--text-primary);
-  transform: translateY(-2px);
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
+
+.techItem:hover .techIcon {
+  opacity: 1;
+}
+
+.techName {
+  font-weight: 500;
+}
+
 
 .infoList {
   display: flex;

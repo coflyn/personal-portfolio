@@ -53,3 +53,35 @@ export async function getProjects() {
     return [];
   }
 }
+
+export async function getGithubStats() {
+  try {
+    const [userRes, reposRes] = await Promise.all([
+      fetch(`https://api.github.com/users/${GITHUB_USERNAME}`, {
+        next: { revalidate: 3600 },
+      }),
+      fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100`, {
+        next: { revalidate: 3600 },
+      })
+    ]);
+
+    if (!userRes.ok || !reposRes.ok) return null;
+
+    const user = await userRes.json();
+    const repos = await reposRes.json();
+    
+    const stars = repos.reduce((acc, repo) => acc + repo.stargazers_count, 0);
+    const forks = repos.reduce((acc, repo) => acc + repo.forks_count, 0);
+
+    return {
+      username: user.login,
+      public_repos: user.public_repos,
+      total_stars: stars,
+      total_forks: forks,
+      avatar: user.avatar_url,
+    };
+  } catch (err) {
+    console.error("Github stats fetch error:", err);
+    return null;
+  }
+}

@@ -4,10 +4,12 @@ import React from "react";
 import ScrollReveal from "@/components/ScrollReveal";
 import PageTransition from "@/components/PageTransition";
 import MagneticButton from "@/components/MagneticButton";
-import { GitHubCalendar } from "react-github-calendar";
+import GithubActivity from "@/components/GithubActivity";
 import "react-github-calendar/tooltips.css";
 import styles from "./page.module.css";
 import SectionHeader from "@/components/SectionHeader";
+import TechIcon from "@/components/TechIcons";
+import LiveStatusCard from "@/components/LiveStatusCard";
 
 const techStack = [
   "Python",
@@ -22,6 +24,9 @@ const techStack = [
   "Bootstrap",
   "MySQL",
   "Git",
+  "Laravel",
+  "HTML",
+  "VS Code",
 ];
 
 const info = [
@@ -79,97 +84,75 @@ export default function About() {
             <ScrollReveal>
               <div className={styles.bio}>
                 <p>
-                  I&apos;m <span className={styles.highlight}>coflyn</span>,
-                  an undergraduate student and developer who enjoys building
-                  tools that solve real-world problems. My work mostly
-                  revolves around{" "}
-                  <span className={styles.highlight}>Python automation</span>,{" "}
-                  <span className={styles.highlight}>Bots automation</span>,
+                  Hi! I&apos;m <span className={styles.highlight}>coflyn</span>,
+                  an IT student and software developer who loves building
+                  digital tools to make daily life easier. I&apos;m a tech
+                  enthusiast who enjoys creating automated systems—like smart
+                  bots—that can handle repetitive tasks, saving people time and
+                  effort.
+                </p>
+                <p>
+                  My main focus is on building{" "}
+                  <span className={styles.highlight}>Automation Systems</span>{" "}
                   and{" "}
-                  <span className={styles.highlight}>Web development</span>.
+                  <span className={styles.highlight}>
+                    Modern Web Applications
+                  </span>{" "}
+                  that are advanced yet simple to use. I prioritize writing
+                  clean code and designing minimal, user-friendly interfaces so
+                  that technology remains accessible to everyone, regardless of
+                  their background.
                 </p>
                 <p>
-                  I believe in the power of simplicity — clean code, minimal
-                  interfaces, and tools that just work without unnecessary
-                  complexity. Most of my projects are open source and
-                  available on GitHub.
+                  Most of my work is open-source, as I value sharing my research
+                  and code with the world. I believe sharing is the best way to
+                  grow together with the global developer community through
+                  platforms like GitHub.
                 </p>
-                <p>
-                  When I&apos;m not coding, I&apos;m probably exploring new
-                  technologies, diving into interesting open-source projects,
-                  or working on the next downloader tool in my suite. I&apos;m
-                  a lifelong learner always looking for the next interesting
-                  challenge.
-                </p>
+
+                <div className={styles.statusWrapper}>
+                  <LiveStatusCard />
+                </div>
               </div>
             </ScrollReveal>
 
-            <div className={styles.details}>
-              <ScrollReveal delay={0.1}>
-                <div className={styles.detailBlock}>
-                  <h3>Tech Stack</h3>
-                  <div className={styles.techGrid}>
-                    {techStack.map((tech) => (
-                      <span key={tech} className={styles.techItem}>
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
+            <ScrollReveal className={styles.details}>
+              <div
+                className={styles.techSide}
+                style={{ transitionDelay: "0.1s" }}
+              >
+                <h3 className={styles.sectionTitle}>Tech Stack</h3>
+                <div className={styles.techGrid}>
+                  {techStack.map((tech) => (
+                    <div key={tech} className={styles.techItem}>
+                      <TechIcon name={tech} className={styles.techIcon} />
+                      <span className={styles.techName}>{tech}</span>
+                    </div>
+                  ))}
                 </div>
-              </ScrollReveal>
+              </div>
 
-              <ScrollReveal delay={0.2}>
-                <div className={styles.detailBlock}>
-                  <h3>Details</h3>
-                  <div className={styles.infoList}>
-                    {info.map((item) => (
-                      <div key={item.label} className={styles.infoItem}>
-                        <span className={styles.infoLabel}>{item.label}</span>
-                        <span className={styles.infoValue}>{item.value}</span>
-                      </div>
-                    ))}
-                  </div>
+              <div
+                className={styles.detailBlock}
+                style={{ transitionDelay: "0.2s" }}
+              >
+                <h3>Details</h3>
+                <div className={styles.infoList}>
+                  {info.map((item) => (
+                    <div key={item.label} className={styles.infoItem}>
+                      <span className={styles.infoLabel}>{item.label}</span>
+                      <span className={styles.infoValue}>{item.value}</span>
+                    </div>
+                  ))}
                 </div>
-              </ScrollReveal>
-            </div>
+              </div>
+            </ScrollReveal>
           </div>
 
           <div className={styles.githubSection}>
             <ScrollReveal>
-              <div className={styles.githubHeader}>
-                <h2 className="section-title">GitHub Contributions</h2>
-              </div>
-              <div className={styles.githubCalendar}>
-                <GitHubCalendar
-                  username="coflyn"
-                  colorScheme="dark"
-                  fontSize={15}
-                  blockSize={14}
-                  blockMargin={4}
-                  showWeekdayLabels
-                  loading={false}
-                  renderBlock={(block, activity) =>
-                    React.cloneElement(block, {
-                      title: `${activity.count} contributions on ${activity.date}`,
-                    })
-                  }
-                >
-                  <div className={styles.calendarSkeleton}>
-                    <div className={styles.skeletonGrid}>
-                      {Array.from({ length: 7 }).map((_, row) => (
-                        <div key={row} className={styles.skeletonRow}>
-                          {Array.from({ length: 20 }).map((_, col) => (
-                            <div key={col} className={styles.skeletonBlock} />
-                          ))}
-                        </div>
-                      ))}
-                    </div>
-                    <p className={styles.skeletonText}>
-                      Loading contributions...
-                    </p>
-                  </div>
-                </GitHubCalendar>
-              </div>
+              <h2 className="section-title">GitHub Contributions</h2>
+              <GithubActivity username="coflyn" />
             </ScrollReveal>
           </div>
 
@@ -190,9 +173,7 @@ export default function About() {
                       <span className={styles.timelineCompany}>
                         {item.company}
                       </span>
-                      <p className={styles.timelineDesc}>
-                        {item.description}
-                      </p>
+                      <p className={styles.timelineDesc}>{item.description}</p>
                     </div>
                   </div>
                 </ScrollReveal>

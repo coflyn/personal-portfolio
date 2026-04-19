@@ -3,14 +3,17 @@
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 32px;
-  transition:
-    background var(--duration-normal) var(--ease-smooth),
-    border-color var(--duration-normal) var(--ease-smooth),
-    transform var(--duration-normal) var(--ease-smooth);
   display: flex;
   flex-direction: column;
   gap: 16px;
+  transition:
+    background-color var(--duration-fast) var(--ease-smooth),
+    border-color var(--duration-fast) var(--ease-smooth);
+  cursor: pointer;
+  position: relative;
+  height: 100%;
 }
+
 
 .number {
   font-family: var(--font-heading);

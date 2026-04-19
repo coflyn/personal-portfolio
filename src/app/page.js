@@ -61,7 +61,13 @@ export default function Home() {
   const [isSelecting, setIsSelecting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  const phrases = ["downloaders.", "web apps.", "bot apps.", "automations."];
+  const phrases = [
+    "downloaders.",
+    "useful tools.",
+    "bot apps.",
+    "automations.",
+    "websites.",
+  ];
 
   useEffect(() => {
     const handleTyping = () => {
@@ -219,9 +225,10 @@ export default function Home() {
                   variants={fadeUp}
                   transition={{ delay: 0.5, duration: 0.5 }}
                 >
-                  An undergraduate student exploring interesting things in
-                  tech and automation. Learning every day to build better,
-                  more efficient tools.
+                  Just a student who loves playing with tech and figuring out
+                  how to automate the boring stuff. I&apos;m on a mission to
+                  learn something new every day and build tools that actually
+                  make life easier for everyone.
                 </motion.p>
                 <motion.div className={styles.ctas} variants={fadeUp}>
                   <MagneticButton>

@@ -1,14 +1,17 @@
+import { motion } from "framer-motion";
 import styles from "./ProjectCard.module.css";
 
 export default function ProjectCard({ project, index = 0 }) {
   const num = String(index + 1).padStart(2, "0");
 
   return (
-    <a
+    <motion.a
       href={project.github}
       target="_blank"
       rel="noopener noreferrer"
       className={styles.card}
+      whileHover={{ y: -8 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
     >
       <div className={styles.topBar}>
         <span className={styles.number}>{num}</span>
@@ -51,6 +54,6 @@ export default function ProjectCard({ project, index = 0 }) {
           </div>
         )}
       </div>
-    </a>
+    </motion.a>
   );
 }

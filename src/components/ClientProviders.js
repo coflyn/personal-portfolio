@@ -7,6 +7,8 @@ import Footer from "./Footer";
 import SmoothScroll from "./SmoothScroll";
 import ScrollProgress from "./ScrollProgress";
 
+import AIAssistant from "./AIAssistant";
+
 export default function ClientProviders({ children }) {
   const pathname = usePathname();
 
@@ -15,6 +17,7 @@ export default function ClientProviders({ children }) {
       <ScrollProgress />
       <Navbar />
       <div key={pathname}>{children}</div>
+      <AIAssistant />
       <Footer />
     </SmoothScroll>
   );

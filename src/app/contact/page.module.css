@@ -139,8 +139,9 @@
 .inputGroup textarea:-webkit-autofill:hover,
 .inputGroup textarea:-webkit-autofill:focus {
   -webkit-text-fill-color: var(--text-primary) !important;
-  -webkit-box-shadow: 0 0 0px 1000px var(--bg-primary) inset !important;
-  transition: background-color 5000s ease-in-out 0s;
+  transition: background-color 600000s ease-in-out 0s; /* Truly infinite transition for transparency */
+  background-color: transparent !important;
+  caret-color: var(--text-primary) !important;
 }
 
 .inputGroup label {
@@ -157,12 +158,17 @@
   transform-origin: left top;
 }
 
+/* Float label for all possible states */
 .inputGroup input:focus ~ label,
 .inputGroup input:not(:placeholder-shown) ~ label,
+.inputGroup input:autofill ~ label,
+.inputGroup input:-webkit-autofill ~ label,
 .inputGroup textarea:focus ~ label,
-.inputGroup textarea:not(:placeholder-shown) ~ label {
-  transform: translateY(-24px) scale(0.85);
-  color: var(--text-secondary);
+.inputGroup textarea:not(:placeholder-shown) ~ label,
+.inputGroup textarea:autofill ~ label,
+.inputGroup textarea:-webkit-autofill ~ label {
+  transform: translateY(-26px) scale(0.8);
+  color: var(--accent);
 }
 
 .submitBtn {
