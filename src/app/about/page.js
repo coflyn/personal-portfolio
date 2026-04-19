@@ -7,6 +7,7 @@ import MagneticButton from "@/components/MagneticButton";
 import { GitHubCalendar } from "react-github-calendar";
 import "react-github-calendar/tooltips.css";
 import styles from "./page.module.css";
+import SectionHeader from "@/components/SectionHeader";
 
 const techStack = [
   "Python",
@@ -67,10 +68,11 @@ export default function About() {
       <main className={styles.page}>
         <div className="container">
           <ScrollReveal>
-            <div className={styles.header}>
-              <p className="section-label">About</p>
-              <h1 className="section-title">A bit about me and what I do.</h1>
-            </div>
+            <SectionHeader
+              label="About"
+              title="A bit about me and what I do."
+              className={styles.header}
+            />
           </ScrollReveal>
 
           <div className={styles.content}>

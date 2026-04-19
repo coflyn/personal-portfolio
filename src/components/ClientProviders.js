@@ -14,9 +14,7 @@ export default function ClientProviders({ children }) {
     <SmoothScroll>
       <ScrollProgress />
       <Navbar />
-      <AnimatePresence mode="wait">
-        <div key={pathname}>{children}</div>
-      </AnimatePresence>
+      <div key={pathname}>{children}</div>
       <Footer />
     </SmoothScroll>
   );

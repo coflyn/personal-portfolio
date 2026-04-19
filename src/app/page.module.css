@@ -53,7 +53,6 @@
   mix-blend-mode: screen;
   position: relative;
   width: 100%;
-  max-width: 480px;
   aspect-ratio: 1 / 1;
   background: radial-gradient(
     circle at center,
@@ -62,6 +61,12 @@
   );
   border-radius: 50%;
   animation: heroPulse 4s ease-in-out infinite;
+}
+
+@media (min-width: 1024px) {
+  .heroImage {
+    width: clamp(320px, 35vw, 480px);
+  }
 }
 
 .catSpeech {
@@ -83,13 +88,7 @@
   animation: speechSequence 4.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards 0.2s;
 }
 
-.image {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  pointer-events: none;
-  transition: transform 0.6s var(--ease-smooth);
-}
+
 
 .happyCat {
   transform: scale(1.08);
@@ -121,9 +120,11 @@
 
 .image {
   width: 100%;
-  max-width: 480px;
-  height: auto;
+  height: 100%;
+  object-fit: contain;
   pointer-events: none;
+  transition: transform 0.6s var(--ease-smooth);
+  display: block; /* Ensure no extra space */
 }
 
 .greeting {
@@ -145,7 +146,23 @@
 }
 
 .titleAccent {
-  color: var(--text-primary);
+  background: linear-gradient(
+    90deg,
+    var(--text-primary),
+    var(--accent),
+    var(--text-primary)
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shine 5s linear infinite;
+}
+
+@keyframes shine {
+  to {
+    background-position: 200% center;
+  }
 }
 
 .titleSub {
@@ -241,7 +258,7 @@
   text-transform: uppercase;
 }
 
-@media (min-height: 700px) {
+@media (min-width: 1024px) and (min-height: 700px) {
   .scrollIndicator {
     display: flex;
   }

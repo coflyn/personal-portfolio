@@ -9,35 +9,51 @@ export default function SmoothScroll({ children }) {
   const lenisRef = useRef(null);
 
   useEffect(() => {
-    if (
-      typeof window !== "undefined" &&
-      "scrollRestoration" in window.history
-    ) {
-      window.history.scrollRestoration = "manual";
-    }
+    const handleResize = () => {
+      const isMobile = window.innerWidth < 1024;
+      if (isMobile) {
+        if (lenisRef.current) {
+          lenisRef.current.destroy();
+          lenisRef.current = null;
+        }
+        return;
+      }
 
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-      wheelMultiplier: 1,
-      infinite: false,
-    });
+      if (!lenisRef.current) {
+        initLenis();
+      }
+    };
 
-    lenisRef.current = lenis;
-    if (typeof window !== "undefined") {
+    const initLenis = () => {
+      if (window.innerWidth < 1024) return;
+
+      const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+        wheelMultiplier: 1,
+        infinite: false,
+      });
+
+      lenisRef.current = lenis;
       window.lenis = lenis;
-    }
 
-    function raf(time) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
+      let rafId;
+      function raf(time) {
+        lenis.raf(time);
+        rafId = requestAnimationFrame(raf);
+      }
+      rafId = requestAnimationFrame(raf);
+      return rafId;
+    };
 
-    requestAnimationFrame(raf);
+    let rafId = initLenis();
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      lenis.destroy();
+      if (lenisRef.current) lenisRef.current.destroy();
+      if (rafId) cancelAnimationFrame(rafId);
+      window.removeEventListener("resize", handleResize);
       lenisRef.current = null;
     };
   }, []);

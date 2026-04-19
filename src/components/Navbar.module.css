@@ -80,34 +80,6 @@
   color: var(--text-primary);
 }
 
-.activeBar {
-  position: absolute;
-  bottom: -4px;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: var(--accent);
-}
-
-.mobileActiveBar {
-  position: absolute;
-  bottom: -8px;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: var(--accent);
-}
-
-.hoverBar {
-  position: absolute;
-  bottom: -4px;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: var(--text-primary);
-  opacity: 0.3;
-}
-
 .menuBtn {
   display: flex;
   flex-direction: column;
@@ -172,7 +144,13 @@
   color: var(--text-primary);
 }
 
-.mobileLink:hover,
-.mobileLink.active {
-  color: var(--text-primary);
+.activeBar {
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 2px;
 }
+

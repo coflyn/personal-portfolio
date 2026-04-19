@@ -52,28 +52,10 @@ export default function Navbar() {
                 {link.label}
                 {pathname === link.href && (
                   <motion.div
-                    layoutId="nav_active"
                     className={styles.activeBar}
-                    initial={false}
-                    transition={{
-                      type: "spring",
-                      stiffness: 380,
-                      damping: 30,
-                    }}
-                  />
-                )}
-                {hoveredPath === link.href && pathname !== link.href && (
-                  <motion.div
-                    layoutId="nav_hover"
-                    className={styles.hoverBar}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{
-                      type: "spring",
-                      stiffness: 380,
-                      damping: 30,
-                    }}
+                    initial={{ opacity: 0, scaleX: 0 }}
+                    animate={{ opacity: 1, scaleX: 1 }}
+                    transition={{ duration: 0.3 }}
                   />
                 )}
               </Link>
@@ -112,20 +94,14 @@ export default function Navbar() {
                   href={link.href}
                   className={`${styles.mobileLink} ${pathname === link.href ? styles.active : ""}`}
                 >
-                  <div
-                    style={{ position: "relative", display: "inline-block" }}
-                  >
+                  <div style={{ position: "relative", display: "inline-block" }}>
                     {link.label}
                     {pathname === link.href && (
                       <motion.div
-                        layoutId="mobile_active"
-                        className={styles.mobileActiveBar}
-                        initial={false}
-                        transition={{
-                          type: "spring",
-                          stiffness: 380,
-                          damping: 30,
-                        }}
+                        className={styles.activeBar}
+                        initial={{ opacity: 0, scaleX: 0 }}
+                        animate={{ opacity: 1, scaleX: 1 }}
+                        transition={{ duration: 0.3 }}
                       />
                     )}
                   </div>

@@ -8,10 +8,13 @@ import ProjectCard from "@/components/ProjectCard";
 import ScrollReveal from "@/components/ScrollReveal";
 import PageTransition from "@/components/PageTransition";
 import TextReveal from "@/components/TextReveal";
+import SectionHeader from "@/components/SectionHeader";
+import ProjectSkeleton from "@/components/ProjectSkeleton";
 
 import MagneticButton from "@/components/MagneticButton";
 import projects from "@/lib/data";
 import styles from "./page.module.css";
+import { getProjects } from "@/lib/github";
 
 const HeartSVG = () => (
   <svg
@@ -56,6 +59,7 @@ export default function Home() {
   const [wordIndex, setWordIndex] = useState(0);
   const [typingSpeed, setTypingSpeed] = useState(150);
   const [isSelecting, setIsSelecting] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const phrases = ["downloaders.", "web apps.", "bot apps.", "automations."];
 
@@ -165,36 +169,23 @@ export default function Home() {
         const cached = sessionStorage.getItem("featured_repos");
         if (cached) {
           setFeatured(JSON.parse(cached).slice(0, 3));
+          setIsLoading(false);
           return;
         }
 
-        const res = await fetch(
-          "https://api.github.com/users/coflyn/repos?sort=updated&per_page=100",
-        );
-        if (!res.ok) return;
+        const mapped = await getProjects();
+        if (mapped.length === 0) {
+          setIsLoading(false);
+          return;
+        }
 
-        const repos = await res.json();
-        const validRepos = repos.filter(
-          (repo) => repo.name !== "coflyn" && !repo.fork,
-        );
-        const mapped = validRepos.map((repo) => ({
-          id: repo.id.toString(),
-          title: repo.name,
-          description: repo.description || "CLI Tool / Automation script",
-          language: repo.language || "Unknown",
-          tags: [repo.language, ...(repo.topics || [])]
-            .filter(Boolean)
-            .slice(0, 2),
-          github: repo.html_url,
-          stars: repo.stargazers_count || 0,
-          forks: repo.forks_count || 0,
-        }));
-
-        mapped.sort((a, b) => b.stars - a.stars);
         const top3 = mapped.slice(0, 3);
         setFeatured(top3);
         sessionStorage.setItem("featured_repos", JSON.stringify(top3));
-      } catch (err) {}
+      } catch (err) {
+      } finally {
+        setIsLoading(false);
+      }
     }
     fetchFeatured();
   }, []);
@@ -282,10 +273,14 @@ export default function Home() {
 
                 <video
                   src="/icon.mp4"
+                  poster="/og-image.png"
                   autoPlay
                   loop
                   muted
                   playsInline
+                  preload="auto"
+                  width="480"
+                  height="480"
                   className={`${styles.image} ${isHappy ? styles.happyCat : ""}`}
                 />
               </motion.div>
@@ -307,26 +302,30 @@ export default function Home() {
         <section className={styles.featured}>
           <div className="container">
             <ScrollReveal>
-              <div className={styles.featuredHeader}>
-                <div>
-                  <p className="section-label">Selected Work</p>
-                  <h2 className="section-title">Featured Projects</h2>
-                </div>
+              <SectionHeader
+                label="Selected Work"
+                title="Featured Projects"
+                className={styles.featuredHeader}
+              >
                 <Link href="/projects" className={styles.viewAll}>
                   View all →
                 </Link>
-              </div>
+              </SectionHeader>
             </ScrollReveal>
 
             <div className={styles.grid}>
-              {featured.map((project, i) => (
-                <ScrollReveal key={project.id} delay={i * 0.1}>
-                  <ProjectCard
-                    project={{ ...project, tags: project.tags.slice(0, 2) }}
-                    index={i}
-                  />
-                </ScrollReveal>
-              ))}
+              {isLoading
+                ? Array.from({ length: 3 }).map((_, i) => (
+                    <ProjectSkeleton key={i} />
+                  ))
+                : featured.map((project, i) => (
+                    <ScrollReveal key={project.id} delay={i * 0.1}>
+                      <ProjectCard
+                        project={{ ...project, tags: project.tags.slice(0, 2) }}
+                        index={i}
+                      />
+                    </ScrollReveal>
+                  ))}
             </div>
           </div>
         </section>
