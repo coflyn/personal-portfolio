@@ -2,45 +2,42 @@
 
 Welcome to the official repository of my personal portfolio. This project serves as a comprehensive showcase of my software development journey, featuring advanced automation tools, modern web experiences, and an intelligent AI assistant.
 
-**Live Demo:** [coflyn.vercel.app](https://coflyn.vercel.app)
+**Live Demo:** [coflyn.my.id](https://coflyn.my.id)
 
 ---
 
 ## Key Features
 
 ### Context-Aware AI Assistant
+Integrated with an advanced AI companion powered by **Llama 3.3 70B** for a truly interactive experience.
 
-Integrated with an advanced AI companion powered by Groq (Llama 3.3).
+- **Live Status Integration:** The assistant monitors real-time Discord presence (Online, Idle, or DND) via Lanyard.
+- **Interactive Navigation:** Provides clickable internal routes and quick access links directly within the chat.
+- **Project Intelligence:** Capable of assisting with navigation and providing context about my development journey.
 
-- **Live Status Integration:** The assistant monitors real-time Discord presence (Online, Busy, or Away) via Lanyard.
-- **Interactive Navigation:** Provides clickable internal routes and external links directly within the chat.
-- **GitHub Intelligence:** Capable of summarizing repository statistics, contribution history, and total star counts.
+### Live Discord Presence
+Real-time activity monitoring integrated directly into the **About Page** to display my current work status.
 
-### Live Presence Tracking
+- **Rich Activity:** Displays active applications (VS Code), Spotify music streaming, and custom status.
+- **Status Indicator:** Dynamic status dot with pulse animations and brand-specific SVG icons.
+- **Aesthetic:** Glassmorphism-style cards that align with the overall dashboard design.
 
-Real-time activity monitoring via the Lanyard API to display current development status.
+### Minimalist & High-Tech UI
+A bespoke dashboard-style design focusing on clean lines, dark mode, and focus-driven interfaces.
 
-- Displays active applications (e.g., VS Code) and current focus.
-- Implements dynamic status labels using a glassmorphism interface.
-
-### GitHub Activity Dashboard
-
-A specialized section providing live contribution data and repository metrics fetched directly from the GitHub API.
-
-### Technical Design Support
-
-- **Glassmorphism Aesthetic:** A modern user interface utilizing frosted glass effects and refined typography.
-- **Motion Orchestration:** Implements fluid page transitions and element reveals via Framer Motion and ScrollReveal.
+- **Glassmorphism:** A modern user interface utilizing frosted glass effects and refined typography.
+- **Fluid Motion:** Implements smooth page transitions and element reveals via Framer Motion and ScrollReveal.
 
 ---
 
 ## Technology Stack
 
-- **Framework:** Next.js (App Router)
-- **AI Engine:** Groq SDK (Llama 3.3 70B)
-- **Live Data:** Lanyard API (Discord Presence)
-- **Styling:** Modular Vanilla CSS
-- **Animations:** Framer Motion and ScrollReveal
+- **Framework:** Next.js 16 (App Router)
+- **Styling:** Modular Vanilla CSS (Modern CSS Variables)
+- **AI Engine:** Llama 3.3 70B
+- **Real-time Data:** Lanyard API (Discord SDK)
+- **Email Service:** Resend API
+- **Animations:** Framer Motion & ScrollReveal
 - **Deployment:** Vercel
 
 ---
@@ -49,7 +46,7 @@ A specialized section providing live contribution data and repository metrics fe
 
 For collaborations or inquiries:
 
-- **Web:** [coflyn.vercel.app/contact](https://coflyn.vercel.app/contact)
+- **Web:** [coflyn.my.id/contact](https://coflyn.my.id/contact)
 - **Discord:** \_coflyn
 
-Copyright 2026 - Raffi Andhika (coflyn).
+Copyright 2026 — Raffi Andhika (coflyn).

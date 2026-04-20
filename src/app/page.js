@@ -226,9 +226,7 @@ export default function Home() {
                   transition={{ delay: 0.5, duration: 0.5 }}
                 >
                   Just a student who loves playing with tech and figuring out
-                  how to automate the boring stuff. I&apos;m on a mission to
-                  learn something new every day and build tools that actually
-                  make life easier for everyone.
+                  how to automate the boring stuff.
                 </motion.p>
                 <motion.div className={styles.ctas} variants={fadeUp}>
                   <MagneticButton>

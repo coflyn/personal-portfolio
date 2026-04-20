@@ -52,25 +52,6 @@ export default function Contact() {
   const [activeFaq, setActiveFaq] = useState(null);
   const [activeTab, setActiveTab] = useState("info");
   const [isMobile, setIsMobile] = useState(false);
-  const [currentTime, setCurrentTime] = useState("");
-
-  useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      setCurrentTime(
-        now.toLocaleTimeString("en-US", {
-          hour12: true,
-          hour: "2-digit",
-          minute: "2-digit",
-          timeZone: "Asia/Makassar",
-        }),
-      );
-    };
-    updateTime();
-    const timer = setInterval(updateTime, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 768);
@@ -139,12 +120,6 @@ export default function Contact() {
                     onClick={() => setActiveTab("faq")}
                   >
                     FAQ
-                  </button>
-                  <button
-                    className={`${styles.tabBtn} ${activeTab === "status" ? styles.activeTab : ""}`}
-                    onClick={() => setActiveTab("status")}
-                  >
-                    Status
                   </button>
                 </div>
 
@@ -246,42 +221,6 @@ export default function Contact() {
                               </AnimatePresence>
                             </div>
                           ))}
-                        </div>
-                      </motion.div>
-                    )}
-
-                    {activeTab === "status" && (
-                      <motion.div
-                        key="status"
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 10 }}
-                        className={styles.statusTab}
-                      >
-                        <div className={styles.statusItem}>
-                          <span className={styles.statusLabel}>
-                            Availability
-                          </span>
-                          <div className={styles.availabilityBox}>
-                            <div className={styles.pulse} />
-                            <span className={styles.availabilityText}>
-                              Available for Projects
-                            </span>
-                          </div>
-                        </div>
-
-                        <div className={styles.statusItem}>
-                          <span className={styles.statusLabel}>Local Time</span>
-                          <span className={styles.statusValue}>
-                            {currentTime} (GMT+8)
-                          </span>
-                        </div>
-
-                        <div className={styles.statusItem}>
-                          <span className={styles.statusLabel}>Location</span>
-                          <span className={styles.statusValue}>
-                            Makassar, Indonesia
-                          </span>
                         </div>
                       </motion.div>
                     )}

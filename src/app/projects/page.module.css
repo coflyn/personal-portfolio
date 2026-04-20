@@ -1,11 +1,13 @@
 .page {
   padding-top: calc(var(--nav-height) + 32px);
-  padding-bottom: var(--section-padding);
+  padding-bottom: var(--section-padding-mobile);
+  overflow-x: hidden;
 }
 
 @media (min-width: 1024px) {
   .page {
     padding-top: calc(var(--nav-height) + 80px);
+    padding-bottom: var(--section-padding);
   }
 }
 
@@ -15,8 +17,9 @@
 
 .grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 16px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+  width: 100%;
 }
 
 @media (min-width: 768px) {

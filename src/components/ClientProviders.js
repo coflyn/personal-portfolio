@@ -7,7 +7,11 @@ import Footer from "./Footer";
 import SmoothScroll from "./SmoothScroll";
 import ScrollProgress from "./ScrollProgress";
 
-import AIAssistant from "./AIAssistant";
+import dynamic from "next/dynamic";
+
+const AIAssistant = dynamic(() => import("./AIAssistant"), {
+  ssr: false,
+});
 
 export default function ClientProviders({ children }) {
   const pathname = usePathname();

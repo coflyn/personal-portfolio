@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { GitHubCalendar } from "react-github-calendar";
+import "react-github-calendar/tooltips.css";
 import styles from "./GithubActivity.module.css";
 import { getGithubStats } from "@/lib/github";
 

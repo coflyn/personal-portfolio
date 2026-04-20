@@ -4,8 +4,13 @@ import React from "react";
 import ScrollReveal from "@/components/ScrollReveal";
 import PageTransition from "@/components/PageTransition";
 import MagneticButton from "@/components/MagneticButton";
-import GithubActivity from "@/components/GithubActivity";
-import "react-github-calendar/tooltips.css";
+import dynamic from "next/dynamic";
+
+const GithubActivity = dynamic(() => import("@/components/GithubActivity"), {
+  ssr: false,
+  loading: () => <div className="loading-placeholder">Loading Activity...</div>,
+});
+
 import styles from "./page.module.css";
 import SectionHeader from "@/components/SectionHeader";
 import TechIcon from "@/components/TechIcons";
@@ -31,6 +36,7 @@ const techStack = [
 
 const info = [
   { label: "Status", value: "Undergraduate Student" },
+  { label: "Major", value: "Informatics Engineering" },
   { label: "Location", value: "Makassar, Indonesia" },
   { label: "Focus", value: "Software Engineering" },
   { label: "Interests", value: "Automation, Bots, Web" },
@@ -38,11 +44,11 @@ const info = [
 
 const timeline = [
   {
-    year: "Present",
-    title: "Bachelor of Computer Science",
+    year: "2024 — Present",
+    title: "Bachelor of Informatics Engineering",
     company: "University Dipa Makassar",
     description:
-      "Currently pursuing a degree in Computer Science with focus on Software Engineering and Web Development. Learning modern programming paradigms and methodologies.",
+      "Currently pursuing a degree in Informatics Engineering with focus on Software Engineering and Web Development. Learning modern programming paradigms and methodologies.",
   },
   {
     year: "2020 — 2023",
@@ -81,27 +87,16 @@ export default function About() {
           </ScrollReveal>
 
           <div className={styles.content}>
-            <ScrollReveal>
+            <ScrollReveal className={styles.bioSection}>
               <div className={styles.bio}>
                 <p>
-                  Hi! I&apos;m <span className={styles.highlight}>coflyn</span>.
-                  I&apos;m a student who loves building digital tools to make life
-                  easier. My main jam is <span className={styles.highlight}>Automation</span>{" "}
-                  and building smart <span className={styles.highlight}>Bots</span>{" "}
-                  that handle repetitive tasks for you, so you can save time and
-                  effort.
+                  Hi! My name is <span className={styles.highlight}>Raffi Andhika</span>, also known as <span className={styles.highlight}>Coflyn</span>. My journey into software development was driven by a deep curiosity about how automation systems and digital products are created to solve real-world problems.
                 </p>
                 <p>
-                  I also love crafting{" "}
-                  <span className={styles.highlight}>Web Applications</span>{" "}
-                  that are simple, clean, and easy to use. I believe technology
-                  shouldn&apos;t be confusing—it should just work and be helpful
-                  for everyone.
+                  As an Informatics Engineering student at <span className={styles.highlight}>Universitas Dipa Makassar</span>, I&apos;ve had the opportunity to deepen my understanding of software development—from core algorithms and data structures to building robust back-end systems and user-centered web applications.
                 </p>
                 <p>
-                  Most of my work is open-source on GitHub because I believe in 
-                  growing together by sharing code and ideas with the global 
-                  developer community.
+                  When I&apos;m not busy with my studies, I&apos;m usually deep-diving into the world of open-source or tinkering with my latest automation tools. I&apos;m all about sharing ideas, collaborating on neat projects, and just trying to make the digital space a bit more efficient, one bot at a time.
                 </p>
 
                 <div className={styles.statusWrapper}>
@@ -138,6 +133,22 @@ export default function About() {
                       <span className={styles.infoValue}>{item.value}</span>
                     </div>
                   ))}
+                </div>
+              </div>
+
+              <div 
+                className={styles.availabilityBlock}
+                style={{ transitionDelay: "0.3s" }}
+              >
+                <div className={styles.availabilityCard}>
+                  <div className={styles.pulseContainer}>
+                    <div className={styles.pulseDot} />
+                    <div className={styles.pulseRing} />
+                  </div>
+                  <div className={styles.availabilityInfo}>
+                    <span className={styles.availabilityLabel}>Work Status</span>
+                    <span className={styles.availabilityStatus}>Available for Projects</span>
+                  </div>
                 </div>
               </div>
             </ScrollReveal>
