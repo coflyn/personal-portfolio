@@ -3,13 +3,13 @@ import ClientProviders from "@/components/ClientProviders";
 import { Analytics } from "@vercel/analytics/react";
 
 export const metadata = {
-  metadataBase: new URL("https://coflyn.vercel.app"),
+  metadataBase: new URL("https://www.coflyn.my.id"),
   title: {
     template: "%s | coflyn",
     default: "coflyn — Hello World!",
   },
   description:
-    "Portfolio of coflyn — a developer crafting tools, bots, and digital experiences. Exploring the boundaries of automation and web tech.",
+    "Portfolio of Coflyn — Automation specialist creating bots, tools, and efficient web solutions.",
   keywords: [
     "developer",
     "portfolio",
@@ -25,7 +25,7 @@ export const metadata = {
     title: "coflyn — Hello World!",
     description:
       "Portfolio of coflyn — a developer crafting tools, bots, and digital experiences.",
-    url: "https://coflyn.vercel.app",
+    url: "https://www.coflyn.my.id",
     siteName: "coflyn Portfolio",
     images: [
       {

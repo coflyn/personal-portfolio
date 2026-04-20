@@ -38,9 +38,9 @@ export default function Navbar() {
       >
         <div className={styles.inner}>
           <Link href="/" className={styles.logo}>
-            coflyn
+            <img src="/icon.svg" alt="coflyn" className={styles.logoIcon} />
+            <span>coflyn</span>
           </Link>
-
           <nav className={styles.nav} onMouseLeave={() => setHoveredPath(null)}>
             {links.map((link) => (
               <Link

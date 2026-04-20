@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import ReactMarkdown from "react-markdown";
 import styles from "./AIAssistant.module.css";
 
 export default function AIAssistant() {
@@ -9,12 +10,42 @@ export default function AIAssistant() {
   const [showNudge, setShowNudge] = useState(false);
   const [githubStats, setGithubStats] = useState(null);
   const [presence, setPresence] = useState(null);
-  const [messages, setMessages] = useState([
-    {
-      role: "assistant",
-      content: "Hi! I'm Coflyn's AI Companion. How can I help you today?",
-    },
-  ]);
+  const initialMessage = {
+    role: "assistant",
+    content: "Hi! I'm Coflyn's AI Companion. How can I help you today?",
+  };
+
+  const [messages, setMessages] = useState([initialMessage]);
+  const [showClearConfirm, setShowClearConfirm] = useState(false);
+  const isOpenRef = useRef(isOpen);
+
+  useEffect(() => {
+    isOpenRef.current = isOpen;
+  }, [isOpen]);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("coflyn_chat_history");
+    if (saved) {
+      try {
+        setMessages(JSON.parse(saved));
+      } catch (e) {
+        console.error("Failed to parse chat history");
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (messages.length > 1 || messages[0].content !== initialMessage.content) {
+      localStorage.setItem("coflyn_chat_history", JSON.stringify(messages));
+    }
+  }, [messages]);
+
+  const handleClearChat = () => {
+    setMessages([initialMessage]);
+    localStorage.removeItem("coflyn_chat_history");
+    setShowClearConfirm(false);
+  };
+
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -44,16 +75,23 @@ export default function AIAssistant() {
     fetchPresence();
     const interval = setInterval(fetchPresence, 30000);
 
-    const nudgeTimer = setTimeout(() => {
-      if (!isOpen) setShowNudge(true);
-    }, 5000);
-
     return () => {
       window.removeEventListener("resize", checkMobile);
-      clearTimeout(nudgeTimer);
       clearInterval(interval);
     };
-  }, [isOpen]);
+  }, []);
+
+  useEffect(() => {
+    const nudgeTimer = setTimeout(() => {
+      const hasSeenNudge = sessionStorage.getItem("hasSeenAInudge");
+      if (!isOpenRef.current && !hasSeenNudge) {
+        setShowNudge(true);
+        sessionStorage.setItem("hasSeenAInudge", "true");
+      }
+    }, 5000);
+
+    return () => clearTimeout(nudgeTimer);
+  }, []);
 
   const getStatusColor = () => {
     if (!presence) return "#94a3b8";
@@ -80,9 +118,12 @@ export default function AIAssistant() {
   };
 
   const scrollToBottom = () => {
+    isAutoScrolling.current = true;
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    setTimeout(() => {
+      isAutoScrolling.current = false;
+    }, 800);
   };
-
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
@@ -137,6 +178,16 @@ export default function AIAssistant() {
     },
   ];
 
+  const [showScrollBottom, setShowScrollBottom] = useState(false);
+  const scrollRef = useRef(null);
+  const isAutoScrolling = useRef(false);
+
+  const handleScroll = (e) => {
+    if (isAutoScrolling.current) return;
+
+    const { scrollTop, scrollHeight, clientHeight } = e.target;
+    setShowScrollBottom(scrollHeight - scrollTop - clientHeight > 150);
+  };
   const handleSuggestion = (val) => {
     setInput(val);
     setTimeout(() => {
@@ -208,7 +259,7 @@ export default function AIAssistant() {
       return subParts.map((subPart, j) => {
         if (subPart.match(rawUrlRegex)) {
           const isInternal =
-            subPart.includes("coflyn.vercel.app") || subPart.startsWith("/");
+            subPart.includes("www.coflyn.my.id") || subPart.startsWith("/");
           return (
             <a
               key={`${i}-${j}`}
@@ -226,8 +277,22 @@ export default function AIAssistant() {
     });
   };
 
+  const MarkdownBody = ({ content }) => {
+    const autoLinked = content.replace(
+      /(?<!\()https?:\/\/[^\s\)]+/g,
+      (url) => `[${url}](${url})`,
+    );
+    const formatted = autoLinked.replace(/\n(?!\n)/g, "\n\n");
+
+    return (
+      <div className={styles.msgText}>
+        <ReactMarkdown>{formatted}</ReactMarkdown>
+      </div>
+    );
+  };
+
   const renderMessageContent = (content, role) => {
-    if (role !== "assistant") return content;
+    if (role !== "assistant") return <MarkdownBody content={content} />;
 
     const lowerContent = content.toLowerCase();
 
@@ -239,7 +304,7 @@ export default function AIAssistant() {
     ) {
       return (
         <div className={styles.msgContentWrapper}>
-          <div className={styles.msgText}>{formatLinks(content)}</div>
+          <MarkdownBody content={content} />
           <div className={styles.statsGrid}>
             <div className={styles.statItem}>
               <span className={styles.statVal}>{githubStats.public_repos}</span>
@@ -266,7 +331,7 @@ export default function AIAssistant() {
       const project = projectData[detectedProject];
       return (
         <div className={styles.msgContentWrapper}>
-          <div className={styles.msgText}>{formatLinks(content)}</div>
+          <MarkdownBody content={content} />
           <div className={styles.projectCard}>
             <span>
               Context Link: <strong>{detectedProject}</strong>
@@ -297,12 +362,15 @@ export default function AIAssistant() {
         </div>
       );
     }
-    return <div className={styles.msgText}>{formatLinks(content)}</div>;
+    return <MarkdownBody content={content} />;
   };
 
   const handleToggle = () => {
+    if (!isOpen) {
+      setShowNudge(false);
+      sessionStorage.setItem("hasSeenAInudge", "true");
+    }
     setIsOpen(!isOpen);
-    setShowNudge(false);
   };
 
   return (
@@ -350,64 +418,122 @@ export default function AIAssistant() {
                 />
                 <h4>{getStatusText()}</h4>
               </div>
-              <button className={styles.closeButton} onClick={handleToggle}>
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+              <div className={styles.headerActions}>
+                <button
+                  className={styles.resetButton}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowClearConfirm(true);
+                  }}
+                  title="Clear conversation"
                 >
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-              </button>
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="18"
+                    height="18"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M3 6h18"></path>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                  </svg>
+                </button>
+                <button className={styles.closeButton} onClick={handleToggle}>
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                </button>
+              </div>
             </div>
 
-            <div className={styles.messages} data-lenis-prevent>
-              {messages.map((msg, index) => (
-                <div
-                  key={index}
-                  className={`${styles.message} ${
-                    msg.role === "assistant" ? styles.ai : styles.user
-                  }`}
-                >
-                  {msg.role === "assistant" && (
-                    <div className={styles.avatarWrapper}>
-                      <img
-                        src="/icon.svg"
-                        alt="Coflyn AI"
-                        className={styles.avatar}
-                      />
+            <div className={styles.messagesWrapper}>
+              <div
+                className={styles.messages}
+                data-lenis-prevent
+                onScroll={handleScroll}
+                ref={scrollRef}
+              >
+                <div className={styles.messagesContainer}>
+                  {messages.map((msg, idx) => (
+                    <div
+                      key={idx}
+                      className={`${styles.message} ${
+                        msg.role === "user" ? styles.user : styles.ai
+                      }`}
+                    >
+                      {msg.role === "assistant" && (
+                        <div className={styles.avatarWrapper}>
+                          <img
+                            src="/icon.svg"
+                            alt="Coflyn AI"
+                            className={styles.avatar}
+                          />
+                        </div>
+                      )}
+                      <div className={styles.messageContent}>
+                        {renderMessageContent(msg.content, msg.role)}
+                      </div>
+                    </div>
+                  ))}
+                  {isLoading && (
+                    <div className={`${styles.message} ${styles.ai}`}>
+                      <div className={styles.avatarWrapper}>
+                        <img
+                          src="/icon.svg"
+                          alt="Coflyn AI"
+                          className={styles.avatar}
+                        />
+                      </div>
+                      <div className={styles.messageContent}>
+                        <div className={styles.typingIndicator}>
+                          <span></span>
+                          <span></span>
+                          <span></span>
+                        </div>
+                      </div>
                     </div>
                   )}
-                  <div className={styles.messageContent}>
-                    {renderMessageContent(msg.content, msg.role)}
-                  </div>
+                  <div ref={messagesEndRef} />
                 </div>
-              ))}
-              {isLoading && (
-                <div className={`${styles.message} ${styles.ai}`}>
-                  <div className={styles.avatarWrapper}>
-                    <img
-                      src="/icon.svg"
-                      alt="Coflyn AI"
-                      className={styles.avatar}
-                    />
-                  </div>
-                  <div className={styles.messageContent}>
-                    <div className={styles.typingIndicator}>
-                      <span></span>
-                      <span></span>
-                      <span></span>
-                    </div>
-                  </div>
-                </div>
+              </div>
+
+              {showScrollBottom && (
+                <button
+                  className={styles.scrollToBottom}
+                  onClick={() => {
+                    scrollToBottom();
+                    setShowScrollBottom(false);
+                  }}
+                  aria-label="Scroll to bottom"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="20"
+                    height="20"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <polyline points="7 13 12 18 17 13"></polyline>
+                    <polyline points="7 6 12 11 17 6"></polyline>
+                  </svg>
+                </button>
               )}
-              <div ref={messagesEndRef} />
             </div>
 
             <div className={styles.inputContainer}>
@@ -450,18 +576,51 @@ export default function AIAssistant() {
                 </button>
               </form>
             </div>
+
+            <AnimatePresence>
+              {showClearConfirm && (
+                <motion.div
+                  className={styles.clearOverlay}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                >
+                  <motion.div
+                    className={styles.clearModal}
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.9, opacity: 0 }}
+                  >
+                    <p>Reset chat history?</p>
+                    <div className={styles.modalActions}>
+                      <button
+                        className={styles.cancelBtn}
+                        onClick={() => setShowClearConfirm(false)}
+                      >
+                        No
+                      </button>
+                      <button
+                        className={styles.confirmBtn}
+                        onClick={handleClearChat}
+                      >
+                        Yes
+                      </button>
+                    </div>
+                  </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.div>
         )}
       </AnimatePresence>
 
       <motion.button
         className={`${styles.chatButton} ${isOpen ? styles.menuOpen : ""}`}
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={handleToggle}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.9 }}
       >
         <div className={styles.iconContainer}>
-          {/* Chat SVG Icon */}
           <motion.div
             animate={{
               opacity: isOpen ? 0 : 1,
@@ -471,21 +630,15 @@ export default function AIAssistant() {
             transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
             className={styles.iconWrapper}
           >
-            <svg
+            <img
+              src="/icon.svg"
+              alt="AI"
               width="24"
               height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-            </svg>
+              className={styles.buttonIcon}
+            />
           </motion.div>
 
-          {/* Burger-style X Lines */}
           <div className={styles.burgerContainer}>
             <span className={styles.burgerLine} />
             <span className={styles.burgerLine} />

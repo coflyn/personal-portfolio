@@ -1,42 +1,40 @@
 .card {
   margin-top: 20px;
-  padding: 14px 18px;
-  background: rgba(196, 168, 130, 0.05);
-  border: 1px solid rgba(196, 168, 130, 0.1);
-  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 14px;
   position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease;
-  width: 100%;
+  transition: all 0.4s var(--ease-smooth);
 }
 
 .card:hover {
-  border-color: rgba(196, 168, 130, 0.3);
-  background: rgba(196, 168, 130, 0.08);
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(196, 168, 130, 0.2);
   transform: translateY(-2px);
 }
 
-.header {
+.topInfo {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 12px;
+  gap: 10px;
+  margin-bottom: 14px;
 }
 
 .dotWrapper {
   position: relative;
   width: 10px;
-  height: 100%;
+  height: 10px;
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .dot {
   width: 10px;
-  height: 100px;
-  width: 10px;
   height: 10px;
   border-radius: 50%;
+  position: relative;
   z-index: 2;
 }
 
@@ -45,49 +43,29 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  z-index: 1;
   animation: pulse 2s infinite;
 }
 
 @keyframes pulse {
   0% { transform: scale(1); opacity: 0.8; }
-  100% { transform: scale(2.5); opacity: 0; }
+  100% { transform: scale(3); opacity: 0; }
 }
 
 .statusText {
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-size: 0.7rem;
+  font-weight: 700;
   color: var(--text-tertiary);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.15em;
 }
 
-.name {
-  margin: 0;
-  font-size: 1.1rem;
-  color: var(--text-primary);
-}
-
-.activity {
-  margin: 4px 0 0;
-  font-size: 0.9rem;
-  color: var(--accent);
+.liveIndicator {
+  margin-left: auto;
   display: flex;
   align-items: center;
   gap: 6px;
-}
-
-.emoji {
-  font-size: 1.1rem;
-}
-
-.indicator {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  background: rgba(239, 68, 68, 0.08);
+  padding: 4px 10px;
+  border-radius: 4px;
 }
 
 .liveLabel {
@@ -110,11 +88,159 @@
   border-radius: 1px;
 }
 
-.signal span:nth-child(1) { height: 40%; animation: bark 1s infinite alternate; }
-.signal span:nth-child(2) { height: 70%; animation: bark 1.2s infinite alternate; }
-.signal span:nth-child(3) { height: 100%; animation: bark 0.8s infinite alternate; }
+.signal span:nth-child(1) { height: 4px; animation: signalAnim 1s infinite alternate; }
+.signal span:nth-child(2) { height: 7px; animation: signalAnim 1.2s infinite alternate; }
+.signal span:nth-child(3) { height: 10px; animation: signalAnim 0.8s infinite alternate; }
 
-@keyframes bark {
-  from { opacity: 0.3; height: 30%; }
-  to { opacity: 1; height: 100%; }
+@keyframes signalAnim {
+  from { opacity: 0.4; }
+  to { opacity: 1; }
+}
+
+.profileSection {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.avatarWrapper {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid rgba(196, 168, 130, 0.3);
+  object-fit: cover;
+}
+
+.avatarPlaceholder {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--bg-tertiary);
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.name {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.customStatus {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.activitySection {
+  width: 100%;
+}
+
+.activityBox {
+  background: rgba(196, 168, 130, 0.05);
+  border: 1px solid rgba(196, 168, 130, 0.1);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.activityItem {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.activityIcon {
+  font-size: 1.5rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.activityIcon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.activityText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.activityLabel {
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.15em;
+}
+
+.activityValue {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.activityDetail {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.idleState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 20px;
+  border: 1px dashed rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+}
+
+.idleIcon {
+  color: var(--text-tertiary);
+  opacity: 0.6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+  100% { transform: translateY(0); }
+}
+
+.idleState p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+  font-weight: 500;
+  letter-spacing: 0.02em;
 }

@@ -42,12 +42,26 @@
 }
 
 .logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   font-family: var(--font-heading);
   font-size: 1.25rem;
   font-weight: 600;
   letter-spacing: -0.02em;
   color: var(--text-primary);
-  transition: color var(--duration-fast) var(--ease-smooth);
+  transition: all var(--duration-fast) var(--ease-smooth);
+}
+
+.logoIcon {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  transition: transform var(--duration-fast) var(--ease-smooth);
+}
+
+.logo:hover .logoIcon {
+  transform: rotate(-10deg) scale(1.1);
 }
 
 .logo:hover {

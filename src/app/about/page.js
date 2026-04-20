@@ -84,30 +84,24 @@ export default function About() {
             <ScrollReveal>
               <div className={styles.bio}>
                 <p>
-                  Hi! I&apos;m <span className={styles.highlight}>coflyn</span>,
-                  an IT student and software developer who loves building
-                  digital tools to make daily life easier. I&apos;m a tech
-                  enthusiast who enjoys creating automated systems—like smart
-                  bots—that can handle repetitive tasks, saving people time and
+                  Hi! I&apos;m <span className={styles.highlight}>coflyn</span>.
+                  I&apos;m a student who loves building digital tools to make life
+                  easier. My main jam is <span className={styles.highlight}>Automation</span>{" "}
+                  and building smart <span className={styles.highlight}>Bots</span>{" "}
+                  that handle repetitive tasks for you, so you can save time and
                   effort.
                 </p>
                 <p>
-                  My main focus is on building{" "}
-                  <span className={styles.highlight}>Automation Systems</span>{" "}
-                  and{" "}
-                  <span className={styles.highlight}>
-                    Modern Web Applications
-                  </span>{" "}
-                  that are advanced yet simple to use. I prioritize writing
-                  clean code and designing minimal, user-friendly interfaces so
-                  that technology remains accessible to everyone, regardless of
-                  their background.
+                  I also love crafting{" "}
+                  <span className={styles.highlight}>Web Applications</span>{" "}
+                  that are simple, clean, and easy to use. I believe technology
+                  shouldn&apos;t be confusing—it should just work and be helpful
+                  for everyone.
                 </p>
                 <p>
-                  Most of my work is open-source, as I value sharing my research
-                  and code with the world. I believe sharing is the best way to
-                  grow together with the global developer community through
-                  platforms like GitHub.
+                  Most of my work is open-source on GitHub because I believe in 
+                  growing together by sharing code and ideas with the global 
+                  developer community.
                 </p>
 
                 <div className={styles.statusWrapper}>
