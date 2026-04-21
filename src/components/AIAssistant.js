@@ -163,11 +163,19 @@ export default function AIAssistant() {
 
   const suggestions = [
     { label: "Who is coflyn?", value: "Who is Raffi Andhika (coflyn)?" },
+    { label: "Tech Stack", value: "What tech stack do you use?" },
     {
-      label: "Elaina Bot",
-      value: "Tell me about Clover (Elaina Persona AI) bot.",
+      label: "Why 'coflyn'?",
+      value: "Why the name coflyn?",
     },
-    { label: "Downloaders", value: "What downloader tools have you built?" },
+    {
+      label: "Games",
+      value: "What games are you currently playing?",
+    },
+    {
+      label: "Latest Project",
+      value: "What is your latest project on GitHub?",
+    },
     {
       label: "Github",
       value: "Give me your GitHub profile and repository links.",
@@ -230,51 +238,6 @@ export default function AIAssistant() {
       label: "All Repos",
       external: true,
     },
-  };
-
-  const formatLinks = (text) => {
-    if (!text) return text;
-
-    const parts = text.split(/(\[[^\]]+\]\([^)]+\))/g);
-
-    return parts.map((part, i) => {
-      const linkMatch = part.match(/\[([^\]]+)\]\(([^)]+)\)/);
-      if (linkMatch) {
-        return (
-          <a
-            key={i}
-            href={linkMatch[2]}
-            className={styles.chatLink}
-            target={linkMatch[2].startsWith("http") ? "_blank" : "_self"}
-            rel={linkMatch[2].startsWith("http") ? "noopener noreferrer" : ""}
-          >
-            {linkMatch[1]}
-          </a>
-        );
-      }
-
-      const rawUrlRegex = /(https?:\/\/[^\s]+)/g;
-      const subParts = part.split(rawUrlRegex);
-
-      return subParts.map((subPart, j) => {
-        if (subPart.match(rawUrlRegex)) {
-          const isInternal =
-            subPart.includes("www.coflyn.my.id") || subPart.startsWith("/");
-          return (
-            <a
-              key={`${i}-${j}`}
-              href={subPart}
-              className={styles.chatLink}
-              target={isInternal ? "_self" : "_blank"}
-              rel={isInternal ? "" : "noopener noreferrer"}
-            >
-              {subPart}
-            </a>
-          );
-        }
-        return subPart;
-      });
-    });
   };
 
   const MarkdownBody = ({ content }) => {
@@ -537,7 +500,7 @@ export default function AIAssistant() {
             </div>
 
             <div className={styles.inputContainer}>
-              <div className={styles.suggestions}>
+              <div className={styles.suggestions} data-lenis-prevent>
                 {suggestions.map((s, i) => (
                   <button key={i} onClick={() => handleSuggestion(s.value)}>
                     {s.label}

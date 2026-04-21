@@ -211,9 +211,31 @@
   color: #fff;
 }
 
+.submitBtn.disabled {
+  background: var(--bg-tertiary) !important;
+  color: var(--text-tertiary) !important;
+  cursor: not-allowed;
+  opacity: 0.8;
+  border: 1px solid var(--border);
+}
+
 .successMsg {
   font-size: 0.85rem;
   color: #22c55e;
+  text-align: left;
+  animation: fadeIn 0.5s ease forwards;
+}
+
+.errorMsg {
+  font-size: 0.85rem;
+  color: #ef4444;
+  text-align: left;
+  animation: fadeIn 0.5s ease forwards;
+}
+
+.infoMsg {
+  font-size: 0.85rem;
+  color: var(--text-tertiary);
   text-align: left;
   animation: fadeIn 0.5s ease forwards;
 }
@@ -351,117 +373,6 @@
   min-height: 350px;
 }
 
-/* Adjust FAQ for tab layout */
 .faqSection {
   margin-top: 0 !important;
-}
-
-/* Status Tab Styles */
-.statusTab {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.statusItem {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.statusLabel {
-  font-size: 0.7rem;
-  font-weight: 600;
-  color: var(--text-tertiary);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-
-.statusValue {
-  font-size: 1rem;
-  font-weight: 500;
-  color: var(--text-primary);
-}
-
-.availabilityBox {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background: rgba(34, 197, 94, 0.1);
-  padding: 10px 16px;
-  border-radius: 100px;
-  width: fit-content;
-  border: 1px solid rgba(34, 197, 94, 0.2);
-}
-
-.availabilityText {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #22c55e;
-}
-
-.pulse {
-  width: 10px;
-  height: 10px;
-  background: #22c55e;
-  border-radius: 50%;
-  box-shadow: 0 0 0 rgba(34, 197, 94, 0.4);
-  animation: pulse-green 2s infinite;
-}
-
-@keyframes pulse-green {
-  0% {
-    transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
-  }
-  70% {
-    transform: scale(1);
-    box-shadow: 0 0 0 10px rgba(34, 197, 94, 0);
-  }
-  100% {
-    transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
-  }
-}
-
-/* Process Tab Styles */
-.processTab {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-}
-
-.processItem {
-  display: flex;
-  gap: 20px;
-  align-items: flex-start;
-}
-
-.processStep {
-  font-family: var(--font-heading);
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--accent);
-  background: rgba(196, 168, 130, 0.1);
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  border: 1px solid rgba(196, 168, 130, 0.2);
-  flex-shrink: 0;
-}
-
-.processTitle {
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 4px;
-}
-
-.processDesc {
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  line-height: 1.5;
 }

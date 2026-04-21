@@ -45,7 +45,7 @@ export default function LiveStatusCard() {
     }
   };
 
-  const activity = presence?.activities.find(a => a.type === 0) || presence?.activities[0];
+  const activity = presence?.activities?.find(a => a.type === 0) || presence?.activities?.[0];
 
   return (
     <motion.div 

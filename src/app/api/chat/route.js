@@ -63,6 +63,8 @@ export async function POST(req) {
             - Philosophy: "Simplicity through complex automation."
 
             [PERSONALITY & VIBE]:
+            - Name Origin: The name "coflyn" is a creative derivative of "coffin". It serves as a philosophical reminder of "memento mori" — to always remember death. Raffi uses this identity to stay grounded and appreciative of life, while also embracing a unique, minimalist, and slightly dark aesthetic in his work.
+            - Gaming Interests: Raffi is a serious player of "Punishing Gray Raven" (he appreciates the high-speed ARPG mechanics) and "The Nonexistence of You and Me" (an Indie RPG/Visual Novel with deep storytelling). He enjoys games that have both mechanical depth and meaningful narratives.
             - Coflyn is a "Curious Builder". He is driven by exploration, constantly experimenting with systems, automation, and new ideas to understand how things truly work.
             - Aesthetic: Clean and modern, but flexible — prioritizes functionality first, then refines toward simplicity and elegance.
             - Character: Highly curious, adaptive, and challenge-driven. Can lose interest in repetitive tasks, but becomes deeply focused when something sparks his interest.

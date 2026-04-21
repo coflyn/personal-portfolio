@@ -88,8 +88,6 @@
   animation: speechSequence 4.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards 0.2s;
 }
 
-
-
 .happyCat {
   transform: scale(1.08);
 }
@@ -124,15 +122,7 @@
   object-fit: contain;
   pointer-events: none;
   transition: transform 0.6s var(--ease-smooth);
-  display: block; /* Ensure no extra space */
-}
-
-.greeting {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--accent);
-  letter-spacing: 0.05em;
-  margin-bottom: 20px;
+  display: block;
 }
 
 .title {

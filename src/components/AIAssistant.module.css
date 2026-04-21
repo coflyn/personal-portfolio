@@ -244,6 +244,8 @@
   padding-bottom: 12px;
   margin-bottom: 4px;
   scrollbar-width: none;
+  overscroll-behavior: contain;
+  touch-action: pan-x;
 }
 
 .suggestions::-webkit-scrollbar {
@@ -509,13 +511,15 @@
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
-    height: -webkit-fill-available;
+    height: 100dvh;
+    height: 100%;
     background: #0a0a0a;
     border-radius: 0;
     bottom: 0;
     right: 0;
     z-index: 2000;
+    display: flex;
+    flex-direction: column;
   }
 
   .inputContainer {
@@ -540,18 +544,7 @@
   }
 }
 
-.chatLink {
-  color: var(--accent);
-  text-decoration: none;
-  font-weight: 500;
-  transition: opacity var(--duration-fast) var(--ease-smooth);
-  border-bottom: 1px dashed rgba(196, 168, 130, 0.4);
-}
 
-.chatLink:hover {
-  opacity: 0.8;
-  border-bottom-style: solid;
-}
 
 .clearOverlay {
   position: absolute;

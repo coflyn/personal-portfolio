@@ -6,7 +6,7 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import SmoothScroll from "./SmoothScroll";
 import ScrollProgress from "./ScrollProgress";
-
+import PageTransition from "./PageTransition";
 import dynamic from "next/dynamic";
 
 const AIAssistant = dynamic(() => import("./AIAssistant"), {
@@ -20,7 +20,11 @@ export default function ClientProviders({ children }) {
     <SmoothScroll>
       <ScrollProgress />
       <Navbar />
-      <div key={pathname}>{children}</div>
+      <AnimatePresence mode="wait">
+        <PageTransition key={pathname}>
+          {children}
+        </PageTransition>
+      </AnimatePresence>
       <AIAssistant />
       <Footer />
     </SmoothScroll>

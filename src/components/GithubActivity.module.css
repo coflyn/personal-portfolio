@@ -158,18 +158,7 @@
   }
 }
 
-.skeletonBlock {
-  height: 15px;
-  width: 15px;
-  border-radius: 2px;
-}
 
-.skeletonLine {
-  height: 12px;
-  background: var(--bg-tertiary);
-  border-radius: 4px;
-  margin-bottom: 8px;
-}
 
 .calendarWrapper {
   margin-top: 10px;

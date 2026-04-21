@@ -16,7 +16,6 @@ const links = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [hoveredPath, setHoveredPath] = useState(null);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -41,13 +40,12 @@ export default function Navbar() {
             <img src="/icon.svg" alt="coflyn" className={styles.logoIcon} />
             <span>coflyn</span>
           </Link>
-          <nav className={styles.nav} onMouseLeave={() => setHoveredPath(null)}>
+          <nav className={styles.nav}>
             {links.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 className={`${styles.navLink} ${pathname === link.href ? styles.active : ""}`}
-                onMouseEnter={() => setHoveredPath(link.href)}
               >
                 {link.label}
                 {pathname === link.href && (

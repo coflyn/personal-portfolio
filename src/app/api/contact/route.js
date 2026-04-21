@@ -2,9 +2,29 @@ import { Resend } from "resend";
 import { NextResponse } from "next/server";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
+const rateLimitMap = new Map();
 
 export async function POST(req) {
   try {
+    const ip = req.headers.get("x-forwarded-for") || "anonymous";
+    const now = Date.now();
+    const COOLDOWN = 60 * 60 * 1000;
+
+    if (rateLimitMap.has(ip)) {
+      const lastSent = rateLimitMap.get(ip);
+      if (now - lastSent < COOLDOWN) {
+        const remainingMinutes = Math.ceil(
+          (COOLDOWN - (now - lastSent)) / (1000 * 60),
+        );
+        return NextResponse.json(
+          {
+            error: `Too many requests. Please try again in ${remainingMinutes} minutes.`,
+          },
+          { status: 429 },
+        );
+      }
+    }
+
     const { name, email, message } = await req.json();
 
     if (!name || !email || !message) {
@@ -15,7 +35,7 @@ export async function POST(req) {
     }
 
     const { data, error } = await resend.emails.send({
-      from: "Portfolio <onboarding@resend.dev>",
+      from: "Portfolio <contact@coflyn.my.id>",
       to: ["riazrepo@gmail.com"],
       subject: `New Collaboration Message from ${name}`,
       replyTo: email,
@@ -36,6 +56,8 @@ export async function POST(req) {
       console.error("Resend Error:", error);
       return NextResponse.json({ error }, { status: 500 });
     }
+
+    rateLimitMap.set(ip, now);
 
     return NextResponse.json({ success: true, data });
   } catch (error) {
