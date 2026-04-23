@@ -12,7 +12,8 @@ export default function AIAssistant() {
   const [presence, setPresence] = useState(null);
   const initialMessage = {
     role: "assistant",
-    content: "Hi! I'm Coflyn's AI Companion. How can I help you today?",
+    content:
+      "Hi! I'm Coflyn's AI Companion. How can I help you today? You can ask about coflyn or anything.",
   };
 
   const [messages, setMessages] = useState([initialMessage]);
@@ -48,6 +49,7 @@ export default function AIAssistant() {
 
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isStreaming, setIsStreaming] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const messagesEndRef = useRef(null);
 
@@ -128,61 +130,186 @@ export default function AIAssistant() {
     scrollToBottom();
   }, [messages]);
 
+  const streamBufferRef = useRef("");
+  const typingIntervalRef = useRef(null);
+
+  useEffect(() => {
+    if (isStreaming) {
+      if (typingIntervalRef.current) return;
+
+      typingIntervalRef.current = setInterval(() => {
+        setMessages((prev) => {
+          const updated = [...prev];
+          const lastMsg = updated[updated.length - 1];
+
+          if (
+            lastMsg &&
+            lastMsg.role === "assistant" &&
+            lastMsg.content.length < streamBufferRef.current.length
+          ) {
+            const buffer = streamBufferRef.current;
+            const currentPos = lastMsg.content.length;
+            const diff = buffer.length - currentPos;
+
+            let step = diff > 50 ? 3 : 1;
+
+            if (step > 1) {
+              const lookAhead = buffer.slice(currentPos, currentPos + step);
+              if (/[\[*`#]/.test(lookAhead)) {
+                step = 1;
+              }
+            }
+
+            const nextChar = buffer[currentPos];
+
+            if (nextChar === "[") {
+              const midPattern = buffer.indexOf("](", currentPos);
+              const closingParen = buffer.indexOf(")", midPattern);
+              if (midPattern !== -1 && closingParen !== -1) {
+                step = closingParen + 1 - currentPos;
+              } else {
+                return prev;
+              }
+            } else if (nextChar === "*") {
+              const isBold = buffer[currentPos + 1] === "*";
+              const symbol = isBold ? "**" : "*";
+              const closingIdx = buffer.indexOf(
+                symbol,
+                currentPos + (isBold ? 2 : 1),
+              );
+              if (closingIdx !== -1) {
+                step = closingIdx + symbol.length - currentPos;
+              } else {
+                return prev; // Pause until closing ** or *
+              }
+            } else if (nextChar === "`") {
+              const closingIdx = buffer.indexOf("`", currentPos + 1);
+              if (closingIdx !== -1 && buffer[currentPos + 1] !== "`") {
+                step = closingIdx + 1 - currentPos;
+              } else if (buffer[currentPos + 1] !== "`") {
+                return prev;
+              }
+            } else if (
+              nextChar === "#" &&
+              (currentPos === 0 || buffer[currentPos - 1] === "\n")
+            ) {
+              const spaceIdx = buffer.indexOf(" ", currentPos);
+              if (spaceIdx !== -1 && spaceIdx - currentPos < 6) {
+                step = spaceIdx + 1 - currentPos;
+              } else {
+                if (buffer.slice(currentPos, currentPos + 6).includes(" ")) {
+                } else {
+                  if (buffer.length - currentPos < 6) return prev;
+                }
+              }
+            }
+
+            updated[updated.length - 1] = {
+              ...lastMsg,
+              content: buffer.slice(0, currentPos + step),
+            };
+            return updated;
+          }
+          return prev;
+        });
+      }, 55);
+    } else {
+      if (typingIntervalRef.current) {
+        clearInterval(typingIntervalRef.current);
+        typingIntervalRef.current = null;
+      }
+    }
+    return () => {
+      if (typingIntervalRef.current) clearInterval(typingIntervalRef.current);
+    };
+  }, [isStreaming]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
 
     const userMessage = { role: "user", content: input };
-    setMessages((prev) => [...prev, userMessage]);
+    const newMessages = [...messages, userMessage];
+    setMessages(newMessages);
     setInput("");
     setIsLoading(true);
+    streamBufferRef.current = "";
 
     try {
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          messages: [...messages, userMessage].slice(-10),
+          messages: newMessages.slice(-10),
           presence: presence,
         }),
       });
 
-      const data = await response.json();
-      if (data.content) {
-        setMessages((prev) => [
-          ...prev,
-          { role: "assistant", content: data.content },
-        ]);
+      if (!response.ok) {
+        throw new Error("Failed to connect");
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+
+      setMessages((prev) => [...prev, { role: "assistant", content: "" }]);
+      setIsLoading(false);
+      setIsStreaming(true);
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value, { stream: true });
+        streamBufferRef.current += chunk;
       }
     } catch (error) {
       console.error("Chat Error:", error);
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content:
+            "Sorry, I'm experiencing some connectivity issues. Please try again later.",
+        },
+      ]);
     } finally {
       setIsLoading(false);
+      const checkFinished = setInterval(() => {
+        setMessages((prev) => {
+          const lastMsg = prev[prev.length - 1];
+          if (
+            lastMsg &&
+            lastMsg.content.length >= streamBufferRef.current.length
+          ) {
+            setIsStreaming(false);
+            clearInterval(checkFinished);
+          }
+          return prev;
+        });
+      }, 100);
     }
   };
 
   const suggestions = [
     { label: "Who is coflyn?", value: "Who is Raffi Andhika (coflyn)?" },
-    { label: "Tech Stack", value: "What tech stack do you use?" },
     {
-      label: "Why 'coflyn'?",
-      value: "Why the name coflyn?",
+      label: "Tech Stack",
+      value: "What technologies do you use for development?",
     },
+    { label: "Games", value: "What games are you currently playing?" },
     {
-      label: "Games",
-      value: "What games are you currently playing?",
+      label: "Freelance Status",
+      value: "Are you available for freelance projects?",
     },
+    { label: "Education", value: "Tell me about your education background." },
     {
       label: "Latest Project",
       value: "What is your latest project on GitHub?",
     },
     {
-      label: "Github",
-      value: "Give me your GitHub profile and repository links.",
-    },
-    {
-      label: "Get in touch",
-      value: "How can I contact coflyn for collaboration?",
+      label: "Contact Info",
+      value: "How can I get in touch with you for collaboration?",
     },
   ];
 
@@ -259,16 +386,28 @@ export default function AIAssistant() {
 
     const lowerContent = content.toLowerCase();
 
-    if (
+    const hasStats =
       githubStats &&
       (lowerContent.includes("stats") ||
         lowerContent.includes("milestone") ||
-        lowerContent.includes("total stars"))
-    ) {
-      return (
-        <div className={styles.msgContentWrapper}>
-          <MarkdownBody content={content} />
-          <div className={styles.statsGrid}>
+        lowerContent.includes("total stars") ||
+        lowerContent.includes("statistik"));
+
+    const detectedProjectKey = Object.keys(projectData).find((key) =>
+      lowerContent.includes(key),
+    );
+    const project = detectedProjectKey ? projectData[detectedProjectKey] : null;
+
+    return (
+      <div className={styles.msgContentWrapper}>
+        <MarkdownBody content={content} />
+
+        {hasStats && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className={styles.statsGrid}
+          >
             <div className={styles.statItem}>
               <span className={styles.statVal}>{githubStats.public_repos}</span>
               <span className={styles.statLabel}>Repos</span>
@@ -281,23 +420,17 @@ export default function AIAssistant() {
               <span className={styles.statVal}>{githubStats.total_forks}</span>
               <span className={styles.statLabel}>Forks</span>
             </div>
-          </div>
-        </div>
-      );
-    }
+          </motion.div>
+        )}
 
-    const detectedProject = Object.keys(projectData).find((key) =>
-      lowerContent.includes(key),
-    );
-
-    if (detectedProject) {
-      const project = projectData[detectedProject];
-      return (
-        <div className={styles.msgContentWrapper}>
-          <MarkdownBody content={content} />
-          <div className={styles.projectCard}>
+        {project && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className={styles.projectCard}
+          >
             <span>
-              Context Link: <strong>{detectedProject}</strong>
+              Context Link: <strong>{detectedProjectKey}</strong>
             </span>
             <a
               href={project.path}
@@ -321,11 +454,10 @@ export default function AIAssistant() {
                 <line x1="10" y1="14" x2="21" y2="3"></line>
               </svg>
             </a>
-          </div>
-        </div>
-      );
-    }
-    return <MarkdownBody content={content} />;
+          </motion.div>
+        )}
+      </div>
+    );
   };
 
   const handleToggle = () => {
@@ -446,7 +578,13 @@ export default function AIAssistant() {
                           />
                         </div>
                       )}
-                      <div className={styles.messageContent}>
+                      <div
+                        className={`${styles.messageContent} ${
+                          isStreaming && idx === messages.length - 1
+                            ? styles.streaming
+                            : ""
+                        }`}
+                      >
                         {renderMessageContent(msg.content, msg.role)}
                       </div>
                     </div>

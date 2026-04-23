@@ -6,7 +6,7 @@ export const metadata = {
   metadataBase: new URL("https://www.coflyn.my.id"),
   title: {
     template: "%s | coflyn",
-    default: "coflyn — Hello World!",
+    default: "Coflyn — Hello World!",
   },
   description:
     "Portfolio of Coflyn — Automation specialist creating bots, tools, and efficient web solutions.",
