@@ -9,6 +9,7 @@ export default function AIAssistant() {
   const [isOpen, setIsOpen] = useState(false);
   const [showNudge, setShowNudge] = useState(false);
   const [githubStats, setGithubStats] = useState(null);
+  const [projects, setProjects] = useState([]);
   const [presence, setPresence] = useState(null);
   const initialMessage = {
     role: "assistant",
@@ -18,6 +19,7 @@ export default function AIAssistant() {
 
   const [messages, setMessages] = useState([initialMessage]);
   const [showClearConfirm, setShowClearConfirm] = useState(false);
+  const [vpHeight, setVpHeight] = useState("100dvh");
   const isOpenRef = useRef(isOpen);
 
   useEffect(() => {
@@ -62,8 +64,31 @@ export default function AIAssistant() {
 
     fetch("/api/chat?githubStats=true")
       .then((res) => res.json())
-      .then((data) => setGithubStats(data))
-      .catch(() => {});
+      .then((data) => {
+        setGithubStats(data.stats);
+
+        const fetchedRepos = (data.projects || []).map((repo) => ({
+          ...repo,
+          priority: 10,
+        }));
+
+        const signatureLinks = [
+          {
+            title: "Personal Portfolio",
+            github_url: "https://github.com/coflyn/personal-portfolio",
+            priority: 8,
+          },
+          {
+            title: "GitHub Profile",
+            github_url: "https://github.com/coflyn",
+            priority: 1,
+            isSignature: true,
+          },
+        ];
+
+        setProjects([...fetchedRepos, ...signatureLinks]);
+      })
+      .catch((err) => console.error("Chat info fetch error:", err));
 
     const fetchPresence = () => {
       fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`)
@@ -82,6 +107,41 @@ export default function AIAssistant() {
       clearInterval(interval);
     };
   }, []);
+
+  useEffect(() => {
+    if (!isMobile || !isOpen) {
+      document.body.style.overflow = "";
+      return;
+    }
+
+    document.body.style.overflow = "hidden";
+
+    const handleViewportChange = () => {
+      if (window.visualViewport) {
+        setVpHeight(`${window.visualViewport.height}px`);
+      }
+    };
+
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener("resize", handleViewportChange);
+      window.visualViewport.addEventListener("scroll", handleViewportChange);
+      handleViewportChange();
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+      if (window.visualViewport) {
+        window.visualViewport.removeEventListener(
+          "resize",
+          handleViewportChange,
+        );
+        window.visualViewport.removeEventListener(
+          "scroll",
+          handleViewportChange,
+        );
+      }
+    };
+  }, [isMobile, isOpen]);
 
   useEffect(() => {
     const nudgeTimer = setTimeout(() => {
@@ -180,7 +240,7 @@ export default function AIAssistant() {
               if (closingIdx !== -1) {
                 step = closingIdx + symbol.length - currentPos;
               } else {
-                return prev; // Pause until closing ** or *
+                return prev;
               }
             } else if (nextChar === "`") {
               const closingIdx = buffer.indexOf("`", currentPos + 1);
@@ -224,14 +284,14 @@ export default function AIAssistant() {
     };
   }, [isStreaming]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!input.trim() || isLoading) return;
+  const sendMessage = async (messageText) => {
+    const content = messageText || input;
+    if (!content.trim() || isLoading) return;
 
-    const userMessage = { role: "user", content: input };
+    const userMessage = { role: "user", content: content };
     const newMessages = [...messages, userMessage];
     setMessages(newMessages);
-    setInput("");
+    if (!messageText) setInput("");
     setIsLoading(true);
     streamBufferRef.current = "";
 
@@ -246,7 +306,11 @@ export default function AIAssistant() {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to connect");
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(
+          errorData.error ||
+            "I'm experiencing some connectivity issues. Please try again later.",
+        );
       }
 
       const reader = response.body.getReader();
@@ -270,6 +334,7 @@ export default function AIAssistant() {
         {
           role: "assistant",
           content:
+            error.message ||
             "Sorry, I'm experiencing some connectivity issues. Please try again later.",
         },
       ]);
@@ -291,8 +356,13 @@ export default function AIAssistant() {
     }
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    sendMessage();
+  };
+
   const suggestions = [
-    { label: "Who is coflyn?", value: "Who is Raffi Andhika (coflyn)?" },
+    { label: "Who is coflyn?", value: "Who is Dika (coflyn)?" },
     {
       label: "Tech Stack",
       value: "What technologies do you use for development?",
@@ -324,47 +394,41 @@ export default function AIAssistant() {
     setShowScrollBottom(scrollHeight - scrollTop - clientHeight > 150);
   };
   const handleSuggestion = (val) => {
-    setInput(val);
-    setTimeout(() => {
-      const form = document.getElementById("ai-chat-form");
-      form?.requestSubmit();
-    }, 100);
+    sendMessage(val);
   };
 
-  const projectData = {
-    clover: { path: "/projects#clover", label: "View Clover" },
-    mavel: { path: "/projects#mavel", label: "View MaveL" },
-    metrics: { path: "/projects#metrics", label: "View Metrics" },
-    "scribdl-py": {
-      path: "https://github.com/coflyn/scribdl-py",
-      label: "GitHub Repo",
-      external: true,
-    },
-    "komikudl-py": {
-      path: "https://github.com/coflyn/komikudl-py",
-      label: "GitHub Repo",
-      external: true,
-    },
-    "slidesharedl-py": {
-      path: "https://github.com/coflyn/slidesharedl-py",
-      label: "GitHub Repo",
-      external: true,
-    },
-    "academiadl-py": {
-      path: "https://github.com/coflyn/academiadl-py",
-      label: "GitHub Repo",
-      external: true,
-    },
-    github: {
-      path: "https://github.com/coflyn",
-      label: "Main Profile",
-      external: true,
-    },
-    repository: {
-      path: "https://github.com/coflyn?tab=repositories",
-      label: "All Repos",
-      external: true,
-    },
+  const findProjectInText = (text) => {
+    if (!projects || projects.length === 0) return null;
+    const lowerText = text.toLowerCase();
+
+    const scoredMatches = projects
+      .map((p) => {
+        const title = p.title.toLowerCase();
+
+        if (title === "github profile" && !lowerText.includes("profile"))
+          return { project: p, score: 0 };
+
+        if (lowerText.includes(title))
+          return { project: p, score: 10 + title.length };
+
+        if (
+          title.length > 3 &&
+          (title.includes(lowerText) || lowerText.includes(title))
+        ) {
+          return { project: p, score: 5 + title.length };
+        }
+
+        return { project: p, score: 0 };
+      })
+      .filter((m) => m.score > 0);
+
+    if (scoredMatches.length === 0) return null;
+
+    return scoredMatches.sort((a, b) => {
+      if (b.project.priority !== a.project.priority)
+        return b.project.priority - a.project.priority;
+      return b.score - a.score;
+    })[0].project;
   };
 
   const MarkdownBody = ({ content }) => {
@@ -393,16 +457,13 @@ export default function AIAssistant() {
         lowerContent.includes("total stars") ||
         lowerContent.includes("statistik"));
 
-    const detectedProjectKey = Object.keys(projectData).find((key) =>
-      lowerContent.includes(key),
-    );
-    const project = detectedProjectKey ? projectData[detectedProjectKey] : null;
+    const project = findProjectInText(content);
 
     return (
       <div className={styles.msgContentWrapper}>
         <MarkdownBody content={content} />
 
-        {hasStats && (
+        {hasStats && content.length > 15 && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -423,22 +484,26 @@ export default function AIAssistant() {
           </motion.div>
         )}
 
-        {project && (
+        {project && content.length > 15 && (
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             className={styles.projectCard}
           >
             <span>
-              Context Link: <strong>{detectedProjectKey}</strong>
+              Context Link: <strong>{project.title}</strong>
             </span>
             <a
-              href={project.path}
-              target={project.external ? "_blank" : "_self"}
-              rel={project.external ? "noopener noreferrer" : ""}
+              href={
+                project.github_url ||
+                project.path ||
+                `https://github.com/coflyn/${project.title}`
+              }
+              target="_blank"
+              rel="noopener noreferrer"
               className={styles.projectLink}
             >
-              {project.label}
+              View Repository
               <svg
                 width="12"
                 height="12"
@@ -501,6 +566,7 @@ export default function AIAssistant() {
             }
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
             className={styles.chatWindow}
+            style={isMobile ? { height: vpHeight, top: 0, bottom: "auto" } : {}}
           >
             <div className={styles.header}>
               <div className={styles.headerTitle}>
@@ -557,6 +623,11 @@ export default function AIAssistant() {
             <div className={styles.messagesWrapper}>
               <div
                 className={styles.messages}
+                style={{
+                  overflowY: "auto",
+                  WebkitOverflowScrolling: "touch",
+                  touchAction: "pan-y",
+                }}
                 data-lenis-prevent
                 onScroll={handleScroll}
                 ref={scrollRef}
@@ -570,7 +641,9 @@ export default function AIAssistant() {
                       }`}
                     >
                       {msg.role === "assistant" && (
-                        <div className={styles.avatarWrapper}>
+                        <div
+                          className={`${styles.avatarWrapper} ${isStreaming && idx === messages.length - 1 && msg.content.length < 10 ? styles.loadingAvatar : ""}`}
+                        >
                           <img
                             src="/icon.svg"
                             alt="Coflyn AI"
@@ -583,6 +656,12 @@ export default function AIAssistant() {
                           isStreaming && idx === messages.length - 1
                             ? styles.streaming
                             : ""
+                        } ${
+                          isStreaming &&
+                          idx === messages.length - 1 &&
+                          msg.content.length < 5
+                            ? styles.shortStream
+                            : ""
                         }`}
                       >
                         {renderMessageContent(msg.content, msg.role)}
@@ -591,14 +670,18 @@ export default function AIAssistant() {
                   ))}
                   {isLoading && (
                     <div className={`${styles.message} ${styles.ai}`}>
-                      <div className={styles.avatarWrapper}>
+                      <div
+                        className={`${styles.avatarWrapper} ${styles.loadingAvatar}`}
+                      >
                         <img
                           src="/icon.svg"
                           alt="Coflyn AI"
                           className={styles.avatar}
                         />
                       </div>
-                      <div className={styles.messageContent}>
+                      <div
+                        className={`${styles.messageContent} ${styles.loading}`}
+                      >
                         <div className={styles.typingIndicator}>
                           <span></span>
                           <span></span>

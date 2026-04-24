@@ -104,10 +104,14 @@ export default function About() {
             >
               <div className={styles.bio}>
                 <p>
-                  Hi! My name is <span className={styles.highlight}>Raffi Andhika</span>, also known as <span className={styles.highlight}>Coflyn</span>. My journey into software development was driven by a deep curiosity about how automation systems and digital products are created to solve real-world problems.
+                  Hi! My name is <span className={styles.highlight}>Dika</span>, also
+                  known as <span className={styles.highlight}>Coflyn</span>. My
+                  journey into software development was driven by a deep
+                  curiosity about how automation systems and digital products
+                  are created to solve real-world problems.
                 </p>
                 <p>
-                  As an Informatics Engineering student at <span className={styles.highlight}>Universitas Dipa Makassar</span>, I&apos;ve had the opportunity to deepen my understanding of software development—from core algorithms and data structures to building robust back-end systems and user-centered web applications.
+                  As an Informatics Engineering student at <span className={styles.highlight}>University Dipa Makassar</span>, I&apos;ve had the opportunity to deepen my understanding of software development—from core algorithms and data structures to building robust back-end systems and user-centered web applications.
                 </p>
                 <p>
                   When I&apos;m not busy with my studies, I&apos;m usually deep-diving into the world of open-source or tinkering with my latest automation tools. I&apos;m all about sharing ideas, collaborating on neat projects, and just trying to make the digital space a bit more efficient, one bot at a time.

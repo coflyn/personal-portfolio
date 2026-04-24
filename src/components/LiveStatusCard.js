@@ -92,7 +92,7 @@ export default function LiveStatusCard() {
           )}
         </div>
         <div className={styles.info}>
-          <h4 className={styles.name}>Coflyn (Raffi Andhika)</h4>
+          <h4 className={styles.name}>Coflyn (Dika)</h4>
           {presence?.activities?.find(a => a.type === 4) && (
             <p className={styles.customStatus}>
               {presence.activities.find(a => a.type === 4).state}

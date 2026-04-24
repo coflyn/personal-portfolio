@@ -20,7 +20,6 @@ export default function ProjectList({ projects }) {
 
   return (
     <div className={styles.wrapper}>
-      {/* Filter Pills */}
       <div className={styles.filters}>
         {languages.map((lang) => (
           <button
@@ -33,7 +32,6 @@ export default function ProjectList({ projects }) {
         ))}
       </div>
 
-      {/* Projects Grid with Animations */}
       <motion.div layout className={styles.grid}>
         <AnimatePresence>
           {filteredProjects.map((project, i) => (
