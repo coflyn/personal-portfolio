@@ -564,7 +564,11 @@ export default function AIAssistant() {
                 ? { opacity: 0, y: "100%" }
                 : { opacity: 0, y: 20, scale: 0.95 }
             }
-            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            transition={
+              isMobile
+                ? { type: "tween", duration: 0.36, ease: [0.23, 1, 0.32, 1] }
+                : { type: "spring", damping: 28, stiffness: 220 }
+            }
             className={styles.chatWindow}
             style={isMobile ? { height: vpHeight, top: 0, bottom: "auto" } : {}}
           >

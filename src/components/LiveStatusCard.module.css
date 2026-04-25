@@ -47,8 +47,14 @@
 }
 
 @keyframes pulse {
-  0% { transform: scale(1); opacity: 0.8; }
-  100% { transform: scale(3); opacity: 0; }
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(3);
+    opacity: 0;
+  }
 }
 
 .statusText {
@@ -88,13 +94,26 @@
   border-radius: 1px;
 }
 
-.signal span:nth-child(1) { height: 4px; animation: signalAnim 1s infinite alternate; }
-.signal span:nth-child(2) { height: 7px; animation: signalAnim 1.2s infinite alternate; }
-.signal span:nth-child(3) { height: 10px; animation: signalAnim 0.8s infinite alternate; }
+.signal span:nth-child(1) {
+  height: 4px;
+  animation: signalAnim 1s infinite alternate;
+}
+.signal span:nth-child(2) {
+  height: 7px;
+  animation: signalAnim 1.2s infinite alternate;
+}
+.signal span:nth-child(3) {
+  height: 10px;
+  animation: signalAnim 0.8s infinite alternate;
+}
 
 @keyframes signalAnim {
-  from { opacity: 0.4; }
-  to { opacity: 1; }
+  from {
+    opacity: 0.4;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .profileSection {
@@ -232,9 +251,15 @@
 }
 
 @keyframes float {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
-  100% { transform: translateY(0); }
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 
 .idleState p {

@@ -234,7 +234,6 @@
   color: var(--text-primary);
 }
 
-
 .githubSection {
   margin-top: 64px;
   padding-top: 48px;
@@ -267,8 +266,6 @@
 .githubCalendar::-webkit-scrollbar {
   display: none;
 }
-
-
 
 .timelineSection {
   margin-top: 48px;

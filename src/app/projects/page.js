@@ -1,10 +1,8 @@
+import { Suspense } from "react";
 import ProjectList from "@/components/ProjectList";
-import ScrollReveal from "@/components/ScrollReveal";
-import PageTransition from "@/components/PageTransition";
 import fallbackProjects from "@/lib/data";
-import styles from "./page.module.css";
-import SectionHeader from "@/components/SectionHeader";
 import { getProjects } from "@/lib/github";
+import Loading from "./loading";
 
 export const metadata = {
   title: "Projects — Things I've built",
@@ -13,9 +11,16 @@ export const metadata = {
 
 export const revalidate = 3600;
 
-export default async function Projects() {
+async function ProjectData() {
   const githubProjects = await getProjects();
   const projects = githubProjects.length > 0 ? githubProjects : fallbackProjects;
-
   return <ProjectList projects={projects} />;
+}
+
+export default function Projects() {
+  return (
+    <Suspense fallback={<Loading />}>
+      <ProjectData />
+    </Suspense>
+  );
 }

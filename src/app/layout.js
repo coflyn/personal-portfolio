@@ -51,11 +51,24 @@ export const metadata = {
   },
 };
 
+import { Suspense } from "react";
+import { getProjects } from "@/lib/github";
+
+async function ProjectPrefetcher() {
+  try {
+    await getProjects();
+  } catch (e) {}
+  return null;
+}
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body suppressHydrationWarning>
         <ClientProviders>{children}</ClientProviders>
+        <Suspense fallback={null}>
+          <ProjectPrefetcher />
+        </Suspense>
         <Analytics />
       </body>
     </html>

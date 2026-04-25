@@ -145,11 +145,11 @@ Use this data for accuracy.`;
     async function fetchWithRetry(models, currentPayload) {
       console.log(`[Chat] Request started...`);
       for (const model of models) {
-        for (let attempt = 0; attempt < 2; attempt++) {
+        const maxAttempts = model.includes("70b") ? 1 : 2;
+
+        for (let attempt = 0; attempt < maxAttempts; attempt++) {
           try {
-            console.log(
-              `[Chat] Trying model: ${model} (Attempt ${attempt + 1})`,
-            );
+            console.log(`[Chat] Trying ${model} (Attempt ${attempt + 1})`);
             const response = await fetch(
               "https://api.groq.com/openai/v1/chat/completions",
               {
@@ -163,14 +163,12 @@ Use this data for accuracy.`;
             );
 
             if (response.ok) {
-              console.log(`[Chat] Success with ${model}`);
+              console.log(`[Chat] Success: ${model}`);
               return response;
             }
 
             if (response.status === 429) {
-              console.warn(
-                `[Chat] Rate limit hit for ${model}, switching model...`,
-              );
+              console.warn(`[Chat] ${model} limit hit, switching...`);
               break;
             }
 
@@ -178,10 +176,10 @@ Use this data for accuracy.`;
             console.warn(
               `[Chat] ${model} failed: ${errorData.error?.message || response.status}`,
             );
-            await new Promise((r) => setTimeout(r, 500));
+            await new Promise((r) => setTimeout(r, 400));
           } catch (e) {
             console.error(`[Chat] Error with ${model}:`, e.message);
-            await new Promise((r) => setTimeout(r, 500));
+            await new Promise((r) => setTimeout(r, 400));
           }
         }
       }
