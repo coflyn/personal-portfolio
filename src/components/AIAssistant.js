@@ -3,6 +3,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import remarkBreaks from "remark-breaks";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import styles from "./AIAssistant.module.css";
 
 export default function AIAssistant() {
@@ -15,6 +19,7 @@ export default function AIAssistant() {
     role: "assistant",
     content:
       "Hi! I'm Coflyn's AI Companion. How can I help you today? You can ask about coflyn or anything.",
+    timestamp: new Date().toISOString(),
   };
 
   const [messages, setMessages] = useState([initialMessage]);
@@ -53,6 +58,8 @@ export default function AIAssistant() {
   const [isLoading, setIsLoading] = useState(false);
   const [isStreaming, setIsStreaming] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const wasStreamingRef = useRef(false);
+  const lastSentRef = useRef(0);
   const messagesEndRef = useRef(null);
 
   const DISCORD_ID = "601347669105049600";
@@ -62,49 +69,52 @@ export default function AIAssistant() {
     checkMobile();
     window.addEventListener("resize", checkMobile);
 
-    fetch("/api/chat?githubStats=true")
-      .then((res) => res.json())
-      .then((data) => {
-        setGithubStats(data.stats);
-
-        const fetchedRepos = (data.projects || []).map((repo) => ({
-          ...repo,
-          priority: 10,
-        }));
-
-        const signatureLinks = [
-          {
-            title: "Personal Portfolio",
-            github_url: "https://github.com/coflyn/personal-portfolio",
-            priority: 8,
-          },
-          {
-            title: "GitHub Profile",
-            github_url: "https://github.com/coflyn",
-            priority: 1,
-            isSignature: true,
-          },
-        ];
-
-        setProjects([...fetchedRepos, ...signatureLinks]);
-      })
-      .catch((err) => console.error("Chat info fetch error:", err));
-
-    const fetchPresence = () => {
-      fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`)
+    const initDelay = setTimeout(() => {
+      fetch("/api/chat?githubStats=true")
         .then((res) => res.json())
         .then((data) => {
-          if (data.success) setPresence(data.data);
+          setGithubStats(data.stats);
+          const fetchedRepos = (data.projects || []).map((repo) => ({
+            ...repo,
+            priority: 10,
+          }));
+          const signatureLinks = [
+            {
+              title: "Personal Portfolio",
+              github_url: "https://github.com/coflyn/personal-portfolio",
+              priority: 8,
+            },
+            {
+              title: "GitHub Profile",
+              github_url: "https://github.com/coflyn",
+              priority: 1,
+              isSignature: true,
+            },
+          ];
+          setProjects([...fetchedRepos, ...signatureLinks]);
         })
-        .catch(() => {});
-    };
+        .catch((err) => console.error("Chat info fetch error:", err));
 
-    fetchPresence();
-    const interval = setInterval(fetchPresence, 30000);
+      const fetchPre = () => {
+        fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`)
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.success) setPresence(data.data);
+          })
+          .catch(() => {});
+      };
+
+      fetchPre();
+      const interval = setInterval(fetchPre, 30000);
+      handleIntervalCleanup = () => clearInterval(interval);
+    }, 1500);
+
+    let handleIntervalCleanup = () => {};
 
     return () => {
       window.removeEventListener("resize", checkMobile);
-      clearInterval(interval);
+      clearTimeout(initDelay);
+      handleIntervalCleanup();
     };
   }, []);
 
@@ -144,6 +154,14 @@ export default function AIAssistant() {
   }, [isMobile, isOpen]);
 
   useEffect(() => {
+    if (isMobile && isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+  }, [isMobile, isOpen]);
+
+  useEffect(() => {
     const nudgeTimer = setTimeout(() => {
       const hasSeenNudge = sessionStorage.getItem("hasSeenAInudge");
       if (!isOpenRef.current && !hasSeenNudge) {
@@ -179,16 +197,56 @@ export default function AIAssistant() {
     return "Active Now";
   };
 
-  const scrollToBottom = () => {
+  const scrollToBottom = (instant = false) => {
+    if (!isOpen || !messagesEndRef.current || !scrollRef.current) return;
+
     isAutoScrolling.current = true;
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+
+    const container = scrollRef.current;
+    if (instant) {
+      container.scrollTop = container.scrollHeight;
+    } else {
+      container.scrollTo({
+        top: container.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+
     setTimeout(() => {
       isAutoScrolling.current = false;
-    }, 800);
+    }, 100);
   };
+
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+    const isEnding = wasStreamingRef.current && !isStreaming;
+    scrollToBottom(isStreaming || isLoading || isEnding);
+
+    wasStreamingRef.current = isStreaming;
+  }, [messages, isStreaming, isLoading]);
+
+  useEffect(() => {
+    const chatContainer = scrollRef.current;
+    if (!chatContainer) return;
+
+    const handleBlockScroll = (e) => {
+      if (isStreaming || isLoading) {
+        if (e.cancelable) e.preventDefault();
+        e.stopPropagation();
+      }
+    };
+
+    chatContainer.addEventListener("wheel", handleBlockScroll, {
+      passive: false,
+    });
+    chatContainer.addEventListener("touchmove", handleBlockScroll, {
+      passive: false,
+    });
+
+    return () => {
+      chatContainer.removeEventListener("wheel", handleBlockScroll);
+      chatContainer.removeEventListener("touchmove", handleBlockScroll);
+    };
+  }, [isStreaming, isLoading]);
 
   const streamBufferRef = useRef("");
   const typingIntervalRef = useRef(null);
@@ -284,11 +342,44 @@ export default function AIAssistant() {
     };
   }, [isStreaming]);
 
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible" && isStreaming) {
+        setMessages((prev) => {
+          const updated = [...prev];
+          const lastMsg = updated[updated.length - 1];
+          if (
+            lastMsg &&
+            lastMsg.role === "assistant" &&
+            lastMsg.content.length < streamBufferRef.current.length
+          ) {
+            updated[updated.length - 1] = {
+              ...lastMsg,
+              content: streamBufferRef.current,
+            };
+          }
+          return updated;
+        });
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [isStreaming]);
+
   const sendMessage = async (messageText) => {
     const content = messageText || input;
     if (!content.trim() || isLoading) return;
 
-    const userMessage = { role: "user", content: content };
+    lastSentRef.current = Date.now();
+
+    const userMessage = {
+      role: "user",
+      content: content,
+      timestamp: new Date().toISOString(),
+    };
     const newMessages = [...messages, userMessage];
     setMessages(newMessages);
     if (!messageText) setInput("");
@@ -300,7 +391,9 @@ export default function AIAssistant() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          messages: newMessages.slice(-10),
+          messages: newMessages
+            .slice(-10)
+            .map(({ role, content }) => ({ role, content })),
           presence: presence,
         }),
       });
@@ -316,7 +409,10 @@ export default function AIAssistant() {
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
 
-      setMessages((prev) => [...prev, { role: "assistant", content: "" }]);
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: "", timestamp: new Date().toISOString() },
+      ]);
       setIsLoading(false);
       setIsStreaming(true);
 
@@ -345,6 +441,7 @@ export default function AIAssistant() {
           const lastMsg = prev[prev.length - 1];
           if (
             lastMsg &&
+            lastMsg.role === "assistant" &&
             lastMsg.content.length >= streamBufferRef.current.length
           ) {
             setIsStreaming(false);
@@ -352,7 +449,7 @@ export default function AIAssistant() {
           }
           return prev;
         });
-      }, 100);
+      }, 50);
     }
   };
 
@@ -431,18 +528,155 @@ export default function AIAssistant() {
     })[0].project;
   };
 
+  const CodeBlock = ({ code, lang }) => {
+    const [copied, setCopied] = useState(false);
+
+    const handleCopy = () => {
+      navigator.clipboard.writeText(code);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    };
+
+    return (
+      <div className={styles.codeBlock}>
+        <div className={styles.codeHeader}>
+          <div className={styles.windowControls}>
+            <span className={styles.dotRed}></span>
+            <span className={styles.dotYellow}></span>
+            <span className={styles.dotGreen}></span>
+          </div>
+          <span className={styles.codeLang}>{lang || "code"}</span>
+          <button
+            className={styles.copyBtn}
+            onClick={handleCopy}
+            title="Copy code"
+          >
+            {copied ? (
+              <span className={styles.copyFeedback}>Copied!</span>
+            ) : (
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+            )}
+          </button>
+        </div>
+        <div className={styles.codeContent}>
+          <SyntaxHighlighter
+            language={(lang || "javascript").toLowerCase()}
+            style={vscDarkPlus}
+            customStyle={{
+              margin: 0,
+              padding: "20px 16px",
+              background: "transparent",
+              fontSize: "0.85rem",
+              lineHeight: "1.7",
+            }}
+            codeTagProps={{
+              style: {
+                background: "transparent",
+                fontFamily: "inherit",
+              },
+            }}
+            lineNumberStyle={{
+              color: "rgba(255,255,255,0.25)",
+              minWidth: "3em",
+              paddingRight: "1.2em",
+              textAlign: "right",
+              fontSize: "0.75rem",
+              userSelect: "none",
+              borderRight: "1px solid rgba(255,255,255,0.05)",
+              marginRight: "12px",
+              background: "transparent",
+            }}
+            showLineNumbers={true}
+            wrapLines={true}
+            lineProps={{
+              style: {
+                display: "flex",
+                alignItems: "center",
+              },
+            }}
+          >
+            {code.replace(/`+$/, "").trim()}
+          </SyntaxHighlighter>
+        </div>
+      </div>
+    );
+  };
+
   const MarkdownBody = ({ content }) => {
-    const autoLinked = content.replace(
+    const formatted = content.replace(
       /(?<!\()https?:\/\/[^\s\)]+/g,
       (url) => `[${url}](${url})`,
     );
-    const formatted = autoLinked.replace(/\n(?!\n)/g, "\n\n");
 
     return (
       <div className={styles.msgText}>
-        <ReactMarkdown>{formatted}</ReactMarkdown>
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm, remarkBreaks]}
+          components={{
+            code({ node, inline, className, children, ...props }) {
+              const match = /language-(\w+)/.exec(className || "");
+              if (inline || !match) {
+                return (
+                  <code className={className} {...props}>
+                    {children}
+                  </code>
+                );
+              }
+              return (
+                <CodeBlock
+                  code={String(children).replace(/\n$/, "")}
+                  lang={match[1]}
+                />
+              );
+            },
+          }}
+        >
+          {formatted}
+        </ReactMarkdown>
       </div>
     );
+  };
+
+  const formatTime = (isoString) => {
+    if (!isoString) return "";
+    try {
+      const date = new Date(isoString);
+      const now = new Date();
+      const diffInDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+
+      const timeStr = date.toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      });
+
+      const isToday = date.toDateString() === now.toDateString();
+
+      const yesterday = new Date();
+      yesterday.setDate(now.getDate() - 1);
+      const isYesterday = date.toDateString() === yesterday.toDateString();
+
+      if (isToday) return timeStr;
+      if (isYesterday) return `Yesterday, ${timeStr}`;
+      if (diffInDays < 7) {
+        return `${date.toLocaleDateString("en-US", { weekday: "short" })}, ${timeStr}`;
+      }
+      return `${date.toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit" })}, ${timeStr}`;
+    } catch (e) {
+      return "";
+    }
   };
 
   const renderMessageContent = (content, role) => {
@@ -628,9 +862,10 @@ export default function AIAssistant() {
               <div
                 className={styles.messages}
                 style={{
-                  overflowY: "auto",
+                  overflowY: isStreaming || isLoading ? "hidden" : "auto",
                   WebkitOverflowScrolling: "touch",
-                  touchAction: "pan-y",
+                  touchAction: isStreaming || isLoading ? "none" : "pan-y",
+                  overscrollBehavior: "contain",
                 }}
                 data-lenis-prevent
                 onScroll={handleScroll}
@@ -669,6 +904,9 @@ export default function AIAssistant() {
                         }`}
                       >
                         {renderMessageContent(msg.content, msg.role)}
+                        <span className={styles.timestamp}>
+                          {formatTime(msg.timestamp)}
+                        </span>
                       </div>
                     </div>
                   ))}
@@ -686,6 +924,7 @@ export default function AIAssistant() {
                       <div
                         className={`${styles.messageContent} ${styles.loading}`}
                       >
+                        <span className={styles.loadingText}>Thinking</span>
                         <div className={styles.typingIndicator}>
                           <span></span>
                           <span></span>
@@ -727,7 +966,11 @@ export default function AIAssistant() {
             <div className={styles.inputContainer}>
               <div className={styles.suggestions} data-lenis-prevent>
                 {suggestions.map((s, i) => (
-                  <button key={i} onClick={() => handleSuggestion(s.value)}>
+                  <button
+                    key={i}
+                    onClick={() => handleSuggestion(s.value)}
+                    disabled={isLoading || isStreaming}
+                  >
                     {s.label}
                   </button>
                 ))}
@@ -739,14 +982,19 @@ export default function AIAssistant() {
               >
                 <input
                   type="text"
-                  placeholder="Ask anything..."
+                  placeholder={
+                    isStreaming || isLoading
+                      ? "AI is thinking..."
+                      : "Ask anything..."
+                  }
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
+                  disabled={isLoading || isStreaming}
                 />
                 <button
                   type="submit"
                   className={styles.sendButton}
-                  disabled={isLoading}
+                  disabled={isLoading || isStreaming || !input.trim()}
                 >
                   <svg
                     width="18"
