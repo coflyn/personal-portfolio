@@ -65,6 +65,7 @@ export default function Home() {
     "bot apps.",
     "automations.",
     "websites.",
+    "i love cats.",
   ];
 
   useEffect(() => {
@@ -124,11 +125,14 @@ export default function Home() {
   }, [typewriterText, isDeleting, wordIndex, typingSpeed, isSelecting]);
 
   const catMessages = [
-    "Hello!",
-    "Hope you're having a great day!",
-    "I'm feeling a bit lonely...",
-    "Check out my latest work!",
-    "Aww! You're so kind!",
+    "Meow! I'm the real CEO here.",
+    "Meow-mento Mori, human.",
+    "I speak fluent Python and Meow.",
+    "Click me for some good luck!",
+    "Is it 3 AM yet? Time to code.",
+    "Don't just stare, check the projects!",
+    "I'm actually the one writing the code.",
+    "Aww! That tickles! More!",
   ];
 
   useEffect(() => {
@@ -150,7 +154,7 @@ export default function Home() {
     setIsHappy(true);
     setShowFeed(false);
     setTimeout(() => setShowFeed(true), 10);
-    setCatMsgIndex(4);
+    setCatMsgIndex(7);
 
     setTimeout(() => {
       setIsHappy(false);
@@ -195,144 +199,141 @@ export default function Home() {
   }, []);
 
   return (
-    
-      <main>
-        {/* Hero */}
-        <section className={styles.hero}>
-          <div className="container">
-            <div className={styles.heroLayout}>
-              <motion.div
-                className={styles.content}
-                variants={stagger}
-                initial="hidden"
-                animate="visible"
-              >
-                <h1 className={styles.title}>
-                  Hi, I&apos;m{" "}
-                  <span className={styles.titleAccent}>coflyn.</span>
-                </h1>
-                <h2 className={styles.titleSub}>
-                  <span className={isSelecting ? styles.selecting : ""}>
-                    {typewriterText}
-                  </span>
-                  <span className={styles.cursor}>|</span>
-                </h2>
+    <main>
+      <section className={styles.hero}>
+        <div className="container">
+          <div className={styles.heroLayout}>
+            <motion.div
+              className={styles.content}
+              variants={stagger}
+              initial="hidden"
+              animate="visible"
+            >
+              <h1 className={styles.title}>
+                Hi, I&apos;m <span className={styles.titleAccent}>coflyn.</span>
+              </h1>
+              <h2 className={styles.titleSub}>
+                <span className={isSelecting ? styles.selecting : ""}>
+                  {typewriterText}
+                </span>
+                <span className={styles.cursor}>|</span>
+              </h2>
 
-                <motion.p
-                  className={styles.subtitle}
-                  variants={fadeUp}
-                  transition={{ delay: 0.5, duration: 0.5 }}
+              <motion.p
+                className={styles.subtitle}
+                variants={fadeUp}
+                transition={{ delay: 0.5, duration: 0.5 }}
+              >
+                Just a student who loves playing with tech and figuring out how
+                to automate the boring stuff.
+              </motion.p>
+              <motion.div className={styles.ctas} variants={fadeUp}>
+                <MagneticButton>
+                  <Link href="/projects" className={styles.ctaPrimary}>
+                    View Projects
+                  </Link>
+                </MagneticButton>
+                <MagneticButton>
+                  <Link href="/contact" className={styles.ctaSecondary}>
+                    Get in Touch
+                  </Link>
+                </MagneticButton>
+              </motion.div>
+            </motion.div>
+
+            <motion.div
+              className={styles.heroImage}
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{
+                delay: 0.6,
+                duration: 0.8,
+                ease: [0.25, 0.1, 0.25, 1],
+              }}
+              onClick={handleCatClick}
+              style={{ cursor: "pointer" }}
+            >
+              <div key={catMsgIndex} className={styles.catSpeech}>
+                {catMessages[catMsgIndex]}
+              </div>
+
+              {showFeed && (
+                <motion.div
+                  className={styles.feedAnim}
+                  initial={{ scale: 0.5, opacity: 0 }}
+                  animate={{
+                    scale: [0.8, 2.5, 1.8],
+                    opacity: [0, 1, 0],
+                    y: [0, -60],
+                    rotate: [0, 20, -20, 0],
+                  }}
+                  style={{
+                    left: clickPos.x,
+                    top: clickPos.y,
+                  }}
+                  transition={{ duration: 0.6, ease: "easeOut" }}
                 >
-                  Just a student who loves playing with tech and figuring out
-                  how to automate the boring stuff.
-                </motion.p>
-                <motion.div className={styles.ctas} variants={fadeUp}>
-                  <MagneticButton>
-                    <Link href="/projects" className={styles.ctaPrimary}>
-                      View Projects
-                    </Link>
-                  </MagneticButton>
-                  <MagneticButton>
-                    <Link href="/contact" className={styles.ctaSecondary}>
-                      Get in Touch
-                    </Link>
-                  </MagneticButton>
+                  <HeartSVG />
                 </motion.div>
-              </motion.div>
+              )}
 
-              <motion.div
-                className={styles.heroImage}
-                initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{
-                  delay: 0.6,
-                  duration: 0.8,
-                  ease: [0.25, 0.1, 0.25, 1],
-                }}
-                onClick={handleCatClick}
-                style={{ cursor: "pointer" }}
-              >
-                <div key={catMsgIndex} className={styles.catSpeech}>
-                  {catMessages[catMsgIndex]}
-                </div>
-
-                {showFeed && (
-                  <motion.div
-                    className={styles.feedAnim}
-                    initial={{ scale: 0.5, opacity: 0 }}
-                    animate={{
-                      scale: [1, 2.8],
-                      opacity: [0, 1, 0],
-                    }}
-                    style={{
-                      left: clickPos.x,
-                      top: clickPos.y,
-                    }}
-                    transition={{ duration: 0.6, ease: "easeOut" }}
-                  >
-                    <HeartSVG />
-                  </motion.div>
-                )}
-
-                <video
-                  src="/icon.mp4"
-                  poster="/og-image.png"
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  preload="auto"
-                  width="480"
-                  height="480"
-                  className={`${styles.image} ${isHappy ? styles.happyCat : ""}`}
-                />
-              </motion.div>
-            </div>
+              <video
+                src="/icon.mp4"
+                poster="/og-image.png"
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="auto"
+                width="480"
+                height="480"
+                className={`${styles.image} ${isHappy ? styles.happyCat : ""}`}
+              />
+            </motion.div>
           </div>
+        </div>
 
-          <motion.div
-            className={styles.scrollIndicator}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.5, duration: 0.8 }}
-          >
-            <span>scroll</span>
-            <div className={styles.chevron} />
-          </motion.div>
-        </section>
+        <motion.div
+          className={styles.scrollIndicator}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.5, duration: 0.8 }}
+        >
+          <span>scroll</span>
+          <div className={styles.chevron} />
+        </motion.div>
+      </section>
 
-        {/* Featured Projects */}
-        <section className={styles.featured}>
-          <div className="container">
-            <ScrollReveal>
-              <SectionHeader
-                label="Selected Work"
-                title="Featured Projects"
-                className={styles.featuredHeader}
-              >
-                <Link href="/projects" className={styles.viewAll}>
-                  View all →
-                </Link>
-              </SectionHeader>
-            </ScrollReveal>
+      <section className={styles.featured}>
+        <div className="container">
+          <ScrollReveal>
+            <SectionHeader
+              label="Selected Work"
+              title="Featured Projects"
+              className={styles.featuredHeader}
+            >
+              <Link href="/projects" className={styles.viewAll}>
+                View all →
+              </Link>
+            </SectionHeader>
+          </ScrollReveal>
 
-            <div className={styles.grid}>
-              {isLoading
-                ? Array.from({ length: 3 }).map((_, i) => (
-                    <ProjectSkeleton key={i} />
-                  ))
-                : featured.map((project, i) => (
-                    <ScrollReveal key={project.id} delay={i * 0.1}>
-                      <ProjectCard
-                        project={{ ...project, tags: project.tags.slice(0, 2) }}
-                        index={i}
-                      />
-                    </ScrollReveal>
-                  ))}
-            </div>
+          <div className={styles.grid}>
+            {isLoading
+              ? Array.from({ length: 3 }).map((_, i) => (
+                  <ProjectSkeleton key={i} />
+                ))
+              : featured.map((project, i) => (
+                  <ScrollReveal key={project.id} delay={i * 0.1}>
+                    <ProjectCard
+                      project={{ ...project, tags: project.tags.slice(0, 2) }}
+                      index={i}
+                    />
+                  </ScrollReveal>
+                ))}
           </div>
-        </section>
-      </main>
-    
+        </div>
+      </section>
+    </main>
   );
 }

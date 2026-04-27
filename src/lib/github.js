@@ -138,3 +138,20 @@ export async function getRepoFile(repoName, fileName) {
     return null;
   }
 }
+export async function getLatestCommits(repoName, count = 5) {
+  try {
+    const res = await fetch(
+      `https://api.github.com/repos/${GITHUB_USERNAME}/${repoName}/commits?per_page=${count}`,
+      { next: { revalidate: 3600 } },
+    );
+    if (!res.ok) return null;
+    const commits = await res.json();
+    return commits.map((c) => ({
+      message: c.commit.message,
+      date: c.commit.author.date,
+    }));
+  } catch (err) {
+    console.error("Commits fetch error:", err);
+    return null;
+  }
+}

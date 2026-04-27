@@ -3,6 +3,7 @@ import {
   getProjects,
   getRepoReadme,
   getRepoFile,
+  getLatestCommits,
 } from "@/lib/github";
 import { NextResponse } from "next/server";
 
@@ -167,16 +168,18 @@ export async function POST(req) {
         ) || lastUserMessage.includes(project.title.toLowerCase());
 
       if (isMatch) {
-        const [readme, requirements] = await Promise.all([
+        const [readme, requirements, commits] = await Promise.all([
           getRepoReadme(project.title),
           getRepoFile(project.title, "requirements.txt"),
+          getLatestCommits(project.title, 3),
         ]);
 
-        if (readme || requirements) {
+        if (readme || requirements || commits) {
           technicalContext = `\n\n[DEEP PROJECT KNOWLEDGE - ${project.title.toUpperCase()}]:
 Actually, I have technical data:
 ${readme ? `[README]: ${readme.slice(0, 1800)}` : ""}
 ${requirements ? `[REQ]: ${requirements.slice(0, 400)}` : ""}
+${commits ? `[LATEST ACTIVITY]:\n${commits.map((c) => `- ${c.message} (${new Date(c.date).toLocaleDateString()})`).join("\n")}` : ""}
 Use this data for accuracy.`;
           break;
         }

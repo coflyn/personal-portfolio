@@ -89,6 +89,19 @@
   gap: 12px;
 }
 
+@media (max-width: 480px) {
+  .techGrid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .techItem {
+    flex: 1 1 130px;
+    max-width: calc(50% - 6px);
+  }
+}
+
 .techItem {
   display: flex;
   align-items: center;

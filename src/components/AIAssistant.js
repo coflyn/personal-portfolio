@@ -471,8 +471,24 @@ export default function AIAssistant() {
     },
     { label: "Education", value: "Tell me about your education background." },
     {
-      label: "Latest Project",
-      value: "What is your latest project on GitHub?",
+      label: "Latest Updates",
+      value: "What are your 3 latest commits on GitHub?",
+    },
+    {
+      label: "Philosophy",
+      value: "What is the meaning behind the name 'coflyn'?",
+    },
+    {
+      label: "Bot Development",
+      value: "Tell me about your experience building bots.",
+    },
+    {
+      label: "Automation",
+      value: "What kind of automation tools have you built?",
+    },
+    {
+      label: "Discord Status",
+      value: "Are you online or busy on Discord right now?",
     },
     {
       label: "Contact Info",
@@ -615,10 +631,9 @@ export default function AIAssistant() {
   };
 
   const MarkdownBody = ({ content }) => {
-    const formatted = content.replace(
-      /(?<!\()https?:\/\/[^\s\)]+/g,
-      (url) => `[${url}](${url})`,
-    );
+    const formatted = content
+      .replace(/(?<!\()https?:\/\/[^\s\)]+/g, (url) => `[${url}](${url})`)
+      .replace(/^(\s*[-*•]\s+)([^:\n]+):/gm, "$1**$2**:");
 
     return (
       <div className={styles.msgText}>
@@ -668,7 +683,7 @@ export default function AIAssistant() {
       yesterday.setDate(now.getDate() - 1);
       const isYesterday = date.toDateString() === yesterday.toDateString();
 
-      if (isToday) return timeStr;
+      if (isToday) return `Today, ${timeStr}`;
       if (isYesterday) return `Yesterday, ${timeStr}`;
       if (diffInDays < 7) {
         return `${date.toLocaleDateString("en-US", { weekday: "short" })}, ${timeStr}`;
