@@ -217,36 +217,22 @@ export default function AIAssistant() {
     }, 100);
   };
 
+  const userHasScrolledUp = useRef(false);
+
   useEffect(() => {
     const isEnding = wasStreamingRef.current && !isStreaming;
-    scrollToBottom(isStreaming || isLoading || isEnding);
+    const isStarting = !wasStreamingRef.current && isStreaming;
+
+    if (isStarting) {
+      userHasScrolledUp.current = false;
+    }
+
+    if (!userHasScrolledUp.current || isEnding || isLoading) {
+      scrollToBottom(isStreaming || isLoading || isEnding);
+    }
 
     wasStreamingRef.current = isStreaming;
   }, [messages, isStreaming, isLoading]);
-
-  useEffect(() => {
-    const chatContainer = scrollRef.current;
-    if (!chatContainer) return;
-
-    const handleBlockScroll = (e) => {
-      if (isStreaming || isLoading) {
-        if (e.cancelable) e.preventDefault();
-        e.stopPropagation();
-      }
-    };
-
-    chatContainer.addEventListener("wheel", handleBlockScroll, {
-      passive: false,
-    });
-    chatContainer.addEventListener("touchmove", handleBlockScroll, {
-      passive: false,
-    });
-
-    return () => {
-      chatContainer.removeEventListener("wheel", handleBlockScroll);
-      chatContainer.removeEventListener("touchmove", handleBlockScroll);
-    };
-  }, [isStreaming, isLoading]);
 
   const streamBufferRef = useRef("");
   const typingIntervalRef = useRef(null);
@@ -269,7 +255,10 @@ export default function AIAssistant() {
             const currentPos = lastMsg.content.length;
             const diff = buffer.length - currentPos;
 
-            let step = diff > 50 ? 3 : 1;
+            let step = 1;
+            if (diff > 500) step = 15;
+            else if (diff > 200) step = 8;
+            else if (diff > 50) step = 3;
 
             if (step > 1) {
               const lookAhead = buffer.slice(currentPos, currentPos + step);
@@ -285,8 +274,6 @@ export default function AIAssistant() {
               const closingParen = buffer.indexOf(")", midPattern);
               if (midPattern !== -1 && closingParen !== -1) {
                 step = closingParen + 1 - currentPos;
-              } else {
-                return prev;
               }
             } else if (nextChar === "*") {
               const isBold = buffer[currentPos + 1] === "*";
@@ -297,15 +284,11 @@ export default function AIAssistant() {
               );
               if (closingIdx !== -1) {
                 step = closingIdx + symbol.length - currentPos;
-              } else {
-                return prev;
               }
             } else if (nextChar === "`") {
               const closingIdx = buffer.indexOf("`", currentPos + 1);
               if (closingIdx !== -1 && buffer[currentPos + 1] !== "`") {
                 step = closingIdx + 1 - currentPos;
-              } else if (buffer[currentPos + 1] !== "`") {
-                return prev;
               }
             } else if (
               nextChar === "#" &&
@@ -314,11 +297,6 @@ export default function AIAssistant() {
               const spaceIdx = buffer.indexOf(" ", currentPos);
               if (spaceIdx !== -1 && spaceIdx - currentPos < 6) {
                 step = spaceIdx + 1 - currentPos;
-              } else {
-                if (buffer.slice(currentPos, currentPos + 6).includes(" ")) {
-                } else {
-                  if (buffer.length - currentPos < 6) return prev;
-                }
               }
             }
 
@@ -504,7 +482,9 @@ export default function AIAssistant() {
     if (isAutoScrolling.current) return;
 
     const { scrollTop, scrollHeight, clientHeight } = e.target;
-    setShowScrollBottom(scrollHeight - scrollTop - clientHeight > 150);
+    const distanceFromBottom = scrollHeight - scrollTop - clientHeight;
+    setShowScrollBottom(distanceFromBottom > 150);
+    userHasScrolledUp.current = distanceFromBottom > 100;
   };
   const handleSuggestion = (val) => {
     sendMessage(val);
@@ -633,7 +613,10 @@ export default function AIAssistant() {
   const MarkdownBody = ({ content }) => {
     const formatted = content
       .replace(/(?<!\()https?:\/\/[^\s\)]+/g, (url) => `[${url}](${url})`)
-      .replace(/^(\s*[-*•]\s+)([^:\n]+):/gm, "$1**$2**:");
+      .replace(
+        /^(\s*[-*•]\s+)\s*(\*\*)?([^:\n*]+?)\s*(\*\*)?\s*:/gm,
+        "$1**$3**:",
+      );
 
     return (
       <div className={styles.msgText}>

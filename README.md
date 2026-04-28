@@ -9,24 +9,27 @@ Welcome to the official repository of my personal portfolio. This project serves
 ## Key Features
 
 ### Context-Aware AI Assistant
+
 Integrated with an advanced AI companion powered by **Llama 3.3 70B** for a truly interactive experience.
 
-- **Live Status Integration:** The assistant monitors real-time Discord presence (Online, Idle, or DND) via Lanyard.
-- **Interactive Navigation:** Provides clickable internal routes and quick access links directly within the chat.
-- **Project Intelligence:** Capable of assisting with navigation and providing context about my development journey.
+- **Deep GitHub Integration:** The assistant can fetch and analyze READMEs, `requirements.txt`, and the **3 latest commits** from my repositories in real-time.
+- **Live Status Integration:** Monitors real-time Discord presence (Online, Idle, or DND) and current Spotify tracks via Lanyard API.
+- **Performance Optimized Typing:** Features a high-speed adaptive typing engine with smart auto-scroll that respects user interaction.
 
-### Live Discord Presence
-Real-time activity monitoring integrated directly into the **About Page** to display my current work status.
+### Interactive "Meow-mento Mori" Mascot
 
-- **Rich Activity:** Displays active applications (VS Code), Spotify music streaming, and custom status.
-- **Status Indicator:** Dynamic status dot with pulse animations and brand-specific SVG icons.
-- **Aesthetic:** Glassmorphism-style cards that align with the overall dashboard design.
+A responsive pixel-art cat mascot that adds personality to the home page.
+
+- **Reactive Dialogue:** Features witty, tech-themed speech bubbles and "tickle" responses when clicked.
+- **Dynamic Animations:** Implements squash-and-stretch physics for a satisfying, tactile feel.
+- **Philosophical Touch:** Blends my "Coflyn" brand with the _Memento Mori_ philosophy in a playful way.
 
 ### Minimalist & High-Tech UI
+
 A bespoke dashboard-style design focusing on clean lines, dark mode, and focus-driven interfaces.
 
 - **Glassmorphism:** A modern user interface utilizing frosted glass effects and refined typography.
-- **Fluid Motion:** Implements smooth page transitions and element reveals via Framer Motion and ScrollReveal.
+- **Fluid Motion:** Implements smooth page transitions and element reveals via Framer Motion, Lenis smooth scrolling, and ScrollReveal.
 
 ---
 

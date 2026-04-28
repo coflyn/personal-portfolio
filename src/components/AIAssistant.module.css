@@ -501,6 +501,7 @@
   border-radius: 4px;
   font-size: 0.85em;
   font-family: var(--font-mono);
+  white-space: nowrap;
 }
 
 .projectCard {
