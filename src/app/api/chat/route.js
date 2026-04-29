@@ -86,9 +86,14 @@ export async function POST(req) {
       "sunna",
       "songkolo",
     ];
-    const isNowToxic = toxicKeywords.some((word) =>
-      lastUserMessage.includes(word),
-    );
+    const toxicMatches = toxicKeywords.filter((word) => {
+      const regex = new RegExp(`\\b${word}\\b`, "i");
+      return regex.test(lastUserMessage);
+    });
+
+    const isNowToxic =
+      toxicMatches.length > 1 ||
+      (toxicMatches.length === 1 && lastUserMessage.split(/\s+/).length < 8);
 
     const hasWarning = messages.some(
       (m) => m.role === "assistant" && m.content.includes("Keep it civil"),

@@ -18,7 +18,7 @@ export default function AIAssistant() {
   const initialMessage = {
     role: "assistant",
     content:
-      "Hi! I'm Coflyn's AI Companion. How can I help you today? You can ask about coflyn or anything.",
+      "Hi! I'm Coflyn's AI Companion. I can help you explore coflyn's projects, read README files, analyze repository requirements, and check the latest GitHub commits. How can I help you today?",
     timestamp: new Date().toISOString(),
   };
 
@@ -197,39 +197,48 @@ export default function AIAssistant() {
     return "Active Now";
   };
 
-  const scrollToBottom = (instant = false) => {
-    if (!isOpen || !messagesEndRef.current || !scrollRef.current) return;
+  const isUserInteracting = useRef(false);
+  const userHasScrolledUp = useRef(false);
+
+  const scrollToBottom = (instant = false, force = false) => {
+    if (!isOpen || !scrollRef.current) return;
+
+    const container = scrollRef.current;
+    const distanceFromBottom =
+      container.scrollHeight - container.scrollTop - container.clientHeight;
+
+    if (!force) {
+      if (isUserInteracting.current) return;
+      if (userHasScrolledUp.current && distanceFromBottom > 50) return;
+      if (distanceFromBottom > 80) return;
+    }
 
     isAutoScrolling.current = true;
 
-    const container = scrollRef.current;
-    if (instant) {
-      container.scrollTop = container.scrollHeight;
-    } else {
-      container.scrollTo({
-        top: container.scrollHeight,
-        behavior: "smooth",
-      });
-    }
+    const performScroll = () => {
+      if (instant) {
+        container.scrollTop = container.scrollHeight;
+      } else {
+        container.scrollTo({
+          top: container.scrollHeight,
+          behavior: "smooth",
+        });
+      }
 
-    setTimeout(() => {
-      isAutoScrolling.current = false;
-    }, 100);
+      setTimeout(() => {
+        isAutoScrolling.current = false;
+      }, 150);
+    };
+
+    requestAnimationFrame(performScroll);
   };
-
-  const userHasScrolledUp = useRef(false);
 
   useEffect(() => {
     const isEnding = wasStreamingRef.current && !isStreaming;
     const isStarting = !wasStreamingRef.current && isStreaming;
+    const shouldForce = isStarting || isEnding || isLoading;
 
-    if (isStarting) {
-      userHasScrolledUp.current = false;
-    }
-
-    if (!userHasScrolledUp.current || isEnding || isLoading) {
-      scrollToBottom(isStreaming || isLoading || isEnding);
-    }
+    scrollToBottom(isStreaming || isLoading || isEnding, shouldForce);
 
     wasStreamingRef.current = isStreaming;
   }, [messages, isStreaming, isLoading]);
@@ -439,38 +448,45 @@ export default function AIAssistant() {
   const suggestions = [
     { label: "Who is coflyn?", value: "Who is Dika (coflyn)?" },
     {
+      label: "List Projects",
+      value: "Show me a list of coflyn's featured projects.",
+    },
+    {
       label: "Tech Stack",
-      value: "What technologies do you use for development?",
+      value: "What technologies does coflyn use for development?",
     },
-    { label: "Games", value: "What games are you currently playing?" },
+    { label: "Games", value: "What games is coflyn currently playing?" },
     {
-      label: "Freelance Status",
-      value: "Are you available for freelance projects?",
+      label: "Freelance",
+      value: "Is coflyn available for freelance projects?",
     },
-    { label: "Education", value: "Tell me about your education background." },
     {
-      label: "Latest Updates",
-      value: "What are your 3 latest commits on GitHub?",
+      label: "Education",
+      value: "Tell me about coflyn's education background.",
+    },
+    {
+      label: "GitHub Updates",
+      value: "What are coflyn's 3 latest commits on GitHub?",
     },
     {
       label: "Philosophy",
       value: "What is the meaning behind the name 'coflyn'?",
     },
     {
-      label: "Bot Development",
-      value: "Tell me about your experience building bots.",
+      label: "Bot Experience",
+      value: "Tell me about coflyn's experience building bots.",
     },
     {
       label: "Automation",
-      value: "What kind of automation tools have you built?",
+      value: "What kind of automation tools has coflyn built?",
     },
     {
       label: "Discord Status",
-      value: "Are you online or busy on Discord right now?",
+      value: "Is coflyn online on Discord right now?",
     },
     {
-      label: "Contact Info",
-      value: "How can I get in touch with you for collaboration?",
+      label: "Contact",
+      value: "How can I contact coflyn for collaboration?",
     },
   ];
 
@@ -479,12 +495,17 @@ export default function AIAssistant() {
   const isAutoScrolling = useRef(false);
 
   const handleScroll = (e) => {
-    if (isAutoScrolling.current) return;
-
     const { scrollTop, scrollHeight, clientHeight } = e.target;
     const distanceFromBottom = scrollHeight - scrollTop - clientHeight;
     setShowScrollBottom(distanceFromBottom > 150);
-    userHasScrolledUp.current = distanceFromBottom > 100;
+
+    if (isAutoScrolling.current) return;
+
+    if (distanceFromBottom > 80) {
+      userHasScrolledUp.current = true;
+    } else if (distanceFromBottom < 10) {
+      userHasScrolledUp.current = false;
+    }
   };
   const handleSuggestion = (val) => {
     sendMessage(val);
@@ -613,10 +634,7 @@ export default function AIAssistant() {
   const MarkdownBody = ({ content }) => {
     const formatted = content
       .replace(/(?<!\()https?:\/\/[^\s\)]+/g, (url) => `[${url}](${url})`)
-      .replace(
-        /^(\s*[-*•]\s+)\s*(\*\*)?([^:\n*]+?)\s*(\*\*)?\s*:/gm,
-        "$1**$3**:",
-      );
+      .replace(/^(\s*[-*•]\s+)(?!\*\*)([^:\n*]+?)\s*:/gm, "$1**$2**:");
 
     return (
       <div className={styles.msgText}>
@@ -860,13 +878,23 @@ export default function AIAssistant() {
               <div
                 className={styles.messages}
                 style={{
-                  overflowY: isStreaming || isLoading ? "hidden" : "auto",
+                  overflowY: "auto",
                   WebkitOverflowScrolling: "touch",
-                  touchAction: isStreaming || isLoading ? "none" : "pan-y",
+                  touchAction: "pan-y",
                   overscrollBehavior: "contain",
                 }}
                 data-lenis-prevent
                 onScroll={handleScroll}
+                onWheel={() => {
+                  isUserInteracting.current = true;
+                  setTimeout(() => (isUserInteracting.current = false), 1000);
+                }}
+                onTouchStart={() => {
+                  isUserInteracting.current = true;
+                }}
+                onTouchEnd={() => {
+                  setTimeout(() => (isUserInteracting.current = false), 1000);
+                }}
                 ref={scrollRef}
               >
                 <div className={styles.messagesContainer}>
@@ -939,7 +967,7 @@ export default function AIAssistant() {
                 <button
                   className={styles.scrollToBottom}
                   onClick={() => {
-                    scrollToBottom();
+                    scrollToBottom(false, true);
                     setShowScrollBottom(false);
                   }}
                   aria-label="Scroll to bottom"

@@ -116,7 +116,6 @@
   overflow-y: auto;
   overflow-x: hidden;
   padding: 20px;
-  scroll-behavior: smooth;
   scrollbar-width: none;
   overscroll-behavior: contain;
 }
@@ -231,14 +230,14 @@
 
 .msgText ul,
 .msgText ol {
-  margin: 32px 0 16px 0 !important;
-  padding-left: 24px;
+  margin: 12px 0 8px 0 !important;
+  padding-left: 20px;
   list-style-position: outside;
 }
 
 .msgText li {
-  margin-bottom: 24px !important;
-  line-height: 1.6;
+  margin-bottom: 10px !important;
+  line-height: 1.5;
   color: #e2e8f0 !important;
 }
 
