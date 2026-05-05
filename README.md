@@ -12,7 +12,7 @@ Welcome to the official repository of my personal portfolio. This project serves
 
 Integrated with an advanced AI companion powered by **Llama 3.3 70B** for a truly interactive experience.
 
-- **Deep GitHub Integration:** The assistant can fetch and analyze READMEs, `requirements.txt`, and the **3 latest commits** from my repositories in real-time.
+- **Deep GitHub Integration:** The assistant can fetch and analyze READMEs, `package.json`, `requirements.txt`, and the **3 latest commits** from my repositories in real-time.
 - **Live Status Integration:** Monitors real-time Discord presence (Online, Idle, or DND) and current Spotify tracks via Lanyard API.
 - **Performance Optimized Typing:** Features a high-speed adaptive typing engine with smart auto-scroll that respects user interaction.
 

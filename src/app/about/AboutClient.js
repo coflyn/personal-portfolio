@@ -69,7 +69,7 @@ const timeline = [
     title: "Elementary School",
     company: "SD MI Al-Hijrah",
     description:
-      "The beginning of my learning journey. I focused on building strong academic foundations and developing the character traits—like discipline and curiosity—that still drive me today.",
+      "The beginning of my learning journey. I focused on building strong academic foundations and developing the character traits-like discipline and curiosity-that still drive me today.",
   },
 ];
 

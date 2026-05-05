@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import TechIcon from "./TechIcons";
+import Image from "next/image";
 import styles from "./LiveStatusCard.module.css";
 
 const DISCORD_ID = "601347669105049600";
@@ -95,10 +96,13 @@ export default function LiveStatusCard() {
       <div className={styles.profileSection}>
         <div className={styles.avatarWrapper}>
           {presence?.discord_user?.avatar ? (
-            <img
+            <Image
               src={`https://cdn.discordapp.com/avatars/${DISCORD_ID}/${presence.discord_user.avatar}.webp?size=160`}
               alt="Coflyn"
               className={styles.avatar}
+              width={64}
+              height={64}
+              unoptimized
             />
           ) : (
             <div className={styles.avatarPlaceholder} />

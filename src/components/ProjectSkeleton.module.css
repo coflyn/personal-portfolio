@@ -4,6 +4,7 @@
   border-radius: 12px;
   padding: 32px;
   height: 100%;
+  min-height: 280px;
   display: flex;
   flex-direction: column;
   gap: 16px;

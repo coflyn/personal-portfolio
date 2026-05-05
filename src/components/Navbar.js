@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import styles from "./Navbar.module.css";
 
 const links = [
@@ -37,7 +38,14 @@ export default function Navbar() {
       >
         <div className={styles.inner}>
           <Link href="/" className={styles.logo}>
-            <img src="/icon.svg" alt="coflyn" className={styles.logoIcon} />
+            <Image
+              src="/icon.svg"
+              alt="coflyn"
+              className={styles.logoIcon}
+              width={24}
+              height={24}
+              priority
+            />
             <span>coflyn</span>
           </Link>
           <nav className={styles.nav}>

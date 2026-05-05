@@ -53,6 +53,7 @@ export const metadata = {
 
 import { Suspense } from "react";
 import { getProjects } from "@/lib/github";
+import Script from "next/script";
 
 async function ProjectPrefetcher() {
   try {
@@ -62,9 +63,31 @@ async function ProjectPrefetcher() {
 }
 
 export default function RootLayout({ children }) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "coflyn",
+    url: "https://www.coflyn.my.id",
+    image: "https://www.coflyn.my.id/og-image.png",
+    jobTitle: "Developer",
+    knowsAbout: [
+      "Web Development",
+      "Automation",
+      "Bot Development",
+      "Python",
+      "Next.js",
+    ],
+    sameAs: ["https://github.com/coflyn", "https://www.instagram.com/_coflyn/"],
+  };
+
   return (
     <html lang="en">
       <body suppressHydrationWarning>
+        <Script
+          id="json-ld"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <ClientProviders>{children}</ClientProviders>
         <Suspense fallback={null}>
           <ProjectPrefetcher />

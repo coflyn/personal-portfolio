@@ -6,14 +6,16 @@ import Loading from "./loading";
 
 export const metadata = {
   title: "Projects — Things I've built",
-  description: "A showcase of automation tools, scripts, and web projects fetched directly from GitHub.",
+  description:
+    "A showcase of automation tools, scripts, and web projects fetched directly from GitHub.",
 };
 
 export const revalidate = 3600;
 
 async function ProjectData() {
   const githubProjects = await getProjects();
-  const projects = githubProjects.length > 0 ? githubProjects : fallbackProjects;
+  const projects =
+    githubProjects.length > 0 ? githubProjects : fallbackProjects;
   return <ProjectList projects={projects} />;
 }
 

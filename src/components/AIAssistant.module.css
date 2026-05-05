@@ -162,6 +162,23 @@
   border-color: rgba(255, 255, 255, 0.2);
 }
 
+.loadingAvatar {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 15px var(--accent-dim);
+  animation: avatarPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes avatarPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(0.95);
+  }
+}
+
 .avatar {
   width: 20px;
   height: 20px;
@@ -273,6 +290,8 @@
   color: #e2e8f0;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  width: fit-content;
+  align-items: flex-start;
 }
 
 .messageContent.loading,
@@ -282,7 +301,7 @@
   min-height: 45px !important;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   transition: all 0.2s ease;
 }
@@ -979,7 +998,7 @@
   filter: brightness(1.2);
 }
 
-.streaming .messageContent:not(:empty) .msgText > *:last-child::after {
+.streaming:not(:empty) .msgText > *:last-child::after {
   content: "";
   display: inline-block;
   width: 6px;

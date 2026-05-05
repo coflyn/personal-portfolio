@@ -8,6 +8,7 @@ import remarkBreaks from "remark-breaks";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import styles from "./AIAssistant.module.css";
+import Image from "next/image";
 
 export default function AIAssistant() {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,8 +19,11 @@ export default function AIAssistant() {
   const initialMessage = {
     role: "assistant",
     content:
-      "Hi! I'm Coflyn's AI Companion. I can help you explore coflyn's projects, read README files, analyze repository requirements, and check the latest GitHub commits. How can I help you today?",
-    timestamp: new Date().toISOString(),
+      "Hi! I'm Coflyn's AI Companion. I can help you explore Dika's work with deep insights:\n\n• **Analyze READMEs** for project goals\n• **Read package.json** for tech stacks\n• **Check requirements.txt** for dependencies\n• **Track latest commits** for recent activity\n\nHow can I help you today?",
+    timestamp: new Date().toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    }),
   };
 
   const [messages, setMessages] = useState([initialMessage]);
@@ -265,9 +269,9 @@ export default function AIAssistant() {
             const diff = buffer.length - currentPos;
 
             let step = 1;
-            if (diff > 500) step = 15;
-            else if (diff > 200) step = 8;
-            else if (diff > 50) step = 3;
+            if (diff > 400) step = 8;
+            else if (diff > 150) step = 4;
+            else if (diff > 40) step = 2;
 
             if (step > 1) {
               const lookAhead = buffer.slice(currentPos, currentPos + step);
@@ -317,7 +321,7 @@ export default function AIAssistant() {
           }
           return prev;
         });
-      }, 55);
+      }, 40);
     } else {
       if (typingIntervalRef.current) {
         clearInterval(typingIntervalRef.current);
@@ -518,19 +522,13 @@ export default function AIAssistant() {
     const scoredMatches = projects
       .map((p) => {
         const title = p.title.toLowerCase();
-
-        if (title === "github profile" && !lowerText.includes("profile"))
-          return { project: p, score: 0 };
+        const shortName = title.split("-")[0];
 
         if (lowerText.includes(title))
-          return { project: p, score: 10 + title.length };
+          return { project: p, score: 100 + title.length };
 
-        if (
-          title.length > 3 &&
-          (title.includes(lowerText) || lowerText.includes(title))
-        ) {
-          return { project: p, score: 5 + title.length };
-        }
+        if (shortName.length >= 3 && lowerText.includes(shortName))
+          return { project: p, score: 50 + shortName.length };
 
         return { project: p, score: 0 };
       })
@@ -538,11 +536,7 @@ export default function AIAssistant() {
 
     if (scoredMatches.length === 0) return null;
 
-    return scoredMatches.sort((a, b) => {
-      if (b.project.priority !== a.project.priority)
-        return b.project.priority - a.project.priority;
-      return b.score - a.score;
-    })[0].project;
+    return scoredMatches.sort((a, b) => b.score - a.score)[0].project;
   };
 
   const CodeBlock = ({ code, lang }) => {
@@ -909,10 +903,12 @@ export default function AIAssistant() {
                         <div
                           className={`${styles.avatarWrapper} ${isStreaming && idx === messages.length - 1 && msg.content.length < 10 ? styles.loadingAvatar : ""}`}
                         >
-                          <img
+                          <Image
                             src="/icon.svg"
                             alt="Coflyn AI"
                             className={styles.avatar}
+                            width={20}
+                            height={20}
                           />
                         </div>
                       )}
@@ -941,10 +937,12 @@ export default function AIAssistant() {
                       <div
                         className={`${styles.avatarWrapper} ${styles.loadingAvatar}`}
                       >
-                        <img
+                        <Image
                           src="/icon.svg"
                           alt="Coflyn AI"
                           className={styles.avatar}
+                          width={20}
+                          height={20}
                         />
                       </div>
                       <div
@@ -1081,6 +1079,7 @@ export default function AIAssistant() {
         onClick={handleToggle}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.9 }}
+        aria-label={isOpen ? "Close AI Assistant" : "Open AI Assistant"}
       >
         <div className={styles.iconContainer}>
           <motion.div
@@ -1092,11 +1091,11 @@ export default function AIAssistant() {
             transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
             className={styles.iconWrapper}
           >
-            <img
+            <Image
               src="/icon.svg"
               alt="AI"
-              width="24"
-              height="24"
+              width={24}
+              height={24}
               className={styles.buttonIcon}
             />
           </motion.div>

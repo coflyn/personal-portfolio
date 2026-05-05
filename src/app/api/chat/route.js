@@ -173,17 +173,31 @@ export async function POST(req) {
         ) || lastUserMessage.includes(project.title.toLowerCase());
 
       if (isMatch) {
-        const [readme, requirements, commits] = await Promise.all([
+        const [readme, requirements, commits, packageJson] = await Promise.all([
           getRepoReadme(project.title),
           getRepoFile(project.title, "requirements.txt"),
           getLatestCommits(project.title, 3),
+          getRepoFile(project.title, "package.json"),
         ]);
 
-        if (readme || requirements || commits) {
+        if (readme || requirements || commits || packageJson) {
+          let pkgInfo = "";
+          if (packageJson) {
+            try {
+              const pkg = JSON.parse(packageJson);
+              const scripts = pkg.scripts ? Object.keys(pkg.scripts).join(", ") : "None";
+              const deps = pkg.dependencies ? Object.keys(pkg.dependencies).slice(0, 10).join(", ") : "None";
+              pkgInfo = `[PACKAGE.JSON]: Scripts: ${scripts}. Key Deps: ${deps}.`;
+            } catch (e) {
+              pkgInfo = "[PACKAGE.JSON]: File exists but is not valid JSON.";
+            }
+          }
+
           technicalContext = `\n\n[DEEP PROJECT KNOWLEDGE - ${project.title.toUpperCase()}]:
 Actually, I have technical data:
 ${readme ? `[README]: ${readme.slice(0, 1800)}` : ""}
 ${requirements ? `[REQ]: ${requirements.slice(0, 400)}` : ""}
+${packageJson ? pkgInfo : ""}
 ${commits ? `[LATEST ACTIVITY]:\n${commits.map((c) => `- ${c.message} (${new Date(c.date).toLocaleDateString()})`).join("\n")}` : ""}
 Use this data for accuracy.`;
           break;
