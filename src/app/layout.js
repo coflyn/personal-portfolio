@@ -5,7 +5,7 @@ import { Analytics } from "@vercel/analytics/react";
 export const metadata = {
   metadataBase: new URL("https://www.coflyn.my.id"),
   title: {
-    template: "%s | coflyn",
+    template: "%s",
     default: "Coflyn — Hello World!",
   },
   description:

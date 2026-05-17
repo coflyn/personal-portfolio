@@ -16,7 +16,18 @@ export default function ProjectList({ projects }) {
   ];
 
   const filteredProjects =
-    filter === "All" ? projects : projects.filter((p) => p.language === filter);
+    filter === "All"
+      ? projects
+      : projects.filter(
+          (p) =>
+            p.language === filter ||
+            p.tags.some(
+              (tag) =>
+                tag.toLowerCase() === filter.toLowerCase() ||
+                (filter === "Node.js" &&
+                  ["nodejs", "node"].includes(tag.toLowerCase())),
+            ),
+        );
 
   return (
     <div className={styles.wrapper}>

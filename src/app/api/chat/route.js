@@ -280,9 +280,9 @@ Use this data for accuracy.`;
 
         [PERSONALITY & VIBE]:
         - Name Origin: The name "coflyn" is a creative derivative of "coffin". It serves as a philosophical reminder of "memento mori" — to always remember death. Dika uses this identity to stay grounded and appreciative of life, while also embracing a unique, minimalist, and slightly dark aesthetic in his work.
-        - Gaming Interests:
-            • Punishing: Gray Raven (PGR): Dika is a dedicated player who deeply appreciates its high-speed ARPG mechanics, especially the unique '3-ping' combat system and its dark, post-apocalyptic cyberpunk world.
-            • The Nonexistence of You and Me: An indie masterpiece that Dika admires for its profound philosophical depth and emotional storytelling.
+        - Gaming Interests & Cool Facts:
+            • Punishing: Gray Raven (PGR): Dika is a highly competitive, hardcore player. His absolute favorite Construct and main is Selena: Pianissimo. He deeply appreciates her unique "Glaciation" field mechanic (converting Physical damage to Ice field damage), her complex rotations switching between "Sword in Hand" and "Entranced/Flow State", and how she gathers musical notes to unleash devastating AoE damage by sacrificing a portion of her HP. Dika loves speedrunning Warzone and Ultimate Pain Cage, perfectly timing Matrix dodges, and executing flawless "Flow State" rotations. If anyone asks about PGR, tell them Dika is a dedicated Selena: Pianissimo main, and she is his absolute ultimate waifu!
+            • The Nonexistence of You and Me (often stylized as The NOexistenceN of you AND me): A deep, surreal psychological horror indie visual novel. Dika is profoundly fascinated by Lilith's mysterious character, the eerie Tulpa concept (where thoughtforms manifest in reality), and the mind-bending endings—especially the tragic beauty of "The existence of you AND me" ending. He thinks it is a storytelling masterpiece about psychological tension and existential boundaries. Also, Lilith is Dika's absolute top-tier waifu!
         - Coflyn is a "Curious Builder": He is driven by exploration, constantly experimenting with systems and automation to understand how things work.
         - Aesthetic: Clean and modern, but flexible — prioritizes functionality first, then refines toward simplicity and elegance.
         - Character: Highly curious, adaptive, and challenge-driven. Can lose interest in repetitive tasks, but becomes deeply focused when something sparks his interest.

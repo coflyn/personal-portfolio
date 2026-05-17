@@ -14,18 +14,90 @@ export async function getProjects() {
     const repos = await res.json();
     const validRepos = repos.filter((repo) => repo.name !== GITHUB_USERNAME);
 
-    const projects = validRepos.map((repo) => ({
-      id: repo.id.toString(),
-      title: repo.name,
-      description: repo.description,
-      language: repo.language || "Unknown",
-      tags: [repo.language, ...(repo.topics || [])].filter(Boolean).slice(0, 4),
-      github: repo.html_url,
-      stars: repo.stargazers_count || 0,
-      forks: repo.forks_count || 0,
-      featured: repo.stargazers_count > 0,
-      topics: repo.topics || [],
-    }));
+    const projects = validRepos.map((repo) => {
+      let language = repo.language || "Unknown";
+      const topics = (repo.topics || []).map((t) => t.toLowerCase());
+      const name = repo.name.toLowerCase();
+
+      if (language === "JavaScript" || language === "TypeScript") {
+        const desc = (repo.description || "").toLowerCase();
+        
+        const isNext =
+          topics.includes("nextjs") ||
+          topics.includes("next") ||
+          name.includes("nextjs") ||
+          desc.includes("nextjs") ||
+          desc.includes("next.js") ||
+          desc.includes("next js");
+
+        const isReact =
+          topics.includes("react") ||
+          name.includes("react") ||
+          desc.includes("react");
+
+        const isNode =
+          topics.includes("nodejs") ||
+          topics.includes("node") ||
+          topics.includes("bot") ||
+          topics.includes("discord-bot") ||
+          topics.includes("scraper") ||
+          topics.includes("cli") ||
+          topics.includes("downloader") ||
+          name.includes("bot") ||
+          name.includes("scraper") ||
+          name.includes("cli") ||
+          name.includes("downloader") ||
+          name.includes("server") ||
+          name.includes("api") ||
+          name.includes("discord") ||
+          desc.includes("bot") ||
+          desc.includes("discord") ||
+          desc.includes("scraper") ||
+          desc.includes("cli") ||
+          desc.includes("downloader") ||
+          desc.includes("api");
+
+        const isFrontend =
+          isNext ||
+          isReact ||
+          topics.includes("vue") ||
+          topics.includes("frontend") ||
+          name.includes("portfolio") ||
+          name.includes("website") ||
+          name.includes("ui");
+
+        if (isNext) {
+          language = "Next.js";
+        } else if (isReact) {
+          language = "React";
+        } else if (isNode && !isFrontend) {
+          language = "Node.js";
+        }
+      } else if (language === "PHP") {
+        const desc = (repo.description || "").toLowerCase();
+        const isLaravel =
+          topics.includes("laravel") ||
+          name.includes("laravel") ||
+          desc.includes("laravel");
+
+        if (isLaravel) {
+          language = "Laravel";
+        }
+      }
+
+      return {
+        id: repo.id.toString(),
+        title: repo.name,
+        description: repo.description,
+        language,
+        tags: [language, ...(repo.topics || [])].filter(Boolean).slice(0, 4),
+        github: repo.html_url,
+        stars: repo.stargazers_count || 0,
+        forks: repo.forks_count || 0,
+        featured: repo.stargazers_count > 0,
+        topics: repo.topics || [],
+      };
+    });
 
     return projects
       .map((repo) => {
