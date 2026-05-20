@@ -1,7 +1,7 @@
 # coflyn.my.id
 
 <p align="center">
-  <img src="preview.png" alt="coflyn Portfolio Preview" width="100%">
+  <img src="public/preview.png" alt="coflyn Portfolio Preview" width="100%">
 </p>
 
 <p align="center">
