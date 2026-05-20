@@ -1,4 +1,8 @@
-# coflyn — Personal Portfolio
+# coflyn.my.id
+
+<p align="center">
+  <img src="preview.png" alt="coflyn Portfolio Preview" width="100%">
+</p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" alt="Next.js">
@@ -52,6 +56,31 @@ A bespoke dashboard-style design focusing on clean lines, dark mode, and focus-d
 
 ---
 
+## Project Structure
+
+```bash
+src/
+├── app/                  # Next.js Pages & API Routes
+│   ├── about/            # Experience, education timeline & tech grid
+│   ├── contact/          # Clean and animated glassmorphic contact form
+│   ├── projects/         # Dynamic GitHub project hub with custom filters
+│   ├── api/
+│   │   ├── chat/         # Context-aware AI Chat bot endpoint (Groq / Llama)
+│   │   └── contact/      # Email dispatch endpoint (Resend)
+│   ├── HomeClient.js     # Interactive Home component (Cat Mascot & Typewriter)
+│   └── globals.css       # Design tokens, variables & glassmorphism system
+├── components/           # Reusable UI & Widget Components
+│   ├── AIAssistant.js    # Floating AI chatbot drawer component
+│   ├── LiveStatusCard.js # Real-time Discord presence & Spotify monitor
+│   ├── TechIcons.js      # Curated custom SVG path icons for tech stack
+│   └── MagneticButton.js # Premium magnetic cursor attraction effect
+└── lib/                  # Data & API Integration utilities
+    ├── data.js           # Static project descriptors
+    └── github.js         # Real-time GitHub API fetcher
+```
+
+---
+
 ## Technology Stack
 
 - **Framework:** Next.js 16 (App Router)
@@ -70,7 +99,7 @@ A bespoke dashboard-style design focusing on clean lines, dark mode, and focus-d
 For collaborations or inquiries:
 
 - **Web:** [coflyn.my.id/contact](https://coflyn.my.id/contact)
-- **Instagram:** \_coflyn
-- **GitHub:** \_coflyn
+- **Instagram:** [@\_coflyn](https://www.instagram.com/_coflyn)
+- **GitHub:** [@coflyn](https://github.com/coflyn)
 
 Copyright 2026 — Raffi Andhika (coflyn).

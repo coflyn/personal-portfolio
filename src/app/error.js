@@ -8,21 +8,26 @@ export default function Error({ error, reset }) {
   }, [error]);
 
   return (
-    <div style={{
-      padding: "100px 20px",
-      textAlign: "center",
-      background: "#0a0a0a",
-      color: "#fafafa",
-      minHeight: "100vh",
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-      alignItems: "center",
-      fontFamily: "sans-serif"
-    }}>
-      <h2 style={{ fontSize: "2rem", marginBottom: "20px" }}>Something went wrong!</h2>
+    <div
+      style={{
+        padding: "100px 20px",
+        textAlign: "center",
+        background: "#0a0a0a",
+        color: "#fafafa",
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        fontFamily: "sans-serif",
+      }}
+    >
+      <h2 style={{ fontSize: "2rem", marginBottom: "20px" }}>
+        Something went wrong!
+      </h2>
       <p style={{ color: "#a0a0a0", marginBottom: "30px", maxWidth: "500px" }}>
-        {error.message || "An unexpected error occurred in the client-side code."}
+        {error.message ||
+          "An unexpected error occurred in the client-side code."}
       </p>
       <button
         onClick={() => reset()}
@@ -33,7 +38,7 @@ export default function Error({ error, reset }) {
           padding: "12px 24px",
           borderRadius: "8px",
           fontWeight: "600",
-          cursor: "pointer"
+          cursor: "pointer",
         }}
       >
         Try again

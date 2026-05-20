@@ -100,7 +100,9 @@ export default function Navbar() {
                   href={link.href}
                   className={`${styles.mobileLink} ${pathname === link.href ? styles.active : ""}`}
                 >
-                  <div style={{ position: "relative", display: "inline-block" }}>
+                  <div
+                    style={{ position: "relative", display: "inline-block" }}
+                  >
                     {link.label}
                     {pathname === link.href && (
                       <motion.div

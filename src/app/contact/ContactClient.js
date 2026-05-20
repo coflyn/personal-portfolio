@@ -100,12 +100,14 @@ export default function Contact() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (cooldown > 0) {
-      setErrorMsg(`Please wait ${formatCooldown(cooldown)} before sending another message.`);
+      setErrorMsg(
+        `Please wait ${formatCooldown(cooldown)} before sending another message.`,
+      );
       setStatus("error");
       setTimeout(() => setStatus("idle"), 5000);
       return;
     }
-    
+
     setStatus("sending");
 
     try {
@@ -137,252 +139,249 @@ export default function Contact() {
   };
 
   return (
-    
-      <main className={styles.page}>
-        <div className="container">
-          <ScrollReveal 
-            delay={0.1}
+    <main className={styles.page}>
+      <div className="container">
+        <ScrollReveal
+          delay={0.1}
+          variants={{
+            hidden: { opacity: 0, x: 50 },
+            visible: {
+              opacity: 1,
+              x: 0,
+              transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
+            },
+          }}
+        >
+          <div className={styles.header}>
+            <p className="section-label">Contact</p>
+            <h1 className="section-title">Let&apos;s work together.</h1>
+          </div>
+        </ScrollReveal>
+
+        <div className={styles.content}>
+          <ScrollReveal
+            delay={0.3}
             variants={{
-              hidden: { opacity: 0, x: 50 },
-              visible: { 
-                opacity: 1, 
-                x: 0,
-                transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] }
-              }
+              hidden: { opacity: 0, y: 40, skewY: 2 },
+              visible: {
+                opacity: 1,
+                y: 0,
+                skewY: 0,
+                transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
+              },
             }}
           >
-            <div className={styles.header}>
-              <p className="section-label">Contact</p>
-              <h1 className="section-title">Let&apos;s work together.</h1>
+            <div className={styles.infoSide}>
+              <div className={styles.tabHeader}>
+                <button
+                  className={`${styles.tabBtn} ${activeTab === "info" ? styles.activeTab : ""}`}
+                  onClick={() => setActiveTab("info")}
+                >
+                  Connect
+                </button>
+                <button
+                  className={`${styles.tabBtn} ${activeTab === "faq" ? styles.activeTab : ""}`}
+                  onClick={() => setActiveTab("faq")}
+                >
+                  FAQ
+                </button>
+              </div>
+
+              <div className={styles.tabContent}>
+                <AnimatePresence mode="wait">
+                  {activeTab === "info" && (
+                    <motion.div
+                      key="info"
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: 10 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <div className={styles.text}>
+                        <p>
+                          Got a project idea, collaboration proposal, or just
+                          want to say hello? Feel free to reach out. I&apos;m
+                          always open to interesting conversations and
+                          opportunities.
+                        </p>
+                      </div>
+
+                      <div className={styles.socials}>
+                        {socials.map((social) => {
+                          let href = social.href;
+                          if (social.name === "Email") {
+                            const desktopGmail =
+                              "https://mail.google.com/mail/?view=cm&fs=1&to=riazrepo@gmail.com";
+                            const mobileMailto = "mailto:riazrepo@gmail.com";
+                            href = isMobile ? mobileMailto : desktopGmail;
+                          }
+
+                          return (
+                            <a
+                              key={social.name}
+                              href={href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className={styles.socialItem}
+                            >
+                              <span className={styles.socialName}>
+                                {social.name}
+                              </span>
+                              <span className={styles.socialArrow}>↗</span>
+                            </a>
+                          );
+                        })}
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {activeTab === "faq" && (
+                    <motion.div
+                      key="faq"
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: 10 }}
+                      transition={{ duration: 0.3 }}
+                      className={styles.faqSection}
+                    >
+                      <h3 className={styles.faqHeader}>Frequently Asked</h3>
+                      <div className={styles.faqList}>
+                        {faqs.map((faq, index) => (
+                          <div
+                            key={index}
+                            className={`${styles.faqItem} ${activeFaq === index ? styles.active : ""}`}
+                          >
+                            <button
+                              className={styles.faqQuestion}
+                              onClick={() =>
+                                setActiveFaq(activeFaq === index ? null : index)
+                              }
+                              type="button"
+                            >
+                              <span>{faq.question}</span>
+                              <span className={styles.faqIcon}>
+                                {activeFaq === index ? "−" : "+"}
+                              </span>
+                            </button>
+                            <AnimatePresence initial={false}>
+                              {activeFaq === index && (
+                                <motion.div
+                                  initial={{ height: 0, opacity: 0 }}
+                                  animate={{ height: "auto", opacity: 1 }}
+                                  exit={{ height: 0, opacity: 0 }}
+                                  transition={{
+                                    duration: 0.3,
+                                    ease: [0.25, 1, 0.5, 1],
+                                  }}
+                                  style={{ overflow: "hidden" }}
+                                >
+                                  <div className={styles.faqAnswer}>
+                                    <p>{faq.answer}</p>
+                                  </div>
+                                </motion.div>
+                              )}
+                            </AnimatePresence>
+                          </div>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             </div>
           </ScrollReveal>
 
-          <div className={styles.content}>
-            <ScrollReveal 
-              delay={0.3}
-              variants={{
-                hidden: { opacity: 0, y: 40, skewY: 2 },
-                visible: { 
-                  opacity: 1, 
-                  y: 0, 
-                  skewY: 0,
-                  transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] }
-                }
-              }}
-            >
-              <div className={styles.infoSide}>
-                <div className={styles.tabHeader}>
-                  <button
-                    className={`${styles.tabBtn} ${activeTab === "info" ? styles.activeTab : ""}`}
-                    onClick={() => setActiveTab("info")}
-                  >
-                    Connect
-                  </button>
-                  <button
-                    className={`${styles.tabBtn} ${activeTab === "faq" ? styles.activeTab : ""}`}
-                    onClick={() => setActiveTab("faq")}
-                  >
-                    FAQ
-                  </button>
+          <ScrollReveal
+            delay={0.5}
+            variants={{
+              hidden: { opacity: 0, scale: 0.9, y: 20 },
+              visible: {
+                opacity: 1,
+                scale: 1,
+                y: 0,
+                transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
+              },
+            }}
+          >
+            <div className={styles.formSide}>
+              <form className={styles.form} onSubmit={handleSubmit}>
+                <div className={styles.inputGroup}>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    required
+                    placeholder=" "
+                    value={formData.name}
+                    onChange={handleChange}
+                  />
+                  <label htmlFor="name">Name</label>
                 </div>
 
-                <div className={styles.tabContent}>
-                  <AnimatePresence mode="wait">
-                    {activeTab === "info" && (
-                      <motion.div
-                        key="info"
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 10 }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        <div className={styles.text}>
-                          <p>
-                            Got a project idea, collaboration proposal, or just
-                            want to say hello? Feel free to reach out. I&apos;m
-                            always open to interesting conversations and
-                            opportunities.
-                          </p>
-                        </div>
-
-                        <div className={styles.socials}>
-                          {socials.map((social) => {
-                            let href = social.href;
-                            if (social.name === "Email") {
-                              const desktopGmail =
-                                "https://mail.google.com/mail/?view=cm&fs=1&to=riazrepo@gmail.com";
-                              const mobileMailto = "mailto:riazrepo@gmail.com";
-                              href = isMobile ? mobileMailto : desktopGmail;
-                            }
-
-                            return (
-                              <a
-                                key={social.name}
-                                href={href}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className={styles.socialItem}
-                              >
-                                <span className={styles.socialName}>
-                                  {social.name}
-                                </span>
-                                <span className={styles.socialArrow}>↗</span>
-                              </a>
-                            );
-                          })}
-                        </div>
-                      </motion.div>
-                    )}
-
-                    {activeTab === "faq" && (
-                      <motion.div
-                        key="faq"
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 10 }}
-                        transition={{ duration: 0.3 }}
-                        className={styles.faqSection}
-                      >
-                        <h3 className={styles.faqHeader}>Frequently Asked</h3>
-                        <div className={styles.faqList}>
-                          {faqs.map((faq, index) => (
-                            <div
-                              key={index}
-                              className={`${styles.faqItem} ${activeFaq === index ? styles.active : ""}`}
-                            >
-                              <button
-                                className={styles.faqQuestion}
-                                onClick={() =>
-                                  setActiveFaq(
-                                    activeFaq === index ? null : index,
-                                  )
-                                }
-                                type="button"
-                              >
-                                <span>{faq.question}</span>
-                                <span className={styles.faqIcon}>
-                                  {activeFaq === index ? "−" : "+"}
-                                </span>
-                              </button>
-                              <AnimatePresence initial={false}>
-                                {activeFaq === index && (
-                                  <motion.div
-                                    initial={{ height: 0, opacity: 0 }}
-                                    animate={{ height: "auto", opacity: 1 }}
-                                    exit={{ height: 0, opacity: 0 }}
-                                    transition={{
-                                      duration: 0.3,
-                                      ease: [0.25, 1, 0.5, 1],
-                                    }}
-                                    style={{ overflow: "hidden" }}
-                                  >
-                                    <div className={styles.faqAnswer}>
-                                      <p>{faq.answer}</p>
-                                    </div>
-                                  </motion.div>
-                                )}
-                              </AnimatePresence>
-                            </div>
-                          ))}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                <div className={styles.inputGroup}>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    required
+                    placeholder=" "
+                    value={formData.email}
+                    onChange={handleChange}
+                  />
+                  <label htmlFor="email">Email</label>
                 </div>
-              </div>
-            </ScrollReveal>
 
-            <ScrollReveal 
-              delay={0.5}
-              variants={{
-                hidden: { opacity: 0, scale: 0.9, y: 20 },
-                visible: { 
-                  opacity: 1, 
-                  scale: 1, 
-                  y: 0,
-                  transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] }
-                }
-              }}
-            >
-              <div className={styles.formSide}>
-                <form className={styles.form} onSubmit={handleSubmit}>
-                  <div className={styles.inputGroup}>
-                    <input
-                      type="text"
-                      id="name"
-                      name="name"
-                      required
-                      placeholder=" "
-                      value={formData.name}
-                      onChange={handleChange}
-                    />
-                    <label htmlFor="name">Name</label>
-                  </div>
+                <div className={styles.inputGroup}>
+                  <textarea
+                    id="message"
+                    name="message"
+                    required
+                    rows={4}
+                    placeholder=" "
+                    value={formData.message}
+                    onChange={handleChange}
+                  ></textarea>
+                  <label htmlFor="message">Message</label>
+                </div>
 
-                  <div className={styles.inputGroup}>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      required
-                      placeholder=" "
-                      value={formData.email}
-                      onChange={handleChange}
-                    />
-                    <label htmlFor="email">Email</label>
-                  </div>
+                <div className={styles.btnWrapper}>
+                  <MagneticButton>
+                    <button
+                      type="submit"
+                      disabled={status === "sending" || cooldown > 0}
+                      className={`${styles.submitBtn} ${
+                        status === "success" ? styles.success : ""
+                      } ${cooldown > 0 ? styles.disabled : ""}`}
+                    >
+                      {status === "idle" && "Send Message"}
+                      {status === "sending" && "Sending..."}
+                      {status === "success" && "Message Sent!"}
+                      {status === "error" && "Error! Try again"}
+                    </button>
+                  </MagneticButton>
 
-                  <div className={styles.inputGroup}>
-                    <textarea
-                      id="message"
-                      name="message"
-                      required
-                      rows={4}
-                      placeholder=" "
-                      value={formData.message}
-                      onChange={handleChange}
-                    ></textarea>
-                    <label htmlFor="message">Message</label>
-                  </div>
+                  {status === "error" && errorMsg && (
+                    <p className={styles.errorMsg}>{errorMsg}</p>
+                  )}
 
-                  <div className={styles.btnWrapper}>
-                    <MagneticButton>
-                      <button
-                        type="submit"
-                        disabled={status === "sending" || cooldown > 0}
-                        className={`${styles.submitBtn} ${
-                          status === "success" ? styles.success : ""
-                        } ${cooldown > 0 ? styles.disabled : ""}`}
-                      >
-                        {status === "idle" && "Send Message"}
-                        {status === "sending" && "Sending..."}
-                        {status === "success" && "Message Sent!"}
-                        {status === "error" && "Error! Try again"}
-                      </button>
-                    </MagneticButton>
+                  {cooldown > 0 && status === "idle" && (
+                    <p className={styles.infoMsg}>
+                      You can send another message in {formatCooldown(cooldown)}
+                      .
+                    </p>
+                  )}
 
-                    {status === "error" && errorMsg && (
-                      <p className={styles.errorMsg}>{errorMsg}</p>
-                    )}
-
-                    {cooldown > 0 && status === "idle" && (
-                      <p className={styles.infoMsg}>
-                        You can send another message in {formatCooldown(cooldown)}.
-                      </p>
-                    )}
-
-                    {status === "success" && (
-                      <p className={styles.successMsg}>
-                        Thanks! I'll get back to you soon.
-                      </p>
-                    )}
-                  </div>
-                </form>
-              </div>
-            </ScrollReveal>
-          </div>
+                  {status === "success" && (
+                    <p className={styles.successMsg}>
+                      Thanks! I'll get back to you soon.
+                    </p>
+                  )}
+                </div>
+              </form>
+            </div>
+          </ScrollReveal>
         </div>
-      </main>
-    
+      </div>
+    </main>
   );
 }

@@ -1,6 +1,12 @@
 import styles from "./SectionHeader.module.css";
 
-export default function SectionHeader({ label, title, description, children, className = "" }) {
+export default function SectionHeader({
+  label,
+  title,
+  description,
+  children,
+  className = "",
+}) {
   return (
     <div className={`${styles.header} ${className}`}>
       <div className={styles.textGroup}>

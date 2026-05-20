@@ -11,10 +11,5 @@ export default function ScrollProgress() {
     restDelta: 0.001,
   });
 
-  return (
-    <motion.div
-      className={styles.bar}
-      style={{ scaleX }}
-    />
-  );
+  return <motion.div className={styles.bar} style={{ scaleX }} />;
 }
