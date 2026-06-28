@@ -26,6 +26,7 @@ Welcome to the official repository of my personal portfolio. This project serves
 Integrated with an advanced AI companion powered by **Llama 3.3 70B** for a truly interactive experience.
 
 - **Deep GitHub Integration:** The assistant can fetch and analyze READMEs, `package.json`, `requirements.txt`, and the **3 latest commits** from my repositories in real-time.
+- **Intelligent Fallback Architecture:** Implements a cascading multi-model fallback system (Llama 3.3, Llama 3.1, Qwen) to guarantee 100% uptime against API rate limits, featuring smart UI handlers to elegantly mask reasoning models' internal chain-of-thought.
 - **Live Status Integration:** Monitors real-time Discord presence (Online, Idle, or DND) and current Spotify tracks via Lanyard API.
 - **Performance Optimized Typing:** Features a high-speed adaptive typing engine with smart auto-scroll that respects user interaction.
 - **Personalized Easter Eggs:** Features fun conversational secrets, including interactive jokes, customized gaming interests, and philosophical insights.

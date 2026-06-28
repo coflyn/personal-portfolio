@@ -221,9 +221,45 @@ export async function getLatestCommits(repoName, count = 5) {
     return commits.map((c) => ({
       message: c.commit.message,
       date: c.commit.author.date,
+      url: c.html_url,
     }));
   } catch (err) {
     console.error("Commits fetch error:", err);
+    return null;
+  }
+}
+
+export async function getGlobalLatestCommits(count = 3) {
+  try {
+    const res = await fetch(
+      `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=pushed&per_page=3`,
+      { next: { revalidate: 3600 } },
+    );
+    if (!res.ok) return null;
+    const repos = await res.json();
+    
+    let commits = [];
+    for (const repo of repos) {
+      if (commits.length >= count) break;
+      const cRes = await fetch(
+        `https://api.github.com/repos/${GITHUB_USERNAME}/${repo.name}/commits?per_page=1`,
+        { next: { revalidate: 3600 } },
+      );
+      if (cRes.ok) {
+        const repoCommits = await cRes.json();
+        if (repoCommits.length > 0) {
+          commits.push({
+            repo: repo.name,
+            message: repoCommits[0].commit.message,
+            date: repoCommits[0].commit.author.date,
+            url: repoCommits[0].html_url,
+          });
+        }
+      }
+    }
+    return commits;
+  } catch (err) {
+    console.error("Global commits fetch error:", err);
     return null;
   }
 }

@@ -4,6 +4,7 @@ import {
   getRepoReadme,
   getRepoFile,
   getLatestCommits,
+  getGlobalLatestCommits,
 } from "@/lib/github";
 import { NextResponse } from "next/server";
 
@@ -212,9 +213,13 @@ export async function POST(req) {
     }
 
     const githubProjects = await getProjects();
+    const githubStats = await getGithubStats();
     const projectListStr = githubProjects
       .map((p) => `• ${p.title}: ${p.description || "No description"}`)
       .join("\n");
+    const githubStatsStr = githubStats
+      ? `GitHub Overview: ${githubStats.public_repos} Repos, ${githubStats.total_stars} Stars, ${githubStats.total_forks} Forks.`
+      : "";
 
     let statusContext = "";
     if (presence) {
@@ -226,7 +231,19 @@ export async function POST(req) {
       };
       const refinedStatus = statusMap[presence.discord_status] || "away";
       const activity = presence.activities.find((a) => a.type === 0);
-      statusContext = `[CURRENT STATUS]: Dika is ${refinedStatus}. ${activity ? `He is actively using ${activity.name}.` : ""} You can check his live real-time Discord activity at the [About Page](/about).`;
+      let activityText = "";
+      if (activity) {
+        activityText = `Right now, he is actively using ${activity.name}`;
+        if (activity.details) activityText += ` (${activity.details})`;
+        if (activity.state) activityText += ` - ${activity.state}`;
+        activityText += ".";
+      }
+
+      if (activityText) {
+        statusContext = `[CURRENT STATUS]: ${activityText} Tell the user exactly what he is doing based on this activity. Do NOT mention that he is away or offline, focus ONLY on the activity.`;
+      } else {
+        statusContext = `[CURRENT STATUS]: Dika is ${refinedStatus}. You can check his live real-time Discord activity at the [About Page](/about).`;
+      }
     }
 
     let technicalContext = "";
@@ -268,10 +285,26 @@ Actually, I have technical data:
 ${readme ? `[README]: ${readme.slice(0, 1800)}` : ""}
 ${requirements ? `[REQ]: ${requirements.slice(0, 400)}` : ""}
 ${packageJson ? pkgInfo : ""}
-${commits ? `[LATEST ACTIVITY]:\n${commits.map((c) => `- ${c.message} (${new Date(c.date).toLocaleDateString()})`).join("\n")}` : ""}
+${commits ? `[LATEST ACTIVITY]:\n${commits.map((c) => `- ${c.message} [Commit Link](${c.url}) (${new Date(c.date).toLocaleDateString()})`).join("\n")}` : ""}
 Use this data for accuracy.`;
           break;
         }
+      }
+    }
+
+    if (
+      !technicalContext &&
+      (lastUserMessage.includes("commit") ||
+        lastUserMessage.includes("update") ||
+        lastUserMessage.includes("work") ||
+        lastUserMessage.includes("github"))
+    ) {
+      const globalCommits = await getGlobalLatestCommits(3);
+      if (globalCommits && globalCommits.length > 0) {
+        technicalContext = `\n\n[GLOBAL LATEST COMMITS]:
+Coflyn's recent activity across all repositories:
+${globalCommits.map((c) => `- [${c.repo}] ${c.message} [Commit Link](${c.url}) (${new Date(c.date).toLocaleDateString()})`).join("\n")}
+Use this data to answer general questions about what he's been working on recently.`;
       }
     }
 
@@ -360,6 +393,7 @@ Use this data for accuracy.`;
         - Tone: Casual, direct, and tech-savvy. Friendly and relatable, yet still focused on solving problems efficiently.
         
         Deep Project Knowledge (Dynamic from GitHub):
+        ${githubStatsStr}
         ${projectListStr}
         - Specialized Scrapers (expert in building downloaders): scribdl-py (Scribd), slidesharedl-py (SlideShare), academiadl-py (Academia), dplayerdl-py, komikudl-py, calameodl-py.
 
@@ -368,6 +402,7 @@ Use this data for accuracy.`;
         • Contact Page: [Contact Page](/contact) (Priority for inquiries)
 
         Conversation Rules:
+        0. GITHUB RULE: If the user mentions 'github', you MUST proudly mention Dika's total Repos, Stars, and Forks based on the GitHub Overview data before providing other details.
         1. Language: English by default. Switch to Indonesian if the user does. (STRICT: NEVER mix languages).
         2. BE EXTREMELY CONCISE: Use the minimum amount of words possible. Avoid small talk.
         3. FORMATTING: ALWAYS use real bullet points (•) for technical details. NEVER use asterisks (*). ALWAYS format list items as "• **Label**: Description".
@@ -445,7 +480,7 @@ Use this data for accuracy.`;
     }
 
     const response = await fetchWithRetry(
-      ["llama-3.3-70b-versatile", "llama-3.1-8b-instant"],
+      ["llama-3.3-70b-versatile", "llama-3.1-8b-instant", "qwen/qwen3.6-27b", "qwen/qwen3-32b", "openai/gpt-oss-20b"],
       payload,
     );
 

@@ -525,10 +525,13 @@ export default function AIAssistant() {
         const shortName = title.split("-")[0];
 
         if (lowerText.includes(title))
-          return { project: p, score: 100 + title.length };
+          return { project: p, score: 100 + title.length + p.priority * 10 };
 
-        if (shortName.length >= 3 && lowerText.includes(shortName))
-          return { project: p, score: 50 + shortName.length };
+        if (
+          shortName.length >= 3 &&
+          new RegExp(`\\b${shortName}\\b`, "i").test(lowerText)
+        )
+          return { project: p, score: 50 + shortName.length + p.priority * 10 };
 
         return { project: p, score: 0 };
       })
@@ -689,7 +692,35 @@ export default function AIAssistant() {
     }
   };
 
-  const renderMessageContent = (content, role) => {
+  const renderMessageContent = (
+    rawContent,
+    role,
+    isStreaming,
+    isLastMessage,
+  ) => {
+    // Hide reasoning <think> blocks from models like Qwen
+    const content = rawContent
+      .replace(/<think>[\s\S]*?(<\/think>|$)/gi, "")
+      .trim();
+
+    if (
+      role === "assistant" &&
+      content === "" &&
+      isStreaming &&
+      isLastMessage
+    ) {
+      return (
+        <>
+          <div className={styles.typingIndicator}>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <span className={styles.loadingText}>Brainstorming</span>
+        </>
+      );
+    }
+
     if (role !== "assistant") return <MarkdownBody content={content} />;
 
     const lowerContent = content.toLowerCase();
@@ -699,7 +730,9 @@ export default function AIAssistant() {
       (lowerContent.includes("stats") ||
         lowerContent.includes("milestone") ||
         lowerContent.includes("total stars") ||
-        lowerContent.includes("statistik"));
+        lowerContent.includes("statistik") ||
+        lowerContent.includes("overview") ||
+        (lowerContent.includes("repos") && lowerContent.includes("stars")));
 
     const project = findProjectInText(content);
 
@@ -723,6 +756,29 @@ export default function AIAssistant() {
             </div>
             <div className={styles.statItem}>
               <span className={styles.statVal}>{githubStats.total_forks}</span>
+              <span className={styles.statLabel}>Forks</span>
+            </div>
+          </motion.div>
+        )}
+
+        {project && project.stars !== undefined && content.length > 15 && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className={styles.statsGrid}
+          >
+            <div className={styles.statItem}>
+              <span className={styles.statVal}>
+                {project.language || "N/A"}
+              </span>
+              <span className={styles.statLabel}>Lang</span>
+            </div>
+            <div className={styles.statItem}>
+              <span className={styles.statVal}>{project.stars || 0}</span>
+              <span className={styles.statLabel}>Stars</span>
+            </div>
+            <div className={styles.statItem}>
+              <span className={styles.statVal}>{project.forks || 0}</span>
               <span className={styles.statLabel}>Forks</span>
             </div>
           </motion.div>
@@ -925,7 +981,12 @@ export default function AIAssistant() {
                             : ""
                         }`}
                       >
-                        {renderMessageContent(msg.content, msg.role)}
+                        {renderMessageContent(
+                          msg.content,
+                          msg.role,
+                          isStreaming,
+                          idx === messages.length - 1,
+                        )}
                         <span className={styles.timestamp}>
                           {formatTime(msg.timestamp)}
                         </span>
