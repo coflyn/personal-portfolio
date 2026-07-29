@@ -17,24 +17,28 @@ import TechIcon from "@/components/TechIcons";
 import LiveStatusCard from "@/components/LiveStatusCard";
 
 const techStack = [
-  "Python",
-  "JavaScript",
-  "PHP",
-  "Java",
-  "Next.js",
-  "React",
-  "Node.js",
+  "HTML",
   "CSS",
+  "JavaScript",
+  "React",
+  "Next.js",
   "Tailwind CSS",
   "Bootstrap",
+  "Python",
+  "Node.js",
+  "PHP",
+  "Laravel",
+  "Java",
+  "Kotlin",
+  "Flutter",
+  "Dart",
+  "Swift",
   "MySQL",
   "Git",
-  "Laravel",
-  "HTML",
-  "VS Code",
 ];
 
 const info = [
+  { label: "Work Status", value: "Available for Projects", isStatus: true },
   { label: "Status", value: "Undergraduate Student" },
   { label: "Major", value: "Informatics Engineering" },
   { label: "Location", value: "Makassar, Indonesia" },
@@ -46,7 +50,7 @@ const timeline = [
   {
     year: "2024 — Present",
     title: "University Student",
-    company: "University Dipa Makassar",
+    company: "Universitas Dipa Makassar",
     description:
       "Currently diving deep into the world of software engineering and web development. I'm focusing on learning how to build high-quality applications that solve real-world needs while making sure the technology is easy and helpful for everyone to use.",
   },
@@ -69,7 +73,7 @@ const timeline = [
     title: "Elementary School",
     company: "SD MI Al-Hijrah",
     description:
-      "The beginning of my learning journey. I focused on building strong academic foundations and developing the character traits-like discipline and curiosity-that still drive me today.",
+      "The beginning of my learning journey. I focused on building strong academic foundations and developing the character traits — like discipline and curiosity — that still drive me today.",
   },
 ];
 
@@ -114,7 +118,7 @@ export default function About() {
               <p>
                 I am currently a student at{" "}
                 <span className={styles.highlight}>
-                  University Dipa Makassar
+                  Universitas Dipa Makassar
                 </span>
                 . I spend my days learning how to create web applications that
                 are not only powerful and reliable but also feel very smooth and
@@ -173,27 +177,16 @@ export default function About() {
                 {info.map((item) => (
                   <div key={item.label} className={styles.infoItem}>
                     <span className={styles.infoLabel}>{item.label}</span>
-                    <span className={styles.infoValue}>{item.value}</span>
+                    {item.isStatus ? (
+                      <span className={styles.statusBadge}>
+                        <span className={styles.statusDot} />
+                        {item.value}
+                      </span>
+                    ) : (
+                      <span className={styles.infoValue}>{item.value}</span>
+                    )}
                   </div>
                 ))}
-              </div>
-            </div>
-
-            <div
-              className={styles.availabilityBlock}
-              style={{ transitionDelay: "0.3s" }}
-            >
-              <div className={styles.availabilityCard}>
-                <div className={styles.pulseContainer}>
-                  <div className={styles.pulseDot} />
-                  <div className={styles.pulseRing} />
-                </div>
-                <div className={styles.availabilityInfo}>
-                  <span className={styles.availabilityLabel}>Work Status</span>
-                  <span className={styles.availabilityStatus}>
-                    Available for Projects
-                  </span>
-                </div>
               </div>
             </div>
           </ScrollReveal>

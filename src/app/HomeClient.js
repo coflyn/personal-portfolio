@@ -63,9 +63,10 @@ export default function Home() {
     "downloaders.",
     "useful tools.",
     "bot apps.",
+    "mobile apps.",
     "automations.",
     "websites.",
-    "i love cats.",
+    "I love cats.",
   ];
 
   useEffect(() => {

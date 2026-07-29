@@ -70,12 +70,7 @@ export default function LiveStatusCard() {
             className={styles.dot}
             style={{
               backgroundColor: getStatusColor(),
-              boxShadow: `0 0 10px ${getStatusColor()}80`,
             }}
-          />
-          <div
-            className={styles.dotPulse}
-            style={{ backgroundColor: getStatusColor() }}
           />
         </div>
         <span className={styles.statusText}>
@@ -83,11 +78,6 @@ export default function LiveStatusCard() {
         </span>
         {presence?.discord_status !== "offline" && (
           <div className={styles.liveIndicator}>
-            <div className={styles.signal}>
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
             <span className={styles.liveLabel}>LIVE</span>
           </div>
         )}

@@ -178,27 +178,18 @@ export default function AIAssistant() {
   }, []);
 
   const getStatusColor = () => {
-    if (!presence) return "#94a3b8";
-    switch (presence.discord_status) {
-      case "online":
-        return "#22c55e";
-      case "idle":
-        return "#f59e0b";
-      case "dnd":
-        return "#ef4444";
-      default:
-        return "#94a3b8";
-    }
+    // AI Assistant is always online & ready
+    return "#22c55e";
   };
 
   const getStatusText = () => {
-    if (!presence || presence.discord_status === "offline")
-      return "Get in touch";
+    if (presence && presence.discord_status !== "offline") {
+      const activity = presence.activities.find((a) => a.type === 0);
+      if (activity) return `Active - ${activity.name}`;
+      return "Active Now";
+    }
 
-    const activity = presence.activities.find((a) => a.type === 0);
-    if (activity) return `Active - ${activity.name}`;
-
-    return "Active Now";
+    return "Coflyn AI Companion • Online";
   };
 
   const isUserInteracting = useRef(false);
@@ -960,7 +951,7 @@ export default function AIAssistant() {
                           className={`${styles.avatarWrapper} ${isStreaming && idx === messages.length - 1 && msg.content.length < 10 ? styles.loadingAvatar : ""}`}
                         >
                           <Image
-                            src="/icon.svg"
+                            src="/coflyn.svg"
                             alt="Coflyn AI"
                             className={styles.avatar}
                             width={20}
@@ -999,7 +990,7 @@ export default function AIAssistant() {
                         className={`${styles.avatarWrapper} ${styles.loadingAvatar}`}
                       >
                         <Image
-                          src="/icon.svg"
+                          src="/coflyn.svg"
                           alt="Coflyn AI"
                           className={styles.avatar}
                           width={20}
@@ -1153,7 +1144,7 @@ export default function AIAssistant() {
             className={styles.iconWrapper}
           >
             <Image
-              src="/icon.svg"
+              src="/coflyn.svg"
               alt="AI"
               width={24}
               height={24}

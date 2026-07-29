@@ -39,7 +39,7 @@ export default function Navbar() {
         <div className={styles.inner}>
           <Link href="/" className={styles.logo}>
             <Image
-              src="/icon.svg"
+              src="/coflyn.svg"
               alt="coflyn"
               className={styles.logoIcon}
               width={24}

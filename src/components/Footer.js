@@ -11,7 +11,7 @@ export default function Footer() {
     <footer className={styles.footer}>
       <div className={`container ${styles.inner}`}>
         <p className={styles.copy}>
-          © {new Date().getFullYear()} coflyn. All rights reserved.
+          © {new Date().getFullYear()} coflyn
         </p>
 
         <div className={styles.links}>

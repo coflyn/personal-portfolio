@@ -15,6 +15,10 @@ export const metadata = {
     "portfolio",
     "coflyn",
     "web development",
+    "mobile development",
+    "flutter",
+    "kotlin",
+    "swift",
     "python",
     "automation",
     "bots",
@@ -48,6 +52,11 @@ export const metadata = {
   robots: {
     index: true,
     follow: true,
+  },
+  icons: {
+    icon: { url: "/coflyn.svg", type: "image/svg+xml" },
+    shortcut: "/coflyn.svg",
+    apple: "/coflyn.svg",
   },
 };
 
