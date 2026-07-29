@@ -5,15 +5,16 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" alt="Next.js">
+  <img src="https://img.shields.io/badge/Next.js_16-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" alt="Next.js">
   <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js">
+  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript">
   <img src="https://img.shields.io/badge/Vanilla_CSS-1572B6?style=for-the-badge&logo=css3&logoColor=white" alt="CSS3">
   <img src="https://img.shields.io/badge/Framer_Motion-black?style=for-the-badge&logo=framer&logoColor=F0F" alt="Framer Motion">
   <img src="https://img.shields.io/badge/Resend-000000?style=for-the-badge&logo=resend&logoColor=white" alt="Resend">
   <img src="https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white" alt="Vercel">
 </p>
 
-Welcome to the official repository of my personal portfolio. This project serves as a comprehensive showcase of my software development journey, featuring advanced automation tools, modern web experiences, and an intelligent AI assistant.
+Welcome to the official repository of my personal portfolio. This project serves as a comprehensive showcase of my software development journey, featuring advanced automation tools, modern web & mobile experiences, and an intelligent AI assistant.
 
 **Live Demo:** [coflyn.my.id](https://coflyn.my.id)
 
@@ -21,9 +22,9 @@ Welcome to the official repository of my personal portfolio. This project serves
 
 ## Key Features
 
-### Context-Aware AI Assistant
+### Context-Aware AI Companion
 
-Integrated with an advanced AI companion powered by **Llama 3.3 70B** for a truly interactive experience.
+Integrated with an advanced AI assistant powered by **Llama 3.3 70B** for an interactive, deep portfolio exploration experience.
 
 - **Deep GitHub Integration:** The assistant can fetch and analyze READMEs, `package.json`, `requirements.txt`, and the **3 latest commits** from my repositories in real-time.
 - **Intelligent Fallback Architecture:** Implements a cascading multi-model fallback system (Llama 3.3, Llama 3.1, Qwen) to guarantee 100% uptime against API rate limits, featuring smart UI handlers to elegantly mask reasoning models' internal chain-of-thought.
@@ -41,15 +42,15 @@ A dynamically categorized grid showcasing projects fetched in real-time from Git
 
 ### Interactive "Meow-mento Mori" Mascot
 
-A responsive pixel-art cat mascot that adds personality to the home page.
+A responsive pixel-art cat mascot that adds personality to the homepage.
 
 - **Reactive Dialogue:** Features witty, tech-themed speech bubbles and "tickle" responses when clicked.
 - **Dynamic Animations:** Implements squash-and-stretch physics for a satisfying, tactile feel.
 - **Philosophical Touch:** Blends my "Coflyn" brand with the _Memento Mori_ philosophy in a playful way.
 
-### Minimalist & High-Tech UI
+### Minimalist & Premium Dark UI
 
-A bespoke dashboard-style design focusing on clean lines, dark mode, and focus-driven interfaces.
+A bespoke dashboard-style design focusing on clean lines, sleek dark mode aesthetics, and harmonious CSS design tokens.
 
 - **Glassmorphism:** A modern user interface utilizing frosted glass effects and refined typography.
 - **Fluid Motion:** Implements smooth page transitions and element reveals via Framer Motion, Lenis smooth scrolling, and ScrollReveal.
@@ -60,38 +61,57 @@ A bespoke dashboard-style design focusing on clean lines, dark mode, and focus-d
 ## Project Structure
 
 ```bash
-src/
-├── app/                  # Next.js Pages & API Routes
-│   ├── about/            # Experience, education timeline & tech grid
-│   ├── contact/          # Clean and animated glassmorphic contact form
-│   ├── projects/         # Dynamic GitHub project hub with custom filters
-│   ├── api/
-│   │   ├── chat/         # Context-aware AI Chat bot endpoint (Groq / Llama)
-│   │   └── contact/      # Email dispatch endpoint (Resend)
-│   ├── HomeClient.js     # Interactive Home component (Cat Mascot & Typewriter)
-│   └── globals.css       # Design tokens, variables & glassmorphism system
-├── components/           # Reusable UI & Widget Components
-│   ├── AIAssistant.js    # Floating AI chatbot drawer component
-│   ├── LiveStatusCard.js # Real-time Discord presence & Spotify monitor
-│   ├── TechIcons.js      # Curated custom SVG path icons for tech stack
-│   └── MagneticButton.js # Premium magnetic cursor attraction effect
-└── lib/                  # Data & API Integration utilities
-    ├── data.js           # Static project descriptors
-    └── github.js         # Real-time GitHub API fetcher
+Portfolio/
+├── public/                     # Static assets & brand media
+│   ├── coflyn.svg              # Unified brand logo & favicon
+│   ├── preview.png             # Site OpenGraph preview image
+│   └── cat.mp4                 # Hero cat mascot video asset
+├── src/
+│   ├── app/                    # Next.js App Router (Pages & API Routes)
+│   │   ├── about/              # Bio, education timeline, tech stack & details
+│   │   ├── contact/            # Glassmorphic contact form with Resend email API
+│   │   ├── projects/           # Dynamic GitHub project hub with category filters
+│   │   ├── api/
+│   │   │   ├── chat/           # AI Assistant streaming endpoint (Groq / Llama)
+│   │   │   └── contact/        # Contact email dispatch endpoint (Resend API)
+│   │   ├── globals.css         # Core CSS design tokens, typography & variables
+│   │   ├── layout.js           # Root layout, metadata & OpenGraph configuration
+│   │   ├── HomeClient.js       # Homepage client logic (Mascot & Hero typewriter)
+│   │   ├── not-found.js        # Custom 404 page boundary
+│   │   └── error.js            # Custom runtime error boundary
+│   ├── components/             # Reusable UI & Widget Components
+│   │   ├── AIAssistant.js      # Floating AI chatbot drawer with status indicator
+│   │   ├── LiveStatusCard.js   # Real-time Discord presence & Spotify activity
+│   │   ├── Navbar.js           # Header navigation bar with brand logo
+│   │   ├── Footer.js           # Footer with back-to-top trigger & copyright
+│   │   ├── ProjectCard.js      # Repository project card with stars & tags
+│   │   ├── ProjectList.js      # Category filter & search grid manager
+│   │   ├── ProjectSkeleton.js  # Project list skeleton loading placeholder
+│   │   ├── TechIcons.js        # Curated SVG vector icons for tech stack
+│   │   ├── MagneticButton.js   # Cursor magnetic attraction wrapper
+│   │   ├── PageTransition.js   # Page entrance transition animation
+│   │   ├── ScrollReveal.js     # Viewport scroll reveal animation
+│   │   ├── SectionHeader.js    # Standardized section header title
+│   │   └── ClientProviders.js  # Smooth scroll provider wrapper
+│   └── lib/                    # Core utilities & API integrations
+│       ├── data.js             # Fallback static project dataset
+│       └── github.js           # GitHub REST API client & tech classifier
 ```
 
 ---
 
 ## Technology Stack
 
-- **Framework:** Next.js 16 (App Router)
-- **Runtime:** Node.js (API Routes)
-- **Styling:** Modular Vanilla CSS (Modern CSS Variables)
-- **AI Engine:** Llama 3.3 70B (Groq Cloud API)
-- **Real-time Data:** Lanyard API (Discord SDK)
-- **Email Service:** Resend API
-- **Animations:** Framer Motion & ScrollReveal
-- **Deployment:** Vercel
+Technologies used to build this portfolio web application:
+
+- **Framework:** Next.js 16 (App Router);
+- **Runtime Environment:** Node.js (API Routes & Serverless Backend)
+- **Language / Core:** JavaScript (ES6+), HTML5
+- **Styling:** Modular Vanilla CSS3 (CSS Variables & Glassmorphism System)
+- **Animations & Motion:** Framer Motion & ScrollReveal
+- **AI Companion Engine:** Groq Cloud API (Llama 3.3 70B)
+- **Integrations:** Resend API (Email Dispatch), Lanyard API (Discord Rich Presence)
+- **Deployment & Hosting:** Vercel Platform
 
 ---
 
@@ -103,4 +123,4 @@ For collaborations or inquiries:
 - **Instagram:** [@\_coflyn](https://www.instagram.com/_coflyn)
 - **GitHub:** [@coflyn](https://github.com/coflyn)
 
-Copyright 2026 — Raffi Andhika (coflyn).
+Copyright 2026 — coflyn.
