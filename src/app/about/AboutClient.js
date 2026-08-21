@@ -73,7 +73,7 @@ const timeline = [
     title: "Elementary School",
     company: "SD MI Al-Hijrah",
     description:
-      "The beginning of my learning journey. I focused on building strong academic foundations and developing the character traits — like discipline and curiosity — that still drive me today.",
+      "The beginning of my learning journey. I focused on building strong academic foundations and developing character traits like discipline and curiosity that still drive me today.",
   },
 ];
 
@@ -202,7 +202,7 @@ export default function About() {
         <div className={styles.timelineSection}>
           <ScrollReveal>
             <div className={styles.timelineHeader}>
-              <h2 className="section-title">Experience & Education</h2>
+              <h2 className="section-title">Education</h2>
             </div>
           </ScrollReveal>
 
