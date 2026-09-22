@@ -19,11 +19,8 @@ export default function AIAssistant() {
   const initialMessage = {
     role: "assistant",
     content:
-      "Hi! I'm Coflyn's AI Companion. I can help you explore Dika's work with deep insights:\n\n• **Analyze READMEs** for project goals\n• **Read package.json** for tech stacks\n• **Check requirements.txt** for dependencies\n• **Track latest commits** for recent activity\n\nHow can I help you today?",
-    timestamp: new Date().toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-    }),
+      "Hey! I'm Dika's AI, trained on his projects, stack, and how he thinks. Ask me anything: what he's built, what he's into, or if he's open for work.",
+    timestamp: new Date().toISOString(),
   };
 
   const [messages, setMessages] = useState([initialMessage]);
@@ -185,11 +182,11 @@ export default function AIAssistant() {
   const getStatusText = () => {
     if (presence && presence.discord_status !== "offline") {
       const activity = presence.activities.find((a) => a.type === 0);
-      if (activity) return `Active - ${activity.name}`;
-      return "Active Now";
+      if (activity) return `Dika is playing ${activity.name}`;
+      return "Dika is online";
     }
 
-    return "Coflyn AI Companion • Online";
+    return "Ask me anything about Dika";
   };
 
   const isUserInteracting = useRef(false);
@@ -865,12 +862,12 @@ export default function AIAssistant() {
           >
             <div className={styles.header}>
               <div className={styles.headerTitle}>
-                <div
-                  className={styles.statusDot}
-                  style={{
-                    backgroundColor: getStatusColor(),
-                    boxShadow: `0 0 8px ${getStatusColor()}80`,
-                  }}
+                <Image
+                  src="/coflyn.svg"
+                  alt="coflyn"
+                  width={16}
+                  height={16}
+                  className={styles.headerIcon}
                 />
                 <h4>{getStatusText()}</h4>
               </div>

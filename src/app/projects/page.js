@@ -5,7 +5,7 @@ import { getProjects } from "@/lib/github";
 import Loading from "./loading";
 
 export const metadata = {
-  title: "Projects — Things I've built",
+  title: "Projects: Things I've built",
   description:
     "A showcase of automation tools, scripts, and web projects fetched directly from GitHub.",
 };

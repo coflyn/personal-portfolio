@@ -236,7 +236,7 @@ export default function Home() {
                 </MagneticButton>
                 <MagneticButton>
                   <Link href="/contact" className={styles.ctaSecondary}>
-                    Get in Touch
+                    Say Hello
                   </Link>
                 </MagneticButton>
               </motion.div>

@@ -131,7 +131,8 @@
 
 .inputGroup input:focus,
 .inputGroup textarea:focus {
-  outline: none;
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
   border-bottom-color: var(--accent);
 }
 

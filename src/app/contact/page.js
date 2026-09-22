@@ -1,7 +1,7 @@
 import ContactClient from "./ContactClient";
 
 export const metadata = {
-  title: "Contact — Let's work together",
+  title: "Contact: Let's work together",
   description: "Get in touch with coflyn for collaborations or inquiries.",
 };
 

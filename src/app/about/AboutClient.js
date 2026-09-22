@@ -48,32 +48,32 @@ const info = [
 
 const timeline = [
   {
-    year: "2024 — Present",
+    year: "2024–Present",
     title: "University Student",
     company: "Universitas Dipa Makassar",
     description:
-      "Currently diving deep into the world of software engineering and web development. I'm focusing on learning how to build high-quality applications that solve real-world needs while making sure the technology is easy and helpful for everyone to use.",
+      "Informatics Engineering. Most of what I actually learn happens outside the classroom: building projects, reading docs, and shipping things that work. Focused on web development and automation.",
   },
   {
-    year: "2020 — 2023",
+    year: "2020–2023",
     title: "Vocational High School",
     company: "SMK Darussalam Makassar",
     description:
-      "This is where my real journey with code began. I started learning the foundations of programming and spent countless hours figuring out how to think logically to solve complex puzzles through lines of code.",
+      "Software Engineering major. Where I wrote my first real lines of code and started thinking in terms of logic and systems. Spent a lot of time figuring out what breaks and why.",
   },
   {
-    year: "2017 — 2020",
+    year: "2017–2020",
     title: "Junior High School",
     company: "SMP IT Darussalam Makassar",
     description:
-      "My first steps into the digital world. This is where I learned the basics of how computers work and started understanding how important digital tools are in our modern lives.",
+      "First real contact with computers and how they work. Started realizing that understanding the machine was more interesting than just using it.",
   },
   {
-    year: "2012 — 2017",
+    year: "2012–2017",
     title: "Elementary School",
     company: "SD MI Al-Hijrah",
     description:
-      "The beginning of my learning journey. I focused on building strong academic foundations and developing character traits like discipline and curiosity that still drive me today.",
+      "Built the habits that still run in the background: showing up, staying curious, and finishing what I start.",
   },
 ];
 
@@ -107,29 +107,32 @@ export default function About() {
           >
             <div className={styles.bio}>
               <p>
-                Hi! I&apos;m <span className={styles.highlight}>Dika</span>,
-                also known as <span className={styles.highlight}>Coflyn</span>.
-                I love building things that make life easier using technology
-                and automation. Since I was young, I&apos;ve always been
-                fascinated by how things work behind the scenes, and that
-                curiosity eventually led me into the world of software
-                development.
+                I&apos;m <span className={styles.highlight}>Dika</span>, also
+                known as <span className={styles.highlight}>Coflyn</span>. I
+                build tools, bots, and web apps. Tech has always been something
+                I wanted to get into, not just use but actually understand and
+                shape.
               </p>
               <p>
-                I am currently a student at{" "}
+                Currently studying Informatics Engineering at{" "}
                 <span className={styles.highlight}>
                   Universitas Dipa Makassar
                 </span>
-                . I spend my days learning how to create web applications that
-                are not only powerful and reliable but also feel very smooth and
-                easy for anyone to use.
+                . Most of what I learn happens outside the classroom: building
+                projects, reading docs, and figuring out why something broke at
+                2am.
               </p>
               <p>
-                When I&apos;m not studying for my university courses,
-                you&apos;ll usually find me experimenting with new automation
-                tools or building helpful bots. I really enjoy sharing my ideas
-                and working together with others to make the digital space a bit
-                more efficient and fun for everyone.
+                I spend a lot of time on automation and Discord bots. There is
+                something satisfying about writing a script that just runs and
+                handles something you would otherwise do manually a hundred
+                times. I also play games, which is where half my project ideas
+                come from.
+              </p>
+              <p>
+                The name &quot;coflyn&quot; comes from &quot;coffin&quot;. It
+                is a reminder to take the work seriously but not myself. Build
+                things that matter while there is still time to build them.
               </p>
 
               <div className={styles.statusWrapper}>

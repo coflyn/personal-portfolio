@@ -6,10 +6,10 @@ export const metadata = {
   metadataBase: new URL("https://www.coflyn.my.id"),
   title: {
     template: "%s",
-    default: "Coflyn — Hello World!",
+    default: "Coflyn: Hello World!",
   },
   description:
-    "Portfolio of Coflyn — Automation specialist creating bots, tools, and efficient web solutions.",
+    "Portfolio of Coflyn, automation specialist creating bots, tools, and efficient web solutions.",
   keywords: [
     "developer",
     "portfolio",
@@ -26,9 +26,9 @@ export const metadata = {
   authors: [{ name: "coflyn" }],
   creator: "coflyn",
   openGraph: {
-    title: "coflyn — Hello World!",
+    title: "coflyn: Hello World!",
     description:
-      "Portfolio of coflyn — a developer crafting tools, bots, and digital experiences.",
+      "Portfolio of coflyn, a developer crafting tools, bots, and digital experiences.",
     url: "https://www.coflyn.my.id",
     siteName: "coflyn Portfolio",
     images: [
@@ -44,9 +44,9 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "coflyn — Hello World!",
+    title: "coflyn: Hello World!",
     description:
-      "Portfolio of coflyn — a developer crafting tools, bots, and digital experiences.",
+      "Portfolio of coflyn, a developer crafting tools, bots, and digital experiences.",
     images: ["/og-image.png"],
   },
   robots: {
