@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import { GitHubCalendar } from "react-github-calendar";
 import "react-github-calendar/tooltips.css";
 import styles from "./GithubActivity.module.css";
-import { getGithubStats } from "@/lib/github";
 
 const theme = {
   light: ["#161b22", "#302a1f", "#5c503b", "#917e62", "#c4a882"],
@@ -16,11 +15,12 @@ export default function GithubActivity({ username }) {
   const [years, setYears] = useState([]);
 
   useEffect(() => {
-    const fetchStats = async () => {
-      const data = await getGithubStats();
-      if (data) setStats(data);
-    };
-    fetchStats();
+    fetch("/api/chat?githubStats=true")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.stats) setStats(data.stats);
+      })
+      .catch((err) => console.error("Github stats fetch error:", err));
 
     const currentYear = new Date().getFullYear();
     const yearList = ["Last Year"];

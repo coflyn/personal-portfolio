@@ -12,7 +12,6 @@ import ProjectSkeleton from "@/components/ProjectSkeleton";
 import MagneticButton from "@/components/MagneticButton";
 import projects from "@/lib/data";
 import styles from "./page.module.css";
-import { getProjects } from "@/lib/github";
 
 const HeartSVG = () => (
   <svg
@@ -182,7 +181,9 @@ export default function Home() {
           return;
         }
 
-        const mapped = await getProjects();
+        const res = await fetch("/api/chat?githubStats=true");
+        const data = await res.json();
+        const mapped = data.projects || [];
         if (mapped.length === 0) {
           setIsLoading(false);
           return;
