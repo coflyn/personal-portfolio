@@ -231,8 +231,8 @@ export default function Home() {
               </motion.p>
               <motion.div className={styles.ctas} variants={fadeUp}>
                 <MagneticButton>
-                  <Link href="/projects" className={styles.ctaPrimary}>
-                    View Projects
+                  <Link href="/repositories" className={styles.ctaPrimary}>
+                    View Repositories
                   </Link>
                 </MagneticButton>
                 <MagneticButton>
@@ -311,10 +311,10 @@ export default function Home() {
           <ScrollReveal>
             <SectionHeader
               label="Selected Work"
-              title="Featured Projects"
+              title="Featured Repositories"
               className={styles.featuredHeader}
             >
-              <Link href="/projects" className={styles.viewAll}>
+              <Link href="/repositories" className={styles.viewAll}>
                 View all →
               </Link>
             </SectionHeader>

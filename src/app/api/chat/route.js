@@ -480,7 +480,13 @@ Use this data to answer general questions about what he's been working on recent
     }
 
     const response = await fetchWithRetry(
-      ["openai/gpt-oss-120b", "openai/gpt-oss-20b", "qwen/qwen3.6-27b", "qwen/qwen3-32b", "deepseek-r1-distill-llama-70b"],
+      [
+        "openai/gpt-oss-120b",
+        "openai/gpt-oss-20b",
+        "qwen/qwen3.6-27b",
+        "qwen/qwen3-32b",
+        "deepseek-r1-distill-llama-70b",
+      ],
       payload,
     );
 

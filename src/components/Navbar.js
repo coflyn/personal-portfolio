@@ -10,7 +10,7 @@ import styles from "./Navbar.module.css";
 const links = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
-  { href: "/projects", label: "Projects" },
+  { href: "/repositories", label: "Repositories" },
   { href: "/contact", label: "Contact" },
 ];
 

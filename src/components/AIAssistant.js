@@ -440,8 +440,8 @@ export default function AIAssistant() {
   const suggestions = [
     { label: "Who is coflyn?", value: "Who is Dika (coflyn)?" },
     {
-      label: "List Projects",
-      value: "Show me a list of coflyn's featured projects.",
+      label: "List Repositories",
+      value: "Show me a list of coflyn's featured repositories.",
     },
     {
       label: "Tech Stack",

@@ -3,7 +3,7 @@ import PageTransition from "@/components/PageTransition";
 import ScrollReveal from "@/components/ScrollReveal";
 import styles from "./page.module.css";
 
-export default function ProjectsLayout({ children }) {
+export default function RepositoriesLayout({ children }) {
   return (
     <main className={styles.page}>
       <div className="container">
@@ -18,7 +18,7 @@ export default function ProjectsLayout({ children }) {
           }}
         >
           <SectionHeader
-            label="Projects"
+            label="Repositories"
             title="Things I've built."
             description="A collection of tools, scripts, bots, and websites. Fetched directly from my GitHub."
             className={styles.header}
