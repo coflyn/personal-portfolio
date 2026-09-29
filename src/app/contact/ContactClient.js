@@ -8,7 +8,10 @@ import MagneticButton from "@/components/MagneticButton";
 import styles from "./page.module.css";
 
 const socials = [
-  { name: "WhatsApp", href: "https://wa.me/6282399408885" },
+  {
+    name: "LinkedIn",
+    href: "https://www.linkedin.com/in/raffi-andhika-ab75b443b/",
+  },
   { name: "Instagram", href: "https://instagram.com/_coflyn" },
   { name: "GitHub", href: "https://github.com/coflyn" },
   { name: "Email", href: "mailto:riazrepo@gmail.com" },
@@ -23,7 +26,7 @@ const faqs = [
   {
     question: "What is your typical response time?",
     answer:
-      "I usually respond within 24 hours. For faster communication, you can reach me via WhatsApp during business hours.",
+      "I usually respond within 24 hours. For professional inquiries, you can reach me via LinkedIn or email.",
   },
   {
     question: "Do you work with international clients?",

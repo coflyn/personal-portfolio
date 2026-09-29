@@ -77,6 +77,51 @@ const timeline = [
   },
 ];
 
+const experiences = [
+  {
+    period: "Sep 2026 – Present",
+    role: "IT Intern – Airport Technology Department",
+    company: "Sultan Hasanuddin International Airport (UPG)",
+    location: "Makassar, Indonesia",
+    technologies: ["SketchUp", "PHP", "JavaScript", "Python"],
+    overview:
+      "The primary international airport serving South Sulawesi and eastern Indonesia, managed under PT Angkasa Pura Indonesia (InJourney Airports) with large-scale technology operations.",
+    points: [
+      "Developed and optimized the interactive digital airport mapping system (Airport Maps) to assist facility layout visualization and operational navigation across Sultan Hasanuddin Airport.",
+      "Designed and built a taxi staging and management system to regulate queue flows, fleet operational data management, and airport ground transportation efficiency.",
+    ],
+  },
+  {
+    period: "Feb 2022 – Apr 2022",
+    role: "Vocational Intern",
+    company: "Regional Revenue Agency of North Makassar II (Samsat Sudiang)",
+    location: "Makassar, Indonesia",
+    overview:
+      "A government public service agency managing motor vehicle registration administration, vehicle tax payments, and vehicle registration certificate (STNK) validation.",
+    points: [
+      "Meticulously organized, managed, and digitized annual motor vehicle document archives to ensure seamless and efficient document accessibility.",
+      "Served at the two-wheeler motor vehicle tax counter, assisting taxpayers directly with administrative service processing.",
+    ],
+  },
+];
+
+const certifications = [
+  {
+    year: "Dec 2025",
+    title: "Junior Web Developer",
+    issuer: "National Professional Certification Agency (BNSP) • LSP BPPTIK",
+    description:
+      "Nationally certified Junior Web Developer in Software and Web Development. Valid for 3 years.",
+  },
+  {
+    year: "Nov 2025",
+    title: "Junior Web Developer — Vocational School Graduate Academy (VSGA)",
+    issuer: "Digital Talent Scholarship • BPSDMP Komdigi Makassar",
+    description:
+      "Completed vocational technical training covering web programming fundamentals, HTML, CSS, JavaScript, database management, and server-side development.",
+  },
+];
+
 export default function About() {
   return (
     <main className={styles.page}>
@@ -205,6 +250,49 @@ export default function About() {
         <div className={styles.timelineSection}>
           <ScrollReveal>
             <div className={styles.timelineHeader}>
+              <h2 className="section-title">Work Experience</h2>
+            </div>
+          </ScrollReveal>
+
+          <div className={styles.timelineContainer}>
+            {experiences.map((item, index) => (
+              <ScrollReveal key={index} delay={index * 0.1}>
+                <div className={styles.timelineItem}>
+                  <div className={styles.timelineYear}>{item.period}</div>
+                  <div className={styles.timelineContent}>
+                    <h4 className={styles.timelineTitle}>{item.role}</h4>
+                    <span className={styles.timelineCompany}>
+                      {item.company} &bull; {item.location}
+                    </span>
+                    <p className={styles.timelineDesc}>{item.overview}</p>
+                    {item.points && item.points.length > 0 && (
+                      <ul className={styles.timelineList}>
+                        {item.points.map((point, pIndex) => (
+                          <li key={pIndex} className={styles.timelineListItem}>
+                            {point}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                    {item.technologies && item.technologies.length > 0 && (
+                      <div className={styles.timelineTechTags}>
+                        {item.technologies.map((tech) => (
+                          <span key={tech} className={styles.timelineTechTag}>
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
+        </div>
+
+        <div className={styles.timelineSection}>
+          <ScrollReveal>
+            <div className={styles.timelineHeader}>
               <h2 className="section-title">Education</h2>
             </div>
           </ScrollReveal>
@@ -218,6 +306,31 @@ export default function About() {
                     <h4 className={styles.timelineTitle}>{item.title}</h4>
                     <span className={styles.timelineCompany}>
                       {item.company}
+                    </span>
+                    <p className={styles.timelineDesc}>{item.description}</p>
+                  </div>
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
+        </div>
+
+        <div className={styles.timelineSection}>
+          <ScrollReveal>
+            <div className={styles.timelineHeader}>
+              <h2 className="section-title">Certifications</h2>
+            </div>
+          </ScrollReveal>
+
+          <div className={styles.timelineContainer}>
+            {certifications.map((item, index) => (
+              <ScrollReveal key={index} delay={index * 0.1}>
+                <div className={styles.timelineItem}>
+                  <div className={styles.timelineYear}>{item.year}</div>
+                  <div className={styles.timelineContent}>
+                    <h4 className={styles.timelineTitle}>{item.title}</h4>
+                    <span className={styles.timelineCompany}>
+                      {item.issuer}
                     </span>
                     <p className={styles.timelineDesc}>{item.description}</p>
                   </div>

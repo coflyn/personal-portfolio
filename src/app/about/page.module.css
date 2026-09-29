@@ -274,7 +274,7 @@
   font-weight: 600;
   text-transform: uppercase;
   flex-shrink: 0;
-  width: 140px;
+  width: 160px;
 }
 
 .timelineContent {
@@ -300,6 +300,57 @@
   font-size: 0.95rem;
   color: var(--text-secondary);
   line-height: 1.6;
+}
+
+.timelineList {
+  list-style: none;
+  padding: 0;
+  margin: 6px 0 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.timelineListItem {
+  position: relative;
+  padding-left: 18px;
+  font-size: 0.925rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.timelineListItem::before {
+  content: "•";
+  position: absolute;
+  left: 4px;
+  color: var(--accent);
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.timelineTechTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.timelineTechTag {
+  font-size: 0.75rem;
+  font-family: var(--font-heading);
+  letter-spacing: 0.03em;
+  font-weight: 500;
+  color: var(--accent);
+  background: var(--accent-dim);
+  border: 1px solid rgba(196, 168, 130, 0.25);
+  padding: 3px 10px;
+  border-radius: 9999px;
+  transition: all var(--duration-fast) var(--ease-smooth);
+}
+
+.timelineTechTag:hover {
+  background: rgba(196, 168, 130, 0.2);
+  border-color: var(--accent);
 }
 
 .resumeSection {

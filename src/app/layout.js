@@ -86,7 +86,11 @@ export default function RootLayout({ children }) {
       "Python",
       "Next.js",
     ],
-    sameAs: ["https://github.com/coflyn", "https://www.instagram.com/_coflyn/"],
+    sameAs: [
+      "https://github.com/coflyn",
+      "https://www.instagram.com/_coflyn/",
+      "https://www.linkedin.com/in/raffi-andhika-ab75b443b/",
+    ],
   };
 
   return (
